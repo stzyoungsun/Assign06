@@ -1,0 +1,4 @@
+bin-debug/
+.project
+.settings/org.eclipse.core.resources.prefs
+.actionScriptProperties
