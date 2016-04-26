@@ -14,12 +14,23 @@ package framework.display
 		
 		public function DisplayObject()
 		{
-			
+			_x = _y = _rotation = 0.0;
+			_scaleX = _scaleY = 1.0;
 		}
 		
-		public function render():void
+		public function render(painter:Painter):void
 		{
 			// Abstract Method
 		}
+		
+		public function get x():Number { return _x; }
+		public function set x(x:Number):void { _x = x; }
+		
+		public function get y():Number { return _y; }
+		public function set y(y:Number):void { _y = y; }
+		
+		public function get scaleX():Number { return _scaleX; }
+		public function get scaleY():Number { return _scaleY; }
+		public function get rotation():Number { return _rotation; }
 	}
 }

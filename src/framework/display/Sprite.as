@@ -6,11 +6,5 @@ package framework.display
 		{
 			super();
 		}
-		
-		public override function render():void
-		{
-			super.render();
-			trace("sprite");
-		}
 	}
 }

@@ -5,6 +5,7 @@ package
 	import flash.display.StageScaleMode;
 	import framework.core.Framework;
 	
+	[SWF(width="800", height="600", frameRate="60", backgroundColor="#FFFFF0")]
 	public class Assignment06 extends Sprite
 	{
 		public function Assignment06()

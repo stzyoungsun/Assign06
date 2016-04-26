@@ -1,22 +1,16 @@
 package framework.core
 {
-	import com.adobe.utils.AGALMiniAssembler;
-	
 	import flash.display.Sprite;
 	import flash.display.Stage3D;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
-	import flash.display3D.Context3DProgramType;
-	import flash.display3D.IndexBuffer3D;
-	import flash.display3D.Program3D;
-	import flash.display3D.VertexBuffer3D;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.geom.Rectangle;
-	import flash.utils.ByteArray;
 	
 	import framework.display.DisplayObject;
+	import framework.display.Painter;
 	import framework.display.Stage;
 	
 	public class Framework  extends EventDispatcher
@@ -32,13 +26,10 @@ package framework.core
 		private var _viewPort:Rectangle;
 		private var _rootClass:Class;
 		private var _stage3D:Stage3D;
+
+		private var _painter:Painter;
 		
-		private var _vertexBuffer:VertexBuffer3D;
-		private var _indexBuffer:IndexBuffer3D;
-		
-		private var tempAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-		private var vertexProgram:ByteArray;
-		private var fragmentProgram:ByteArray;
+		private static var sCurrent:Framework;
 		
 		public function Framework(rootClass:Class, stage:flash.display.Stage, viewPort:Rectangle=null, stage3D:Stage3D=null)
 		{
@@ -61,6 +52,7 @@ package framework.core
 			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			stage.stage3Ds[0].requestContext3D();
 			_stage3D = stage.stage3Ds[0];
+			_painter = new Painter(_stage3D);
 		}
 		
 		private function onContextCreated(event:Event):void
@@ -69,53 +61,15 @@ package framework.core
 			
 			_context3D = _stage3D.context3D;
 			
+			_context3D.configureBackBuffer(
+				64,
+				64,
+				0,
+				true
+			);
+						
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_stage.addChildAt(root, 0);
-		}
-		
-		private function createProgram():void
-		{
-			tempAssembler.assemble(
-				Context3DProgramType.VERTEX,
-				// Apply draw matrix (object -> clip space)
-				"m44 op, va0, vc0\n" +
-				
-				// Scale texture coordinate and copy to varying
-				"mov vt0, va1\n" +
-				"div vt0.xy, vt0.xy, vc4.xy\n" +
-				"mov v0, vt0\n"
-			);
-			vertexProgram = tempAssembler.agalcode;
-			
-			tempAssembler.assemble(
-				Context3DProgramType.FRAGMENT,
-				"tex oc, v0, fs0 <2d,linear,mipnone,clamp>"
-			);
-			fragmentProgram = tempAssembler.agalcode;
-			
-			var program:Program3D = _context3D.createProgram();
-			program.upload(vertexProgram, fragmentProgram);
-			
-			// Create the positions and texture coordinates vertex buffer
-			_vertexBuffer = _context3D.createVertexBuffer(4, 5);
-			_vertexBuffer.uploadFromVector(
-				new <Number>[
-					// X,  Y,  Z, U, V
-					-1,   -1, 0, 0, 1,
-					-1,    1, 0, 0, 0,
-					1,    1, 0, 1, 0,
-					1,   -1, 0, 1, 1
-				], 0, 4
-			);
-			
-			// Create the triangles index buffer
-			_indexBuffer = _context3D.createIndexBuffer(6);
-			_indexBuffer.uploadFromVector(
-				new <uint>[
-					0, 1, 2,
-					2, 3, 0
-				], 0, 6
-			);
 		}
 		
 		public function dispose() : void
@@ -139,13 +93,15 @@ package framework.core
 			{
 				render();
 			}
+			
+			updateNativeOverlay();
 		}
 		
 		public function render():void
 		{
 			_context3D.clear(0.5, 0.5, 0.5);
 			
-			_stage.render();
+			_stage.render(_painter);
 			
 			_context3D.present();
 		}
@@ -169,6 +125,14 @@ package framework.core
 		{
 			_started = false;
 			_rendering = backGoundRendering;
+		}
+		
+		private function updateNativeOverlay():void
+		{
+			_nativeOverlay.x = _viewPort.x;
+			_nativeOverlay.y = _viewPort.y;
+			_nativeOverlay.scaleX = _viewPort.width / _stage.stageWidth;
+			_nativeOverlay.scaleY = _viewPort.height / _stage.stageHeight;
 		}
 		
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
