@@ -7,12 +7,14 @@ package framework.core
 	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
-	import framework.display.Painter;
 	import framework.display.Stage;
+	import flash.geom.PerspectiveProjection;
+	import flash.geom.Point;
+	
 
 	public class Framework  extends EventDispatcher
 	{
@@ -31,8 +33,12 @@ package framework.core
 		private var _painter:Painter;
 		
 		private static var sCurrent:Framework;
+		
+		
 		public function Framework(rootClass:Class, stage:flash.display.Stage, viewPort:Rectangle=null, stage3D:Stage3D=null)
 		{
+			
+			
 			if (stage == null) throw new ArgumentError("Stage must not be null");
 			if (viewPort == null) viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 						
@@ -44,9 +50,9 @@ package framework.core
 			_nativeOverlay = new Sprite();    //Note @유영선 framework의 큰 틀을 stage에 덮어씀
 			_nativeStage = stage;
 			_nativeStage.addChild(_nativeOverlay);
-			
 	
 			_viewPort = viewPort;
+			
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
@@ -61,11 +67,11 @@ package framework.core
 			_stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			
 			_context3D = _stage3D.context3D;
-			
+		
 			_context3D.configureBackBuffer(
 				_nativeStage.stageWidth,
 				_nativeStage.stageHeight,
-				0,
+				1,
 				true
 			);
 			_painter = new Painter(_stage3D);

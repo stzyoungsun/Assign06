@@ -1,4 +1,4 @@
-package framework.display
+package framework.Rendering
 {
 	import com.adobe.utils.AGALMiniAssembler;
 	
@@ -8,7 +8,6 @@ package framework.display
 	import flash.display3D.IndexBuffer3D;
 	import flash.display3D.Program3D;
 	import flash.display3D.VertexBuffer3D;
-	import flash.events.Event;
 	import flash.utils.ByteArray;
 
 	public class Painter

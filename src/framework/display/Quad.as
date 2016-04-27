@@ -9,47 +9,124 @@ package framework.display
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	
+	import framework.Rendering.Painter;
 	import framework.core.Framework;
+	import flash.geom.Rectangle;
+	import flash.geom.Point;
 	
 
 	public class Quad extends DisplayObject
 	{
-		private var _texture:Texture;
+	
+		
 		private var _context:Context3D;
 		private static const tempMatrix3D:Matrix3D = new Matrix3D();
 		private static const Z_AXIS:Vector3D = Vector3D.Z_AXIS;
 		private var fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		private var _bitmapData:BitmapData;
 		private var _painter : Painter;
+		private var mProjectionMatrix:Matrix3D = new Matrix3D();
+		
+		public var textureWidth:uint;
+		public var textureHeight:uint;
+		private static const tempRect:Rectangle = new Rectangle();
+		private static const tempPoint:Point = new Point();
+		private var _texture:Texture;
+		
+		private var _drawx : Number;
+		private var _drawy : Number;
+		private var _drawWidth : Number;
+		private var _drawHeight : Number;
+		
 		public function Quad(x:Number = 0, y:Number =0, color:uint = 0xffffff)
 		{
-//			this.x = x;
-//			this.y = y;	
-			controlBitmap(x,y);
 			_painter = Framework.painter;
 			_context = _painter.context;
-			if(_texture == null)
-			{
-				_texture = _context.createTexture(32, 32, Context3DTextureFormat.BGRA, false);
-				
-				_texture.uploadFromBitmapData(_bitmapData);
-			}
+			
+			bitmapDataControl(_bitmapData);
+			
+			this.x = x;
+			this.y = y;
 		}
 		
-		public function controlBitmap(x:Number, y: Number) : void
+		public function  bitmapDataControl(bmd:BitmapData): void
 		{
-			this.x = (x-Framework.viewport.width/2+_bitmapData.width/2)/(Framework.viewport.width/2);
-			this.y = -(y-Framework.viewport.height/2+_bitmapData.height/2)/(Framework.viewport.height/2);
+			var width:uint = bmd.width;
+			var height:uint = bmd.height;
 			
-			this.scaleX = (_bitmapData.width)/Framework.viewport.width;
-			this.scaleY = (_bitmapData.height)/Framework.viewport.height;
+			if(_texture == null)
+			{
+				if (createTexture(_bitmapData.width, _bitmapData.height))
+				{
+					// If the new texture doesn't match the BitmapData's dimensions
+					if (width != textureWidth || height != textureHeight)
+					{
+						// Create a BitmapData with the required dimensions
+						var powOfTwoBMD:BitmapData = new BitmapData(
+							textureWidth,
+							textureHeight,
+							bmd.transparent
+						);
+						
+						// Copy the given BitmapData to the newly-created BitmapData
+						tempRect.width = width;
+						tempRect.height = height;
+						powOfTwoBMD.copyPixels(bmd, tempRect, tempPoint);
+						
+						// Upload the newly-created BitmapData instead
+						bmd = powOfTwoBMD;
+						
+						// Scale the UV to the sub-texture
+						fragConsts[0] = textureWidth / width;
+						fragConsts[1] = textureHeight / height;
+					}
+					else
+					{
+						// Reset UV scaling
+						fragConsts[0] = 1;
+						fragConsts[1] = 1;
+					}
+				}
+			}
+			_texture.uploadFromBitmapData(bmd);
 		}
+		
+		protected function createTexture(width:uint, height:uint): Boolean
+		{
+			width = nextPowerOfTwo(width);
+			height = nextPowerOfTwo(height);
+			
+			if (!_texture || textureWidth != width || textureHeight != height)
+			{
+				_texture = _context.createTexture(width,height,Context3DTextureFormat.BGRA,false);
+				textureWidth = width;
+				textureHeight = height;
+				this.width = width;
+				this.heigth = height;
+				
+				return true;
+			}
+			return false;
+		}
+		
+		public function controlBitmap() : void
+		{
+			_drawx = (this.x-Framework.viewport.width/2+_bitmapData.width)/(Framework.viewport.width/2);
+			_drawy = -(this.y-Framework.viewport.height/2+_bitmapData.height)/(Framework.viewport.height/2);
+			
+			_drawWidth = (this.width)/Framework.viewport.width;
+			_drawHeight = (this.heigth)/Framework.viewport.height;
+		}
+		
 		public override function render():void
 		{
+			controlBitmap();
+			
+			var  mModelViewMatrix : Matrix3D = new Matrix3D();
 			tempMatrix3D.identity();
 			tempMatrix3D.appendRotation(-rotation, Z_AXIS);
-			tempMatrix3D.appendScale(scaleX, scaleY, 1);
-			tempMatrix3D.appendTranslation(x, y, 0);
+			tempMatrix3D.appendScale(_drawWidth, _drawHeight, 1);
+			tempMatrix3D.appendTranslation(_drawx, _drawy, 0);
 			
 			_context.setProgram(_painter.program);
 			_context.setTextureAt(0, _texture);
@@ -58,6 +135,18 @@ package framework.display
 			_context.setVertexBufferAt(0, _painter.vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);
 			_context.setVertexBufferAt(1, _painter.vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2);
 			_context.drawTriangles(_painter.indexBuffer);
+		}
+		
+		public static function nextPowerOfTwo(v:uint): uint
+		{
+			v--;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			v |= v >> 16;
+			v++;
+			return v;
 		}
 		
 		public function get texture():Texture { return _texture; }
