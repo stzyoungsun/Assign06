@@ -14,7 +14,6 @@ package framework.display
 
 	public class Quad extends DisplayObject
 	{
-	
 		private var _texture:Texture;
 		private var _context:Context3D;
 		private static const tempMatrix3D:Matrix3D = new Matrix3D();
@@ -22,23 +21,31 @@ package framework.display
 		private var fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		private var _bitmapData:BitmapData;
 		private var _painter : Painter;
-		public function Quad(x:int, y:int, color:uint = 0xffffff)
+		public function Quad(x:Number = 0, y:Number =0, color:uint = 0xffffff)
 		{
-			this.x = x;
-			this.y = y;	
+//			this.x = x;
+//			this.y = y;	
+			controlBitmap(x,y);
 			_painter = Framework.painter;
 			_context = _painter.context;
 			if(_texture == null)
 			{
-				_texture = _context.createTexture(64, 64, Context3DTextureFormat.BGRA, false);
+				_texture = _context.createTexture(32, 32, Context3DTextureFormat.BGRA, false);
 				
 				_texture.uploadFromBitmapData(_bitmapData);
 			}
 		}
 		
+		public function controlBitmap(x:Number, y: Number) : void
+		{
+			this.x = (x-Framework.viewport.width/2+_bitmapData.width/2)/(Framework.viewport.width/2);
+			this.y = -(y-Framework.viewport.height/2+_bitmapData.height/2)/(Framework.viewport.height/2);
+			
+			this.scaleX = (_bitmapData.width)/Framework.viewport.width;
+			this.scaleY = (_bitmapData.height)/Framework.viewport.height;
+		}
 		public override function render():void
 		{
-			
 			tempMatrix3D.identity();
 			tempMatrix3D.appendRotation(-rotation, Z_AXIS);
 			tempMatrix3D.appendScale(scaleX, scaleY, 1);
