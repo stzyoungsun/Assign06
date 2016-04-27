@@ -62,8 +62,8 @@ package framework.core
 			_context3D = _stage3D.context3D;
 			
 			_context3D.configureBackBuffer(
-				64,
-				64,
+				_stage.stageWidth,
+				_stage.stageHeight,
 				0,
 				true
 			);
@@ -99,7 +99,7 @@ package framework.core
 		
 		public function render():void
 		{
-			_context3D.clear(0.5, 0.5, 0.5);
+			_context3D.clear(1, 1, 1);
 			
 			_stage.render(_painter);
 			
