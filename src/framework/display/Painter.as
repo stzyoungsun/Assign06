@@ -26,16 +26,16 @@ package framework.display
 		
 		public function Painter(stage3D:Stage3D)
 		{
-			_stage3D = stage3D;
-			_stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
-		}
-		
-		private function onContextCreated(event:Event):void
-		{
-			_context = _stage3D.context3D;
+			_context = stage3D.context3D;
 			createProgram();
 		}
 		
+//		private function onContextCreated(event:Event):void
+//		{
+//			_context = _stage3D.context3D;
+//			createProgram();
+//		}
+//		
 		private function createProgram():void
 		{
 			tempAssembler.assemble(

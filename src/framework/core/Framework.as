@@ -12,7 +12,7 @@ package framework.core
 	import framework.display.DisplayObject;
 	import framework.display.Painter;
 	import framework.display.Stage;
-	
+
 	public class Framework  extends EventDispatcher
 	{
 		private var _started:Boolean;
@@ -52,7 +52,7 @@ package framework.core
 			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			stage.stage3Ds[0].requestContext3D();
 			_stage3D = stage.stage3Ds[0];
-			_painter = new Painter(_stage3D);
+			
 		}
 		
 		private function onContextCreated(event:Event):void
@@ -62,12 +62,13 @@ package framework.core
 			_context3D = _stage3D.context3D;
 			
 			_context3D.configureBackBuffer(
-				64,
-				64,
+				_nativeStage.stageWidth,
+				_nativeStage.stageHeight,
 				0,
 				true
 			);
-						
+			_painter = new Painter(_stage3D);
+			makeCurrent();			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_stage.addChildAt(root, 0);
 		}
@@ -99,9 +100,9 @@ package framework.core
 		
 		public function render():void
 		{
-			_context3D.clear(0.5, 0.5, 0.5);
+			_context3D.clear(1, 1, 1);
 			
-			_stage.render(_painter);
+			_stage.render();
 			
 			_context3D.present();
 		}
@@ -135,6 +136,13 @@ package framework.core
 			_nativeOverlay.scaleY = _viewPort.height / _stage.stageHeight;
 		}
 		
+		public function makeCurrent():void
+		{
+			sCurrent = this;
+		}
+		
+		public static function get current():Framework { return sCurrent; }
+		public static function get painter():Painter { return sCurrent ? sCurrent._painter : null; }
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
 	}
 }
