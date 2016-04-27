@@ -69,9 +69,15 @@ package framework.core
 			_context3D = _stage3D.context3D;
 		
 			_context3D.configureBackBuffer(
+<<<<<<< HEAD
 				_nativeStage.stageWidth,
 				_nativeStage.stageHeight,
 				1,
+=======
+				_stage.stageWidth,
+				_stage.stageHeight,
+				0,
+>>>>>>> origin/develop
 				true
 			);
 			_painter = new Painter(_stage3D);
