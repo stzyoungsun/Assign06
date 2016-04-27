@@ -38,16 +38,6 @@ package framework.display
 		public function get y():Number { return _y; }
 		public function set y(y:Number):void { _y = y; }
 		
-<<<<<<< HEAD
-=======
-		public function get scaleX():Number { return _scaleX; }
-		public function set scaleX(scaleX:Number):void { _scaleX = scaleX; }
-		
-		public function get scaleY():Number { return _scaleY; }
-		public function set scaleY(scaleY:Number):void { _scaleY = scaleY; }
-		
->>>>>>> origin/develop
 		public function get rotation():Number { return _rotation; }
-		public function set rotation(rotation:Number):void { _rotation = rotation; }
 	}
 }

@@ -15,8 +15,6 @@ package
 		private static const TEXTURE2:Class;
 		public function Main()
 		{
-<<<<<<< HEAD
-			
 			var image : Image = new Image(500,900,(new TEXTURE()).bitmapData as BitmapData);
 			addChild(image);
 			
@@ -28,15 +26,6 @@ package
 			
 			image2.width =300;
 			image2.heigth = 30;
-=======
-			addChild(new Quad(0.1, 0.1, 0xFFFFFF));
-			
-			addChild(new Quad(0.5, 0.5, 0xFFFFFF));
-			
-			addChild(new Quad(-0.5, -0.5, 0xFFFFFF));
-			
-			addChild(new Quad(-0.1, -0.1, 0xFFFFFF));
->>>>>>> origin/develop
 		}
 
 	}

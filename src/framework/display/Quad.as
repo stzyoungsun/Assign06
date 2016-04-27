@@ -7,18 +7,13 @@ package framework.display
 	import flash.display3D.Context3DVertexBufferFormat;
 	import flash.display3D.textures.Texture;
 	import flash.geom.Matrix3D;
-	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
-<<<<<<< HEAD
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	
-=======
-	import flash.geom.Point;
->>>>>>> origin/develop
 
 	public class Quad extends DisplayObject
 	{
@@ -27,7 +22,6 @@ package framework.display
 		private static const Z_AXIS:Vector3D = Vector3D.Z_AXIS;
 		private var fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		private var _bitmapData:BitmapData;
-<<<<<<< HEAD
 		private var _painter : Painter;
 		private var mProjectionMatrix:Matrix3D = new Matrix3D();
 		
@@ -43,12 +37,6 @@ package framework.display
 		private var _drawHeight : Number;
 		
 		public function Quad(x:Number = 0, y:Number =0, color:uint = 0xffffff)
-=======
-		private static const tempRect:Rectangle = new Rectangle();
-		private static const tempPoint:Point = new Point();
-		
-		public function Quad(x:Number, y:Number, color:uint)
->>>>>>> origin/develop
 		{
 			_painter = Framework.painter;
 			_context = _painter.context;
@@ -57,13 +45,6 @@ package framework.display
 			
 			this.x = x;
 			this.y = y;
-<<<<<<< HEAD
-=======
-			scaleX = 0.1;
-			scaleY = 0.1;
-			
-			_bitmapData = (new TEXTURE()).bitmapData as BitmapData;
->>>>>>> origin/develop
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -73,7 +54,6 @@ package framework.display
 			
 			if(_texture == null)
 			{
-<<<<<<< HEAD
 				if (createTexture(_bitmapData.width, _bitmapData.height))
 				{
 					// If the new texture doesn't match the BitmapData's dimensions
@@ -121,24 +101,6 @@ package framework.display
 				textureHeight = height;
 				this.width = width;
 				this.heigth = height;
-=======
-				var textureWidth:int = nextPowerOfTwo(_bitmapData.width);
-				var textureHeight:int = nextPowerOfTwo(_bitmapData.height);
-				
-				_texture = _context.createTexture(textureWidth, textureHeight, Context3DTextureFormat.BGRA, false);
-				
-				var powOfTwoBMD:BitmapData = new BitmapData(textureWidth, textureHeight, _bitmapData.transparent);
-				
-				tempRect.width = _bitmapData.width;
-				tempRect.height = _bitmapData.height;
-				
-				powOfTwoBMD.copyPixels(_bitmapData, tempRect, tempPoint);
-				
-				_bitmapData = powOfTwoBMD;
-				
-				fragConsts[0] = textureWidth / _bitmapData.width;
-				fragConsts[1] = textureHeight / _bitmapData.height;
->>>>>>> origin/develop
 				
 				return true;
 			}
@@ -185,21 +147,7 @@ package framework.display
 			return v;
 		}
 		
-<<<<<<< HEAD
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
-=======
-		public static function nextPowerOfTwo(v:uint): uint
-		{
-			v--;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			v |= v >> 16;
-			v++;
-			return v;
-		}
->>>>>>> origin/develop
 	}
 }

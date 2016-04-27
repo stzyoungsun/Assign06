@@ -12,8 +12,6 @@ package framework.core
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.Stage;
-	import flash.geom.PerspectiveProjection;
-	import flash.geom.Point;
 	
 
 	public class Framework  extends EventDispatcher
@@ -69,15 +67,9 @@ package framework.core
 			_context3D = _stage3D.context3D;
 		
 			_context3D.configureBackBuffer(
-<<<<<<< HEAD
 				_nativeStage.stageWidth,
 				_nativeStage.stageHeight,
 				1,
-=======
-				_stage.stageWidth,
-				_stage.stageHeight,
-				0,
->>>>>>> origin/develop
 				true
 			);
 			_painter = new Painter(_stage3D);
