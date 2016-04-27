@@ -7,7 +7,13 @@ package
 	{
 		public function Main()
 		{
-			addChild(new Quad(0.3, 0.3, 0xFFFFFF));
+			addChild(new Quad(0.1, 0.1, 0xFFFFFF));
+			
+			addChild(new Quad(0.5, 0.5, 0xFFFFFF));
+			
+			addChild(new Quad(-0.5, -0.5, 0xFFFFFF));
+			
+			addChild(new Quad(-0.1, -0.1, 0xFFFFFF));
 		}
 	}
 }
