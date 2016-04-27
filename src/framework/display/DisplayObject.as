@@ -18,7 +18,7 @@ package framework.display
 			_scaleX = _scaleY = 1.0;
 		}
 		
-		public function render(painter:Painter):void
+		public function render():void
 		{
 			// Abstract Method
 		}

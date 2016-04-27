@@ -48,7 +48,7 @@ package framework.display
 		/**
 		 * 자신에게 등록된 Object들을 rendering하는 메서드
 		 */
-		public override function render(painter:Painter):void
+		public override function render():void
 		{
 			var numChildren:int = _children.length;
 			
@@ -56,7 +56,7 @@ package framework.display
 			for(var i:int = 0; i < numChildren; i++)
 			{
 				var child:DisplayObject = _children[i];
-				child.render(painter);
+				child.render();
 			}
 		}
 	}
