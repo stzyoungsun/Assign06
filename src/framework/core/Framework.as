@@ -7,6 +7,7 @@ package framework.core
 	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import framework.display.DisplayObject;
@@ -30,7 +31,6 @@ package framework.core
 		private var _painter:Painter;
 		
 		private static var sCurrent:Framework;
-		
 		public function Framework(rootClass:Class, stage:flash.display.Stage, viewPort:Rectangle=null, stage3D:Stage3D=null)
 		{
 			if (stage == null) throw new ArgumentError("Stage must not be null");
@@ -45,6 +45,7 @@ package framework.core
 			_nativeStage = stage;
 			_nativeStage.addChild(_nativeOverlay);
 			
+	
 			_viewPort = viewPort;
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -143,6 +144,7 @@ package framework.core
 		
 		public static function get current():Framework { return sCurrent; }
 		public static function get painter():Painter { return sCurrent ? sCurrent._painter : null; }
+		public static function get viewport():Rectangle { return sCurrent ? sCurrent._viewPort : null; }
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
 	}
 }

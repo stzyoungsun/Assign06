@@ -4,10 +4,10 @@ package framework.display
 	
 	public class Image extends Quad
 	{
-		public function Image(bitmapData:BitmapData)
+		public function Image(x:int, y:int,bitmapData:BitmapData)
 		{
 			this.bitmapData = bitmapData;
-			super(0.3, 0.3);
+			super(x,y);
 		}
 	}
 }
