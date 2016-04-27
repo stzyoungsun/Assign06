@@ -7,12 +7,12 @@ package framework.display
 	import flash.display3D.Context3DVertexBufferFormat;
 	import flash.display3D.textures.Texture;
 	import flash.geom.Matrix3D;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
-	import flash.geom.Rectangle;
-	import flash.geom.Point;
 	
 
 	public class Quad extends DisplayObject
@@ -25,10 +25,12 @@ package framework.display
 		private var _painter : Painter;
 		private var mProjectionMatrix:Matrix3D = new Matrix3D();
 		
-		public var textureWidth:uint;
-		public var textureHeight:uint;
+		public var _textureWidth:int;
+		public var _textureHeight:int;
+		
 		private static const tempRect:Rectangle = new Rectangle();
 		private static const tempPoint:Point = new Point();
+		
 		private var _texture:Texture;
 		
 		private var _drawx : Number;
@@ -36,15 +38,32 @@ package framework.display
 		private var _drawWidth : Number;
 		private var _drawHeight : Number;
 		
-		public function Quad(x:Number = 0, y:Number =0, color:uint = 0xffffff)
+		public function Quad(x:Number = 0, y:Number =0,width:Number = 0, height:Number =0 ,color:uint = 0xffffff)
 		{
 			_painter = Framework.painter;
 			_context = _painter.context;
 			
-			bitmapDataControl(_bitmapData);
+			if(_bitmapData == null)
+			{
+				_bitmapData = new BitmapData(width, height, false, color);
+			}
 			
 			this.x = x;
 			this.y = y;
+			
+			if(width == 0 && height == 0)
+			{
+				this.width = _bitmapData.width;
+				this.heigth = _bitmapData.height;
+			}
+			else
+			{
+				this.width = width;
+				this.heigth = height;
+			}
+			
+			bitmapDataControl(_bitmapData);
+			
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -57,12 +76,12 @@ package framework.display
 				if (createTexture(_bitmapData.width, _bitmapData.height))
 				{
 					// If the new texture doesn't match the BitmapData's dimensions
-					if (width != textureWidth || height != textureHeight)
+					if (width != _textureWidth || height != _textureHeight)
 					{
 						// Create a BitmapData with the required dimensions
 						var powOfTwoBMD:BitmapData = new BitmapData(
-							textureWidth,
-							textureHeight,
+							_textureWidth,
+							_textureHeight,
 							bmd.transparent
 						);
 						
@@ -75,8 +94,8 @@ package framework.display
 						bmd = powOfTwoBMD;
 						
 						// Scale the UV to the sub-texture
-						fragConsts[0] = textureWidth / width;
-						fragConsts[1] = textureHeight / height;
+						fragConsts[0] = _textureWidth / width;
+						fragConsts[1] = _textureHeight / height;
 					}
 					else
 					{
@@ -89,18 +108,17 @@ package framework.display
 			_texture.uploadFromBitmapData(bmd);
 		}
 		
-		protected function createTexture(width:uint, height:uint): Boolean
+		protected function createTexture(bitwidth:uint, bitheight:uint): Boolean
 		{
-			width = nextPowerOfTwo(width);
-			height = nextPowerOfTwo(height);
+			bitheight = nextPowerOfTwo(bitheight);
+			bitwidth = nextPowerOfTwo(bitwidth);
 			
-			if (!_texture || textureWidth != width || textureHeight != height)
+			if (!_texture || _textureWidth != bitwidth || _textureHeight != bitheight)
 			{
-				_texture = _context.createTexture(width,height,Context3DTextureFormat.BGRA,false);
-				textureWidth = width;
-				textureHeight = height;
-				this.width = width;
-				this.heigth = height;
+				_texture = _context.createTexture(bitwidth,bitheight,Context3DTextureFormat.BGRA,false);
+				_textureWidth = bitwidth;
+				_textureHeight = bitheight;
+				
 				
 				return true;
 			}
@@ -109,8 +127,8 @@ package framework.display
 		
 		public function controlBitmap() : void
 		{
-			_drawx = (this.x-Framework.viewport.width/2+_bitmapData.width)/(Framework.viewport.width/2);
-			_drawy = -(this.y-Framework.viewport.height/2+_bitmapData.height)/(Framework.viewport.height/2);
+			_drawx = (this.x-Framework.viewport.width/2)/(Framework.viewport.width/2);
+			_drawy = (Framework.viewport.height/2-this.y)/(Framework.viewport.height/2);
 			
 			_drawWidth = (this.width)/Framework.viewport.width;
 			_drawHeight = (this.heigth)/Framework.viewport.height;
@@ -124,7 +142,7 @@ package framework.display
 			tempMatrix3D.identity();
 			tempMatrix3D.appendRotation(-rotation, Z_AXIS);
 			tempMatrix3D.appendScale(_drawWidth, _drawHeight, 1);
-			tempMatrix3D.appendTranslation(_drawx, _drawy, 0);
+			tempMatrix3D.appendTranslation(_drawx+_drawWidth,_drawy-_drawHeight,0);
 			
 			_context.setProgram(_painter.program);
 			_context.setTextureAt(0, _texture);
