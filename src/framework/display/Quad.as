@@ -17,8 +17,6 @@ package framework.display
 
 	public class Quad extends DisplayObject
 	{
-	
-		
 		private var _context:Context3D;
 		private static const tempMatrix3D:Matrix3D = new Matrix3D();
 		private static const Z_AXIS:Vector3D = Vector3D.Z_AXIS;
