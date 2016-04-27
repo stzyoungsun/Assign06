@@ -7,11 +7,15 @@ package framework.core
 	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
+	import flash.events.TouchEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.Stage;
+	import framework.event.TouchPhase;
 	
 
 	public class Framework  extends EventDispatcher
@@ -29,35 +33,37 @@ package framework.core
 		private var _stage3D:Stage3D;
 
 		private var _painter:Painter;
+		private var _leftMouseDown:Boolean;
 		
-		private static var sCurrent:Framework;
+		private static var CURRENT:Framework;
 		
-		
-		public function Framework(rootClass:Class, stage:flash.display.Stage, viewPort:Rectangle=null, stage3D:Stage3D=null)
+		public function Framework(rootClass:Class, stage:flash.display.Stage)
 		{
-			
-			
 			if (stage == null) throw new ArgumentError("Stage must not be null");
-			if (viewPort == null) viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-						
-			_stage = new Stage(viewPort.width, viewPort.height, stage.color);
+			
+			_viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			_stage = new Stage(_viewPort.width, _viewPort.height, stage.color);
 			_rootClass = rootClass;
+			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			
+			_stage3D = stage.stage3Ds[0];
 			
 			_nativeOverlay = new Sprite();    //Note @유영선 framework의 큰 틀을 stage에 덮어씀
 			_nativeStage = stage;
 			_nativeStage.addChild(_nativeOverlay);
-	
-			_viewPort = viewPort;
-			
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
+			stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouch);
+			stage.addEventListener(TouchEvent.TOUCH_END, onTouch);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
 			
 			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			stage.stage3Ds[0].requestContext3D();
-			_stage3D = stage.stage3Ds[0];
-			
 		}
 		
 		private function onContextCreated(event:Event):void
@@ -72,10 +78,54 @@ package framework.core
 				1,
 				true
 			);
+			
 			_painter = new Painter(_stage3D);
-			makeCurrent();			
+			
+			makeCurrent();
+			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_stage.addChildAt(root, 0);
+		}
+		
+		private function onTouch(event:Event):void
+		{
+			if(!_started) return;
+			
+			var globalX:Number;
+			var globalY:Number;
+			var phase:String;
+			
+			if(event is MouseEvent)
+			{
+				globalX = (event as MouseEvent).stageX;
+				globalY = (event as MouseEvent).stageY;
+			}
+			else
+			{
+				globalX = (event as TouchEvent).stageX;
+				globalY = (event as TouchEvent).stageY;
+			}
+			
+			switch (event.type)
+			{
+				case TouchEvent.TOUCH_BEGIN:	phase = TouchPhase.BEGAN; break;
+				case TouchEvent.TOUCH_MOVE:		phase = TouchPhase.MOVED; break;
+				case TouchEvent.TOUCH_END:		phase = TouchPhase.ENDED; break;
+				case MouseEvent.MOUSE_DOWN:		phase = TouchPhase.BEGAN; break;
+				case MouseEvent.MOUSE_UP:		phase = TouchPhase.ENDED; break;
+				case MouseEvent.MOUSE_MOVE:		phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
+			}
+			
+			globalX = _stage.stageWidth  * (globalX - _viewPort.x) / _viewPort.width;
+			globalY = _stage.stageHeight * (globalY - _viewPort.y) / _viewPort.height;
+			
+			if(phase == TouchPhase.BEGAN)
+			{
+				var point:Point = new Point(globalX, globalY);
+				var displayObject:DisplayObject = _stage.hitTest(point);
+				if(displayObject != null)
+					displayObject.dispatchTouchEvent(MouseEvent.MOUSE_DOWN);
+			}
 		}
 		
 		public function dispose() : void
@@ -143,12 +193,12 @@ package framework.core
 		
 		public function makeCurrent():void
 		{
-			sCurrent = this;
+			CURRENT = this;
 		}
 		
-		public static function get current():Framework { return sCurrent; }
-		public static function get painter():Painter { return sCurrent ? sCurrent._painter : null; }
-		public static function get viewport():Rectangle { return sCurrent ? sCurrent._viewPort : null; }
+		public static function get current():Framework { return CURRENT; }
+		public static function get painter():Painter { return CURRENT ? CURRENT._painter : null; }
+		public static function get viewport():Rectangle { return CURRENT ? CURRENT._viewPort : null; }
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
 	}
 }

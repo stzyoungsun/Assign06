@@ -2,6 +2,7 @@ package
 {
 
 	import flash.display.BitmapData;
+	import flash.events.MouseEvent;
 	
 	import framework.display.Image;
 	import framework.display.Sprite;
@@ -25,8 +26,14 @@ package
 			addChild(image2);
 			
 			image2.width =300;
-			image2.heigth = 30;
+			image2.height = 30;
+			
+			image2.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
 		}
-
+		
+		private function onTouch(event:MouseEvent):void
+		{
+			trace("hi");
+		}
 	}
 }

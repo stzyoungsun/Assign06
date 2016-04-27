@@ -10,5 +10,4 @@ package framework.display
 			super(x,y);
 		}
 	}
-	
 }

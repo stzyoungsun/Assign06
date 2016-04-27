@@ -1,5 +1,8 @@
 package framework.display
 {
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
@@ -58,6 +61,52 @@ package framework.display
 				var child:DisplayObject = _children[i];
 				child.render();
 			}
+		}
+		
+		public override function get bounds():Rectangle
+		{
+			var numChildren:int = _children.length;
+			
+			if (numChildren == 1)
+			{
+				return _children[0].getBounds();
+			}
+			else
+			{
+				var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
+				var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+				for each (var child:DisplayObject in _children)
+				{
+					var childBounds:Rectangle = child.bounds;
+					minX = Math.min(minX, childBounds.x);
+					maxX = Math.max(maxX, childBounds.x + childBounds.width);
+					minY = Math.min(minY, childBounds.y);
+					maxY = Math.max(maxY, childBounds.y + childBounds.height);                    
+				}
+				return new Rectangle(minX, minY, maxX-minX, maxY-minY);
+			}
+		}
+		
+		public override function hitTest(localPoint:Point):DisplayObject
+		{
+			if (!visible) return null;
+			
+			var target:DisplayObject = null;
+			var localX:Number = localPoint.x;
+			var localY:Number = localPoint.y;
+			var numChildren:int = _children.length;
+			
+			for (var i:int = numChildren - 1; i >= 0; --i)
+			{
+				var child:DisplayObject = _children[i];
+				target = child.hitTest(localPoint);
+				
+				if (target)
+				{
+					return target;
+				}
+			}
+			return null;
 		}
 	}
 }

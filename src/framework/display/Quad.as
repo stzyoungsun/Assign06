@@ -17,28 +17,28 @@ package framework.display
 
 	public class Quad extends DisplayObject
 	{
-		private var _context:Context3D;
-		private static const tempMatrix3D:Matrix3D = new Matrix3D();
+		private static const TEMP_MATRIX3D:Matrix3D = new Matrix3D();
+		private static const TEMP_RECT:Rectangle = new Rectangle();
+		private static const TEMP_POINT:Point = new Point();
 		private static const Z_AXIS:Vector3D = Vector3D.Z_AXIS;
-		private var fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
+
+		private var _context:Context3D;
 		private var _bitmapData:BitmapData;
 		private var _painter : Painter;
-		private var mProjectionMatrix:Matrix3D = new Matrix3D();
+		private var _texture:Texture;
 		
 		public var _textureWidth:int;
 		public var _textureHeight:int;
-		
-		private static const tempRect:Rectangle = new Rectangle();
-		private static const tempPoint:Point = new Point();
-		
-		private var _texture:Texture;
 		
 		private var _drawx : Number;
 		private var _drawy : Number;
 		private var _drawWidth : Number;
 		private var _drawHeight : Number;
+		private var _bounds:Rectangle;
 		
-		public function Quad(x:Number = 0, y:Number =0,width:Number = 0, height:Number =0 ,color:uint = 0xffffff)
+		private var _fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
+		
+		public function Quad(x:Number = 0, y:Number =0, width:Number = 0, height:Number =0,color:uint = 0xffffff)
 		{
 			_painter = Framework.painter;
 			_context = _painter.context;
@@ -54,16 +54,17 @@ package framework.display
 			if(width == 0 && height == 0)
 			{
 				this.width = _bitmapData.width;
-				this.heigth = _bitmapData.height;
+				this.height = _bitmapData.height;
 			}
 			else
 			{
 				this.width = width;
-				this.heigth = height;
+				this.height = height;
 			}
 			
-			bitmapDataControl(_bitmapData);
+			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
 			
+			bitmapDataControl(_bitmapData);
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -86,22 +87,22 @@ package framework.display
 						);
 						
 						// Copy the given BitmapData to the newly-created BitmapData
-						tempRect.width = width;
-						tempRect.height = height;
-						powOfTwoBMD.copyPixels(bmd, tempRect, tempPoint);
+						TEMP_RECT.width = width;
+						TEMP_RECT.height = height;
+						powOfTwoBMD.copyPixels(bmd, TEMP_RECT, TEMP_POINT);
 						
 						// Upload the newly-created BitmapData instead
 						bmd = powOfTwoBMD;
 						
 						// Scale the UV to the sub-texture
-						fragConsts[0] = _textureWidth / width;
-						fragConsts[1] = _textureHeight / height;
+						_fragConsts[0] = _textureWidth / width;
+						_fragConsts[1] = _textureHeight / height;
 					}
 					else
 					{
 						// Reset UV scaling
-						fragConsts[0] = 1;
-						fragConsts[1] = 1;
+						_fragConsts[0] = 1;
+						_fragConsts[1] = 1;
 					}
 				}
 			}
@@ -131,7 +132,7 @@ package framework.display
 			_drawy = (Framework.viewport.height/2-this.y)/(Framework.viewport.height/2);
 			
 			_drawWidth = (this.width)/Framework.viewport.width;
-			_drawHeight = (this.heigth)/Framework.viewport.height;
+			_drawHeight = (this.height)/Framework.viewport.height;
 		}
 		
 		public override function render():void
@@ -139,15 +140,15 @@ package framework.display
 			controlBitmap();
 			
 			var  mModelViewMatrix : Matrix3D = new Matrix3D();
-			tempMatrix3D.identity();
-			tempMatrix3D.appendRotation(-rotation, Z_AXIS);
-			tempMatrix3D.appendScale(_drawWidth, _drawHeight, 1);
-			tempMatrix3D.appendTranslation(_drawx+_drawWidth,_drawy-_drawHeight,0);
+			TEMP_MATRIX3D.identity();
+			TEMP_MATRIX3D.appendRotation(-rotation, Z_AXIS);
+			TEMP_MATRIX3D.appendScale(_drawWidth, _drawHeight, 1);
+			TEMP_MATRIX3D.appendTranslation(_drawx+_drawWidth,_drawy-_drawHeight,0);
 			
 			_context.setProgram(_painter.program);
 			_context.setTextureAt(0, _texture);
-			_context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, tempMatrix3D, true);
-			_context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, fragConsts);
+			_context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, TEMP_MATRIX3D, true);
+			_context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, _fragConsts);
 			_context.setVertexBufferAt(0, _painter.vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);
 			_context.setVertexBufferAt(1, _painter.vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2);
 			_context.drawTriangles(_painter.indexBuffer);
@@ -167,5 +168,6 @@ package framework.display
 		
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
+		public override function get bounds():Rectangle { return new Rectangle(x, y, width, height); }
 	}
 }

@@ -1,5 +1,7 @@
 package framework.display
 {
+	import flash.geom.Point;
+
 	public class Stage extends DisplayObjectContainer
 	{
 		private var _width:int;
@@ -11,6 +13,20 @@ package framework.display
 			_width = width;
 			_height = height;
 			_color = color;
+		}
+		
+		public override function hitTest(localPoint:Point):DisplayObject
+		{
+			if (!visible) return null;
+			
+			// locations outside of the stage area shouldn't be accepted
+			if (localPoint.x < 0 || localPoint.x > _width ||
+				localPoint.y < 0 || localPoint.y > _height)
+				return null;
+			
+			// if nothing else is hit, the stage returns itself as target
+			var target:DisplayObject = super.hitTest(localPoint);
+			return target ? target : this;
 		}
 		
 		public function get stageWidth():int { return _width; }

@@ -19,13 +19,14 @@ package framework.Rendering
 		private var _vertexBuffer:VertexBuffer3D;
 		private var _indexBuffer:IndexBuffer3D;
 		
-		private var tempAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-		private var vertexProgram:ByteArray;
-		private var fragmentProgram:ByteArray;
+		private var _tempAssembler:AGALMiniAssembler;
+		private var _vertexProgram:ByteArray;
+		private var _fragmentProgram:ByteArray;
 		
 		public function Painter(stage3D:Stage3D)
 		{
 			_context = stage3D.context3D;
+			_tempAssembler = new AGALMiniAssembler();
 			createProgram();
 		}
 		
@@ -37,7 +38,7 @@ package framework.Rendering
 //		
 		private function createProgram():void
 		{
-			tempAssembler.assemble(
+			_tempAssembler.assemble(
 				Context3DProgramType.VERTEX,
 				// Apply draw matrix (object -> clip space)
 				"m44 op, va0, vc0\n" +
@@ -47,16 +48,16 @@ package framework.Rendering
 				"div vt0.xy, vt0.xy, vc4.xy\n" +
 				"mov v0, vt0\n"
 			);
-			vertexProgram = tempAssembler.agalcode;
+			_vertexProgram = _tempAssembler.agalcode;
 			
-			tempAssembler.assemble(
+			_tempAssembler.assemble(
 				Context3DProgramType.FRAGMENT,
 				"tex oc, v0, fs0 <2d,linear,mipnone,clamp>"
 			);
-			fragmentProgram = tempAssembler.agalcode;
+			_fragmentProgram = _tempAssembler.agalcode;
 			
 			_program = _context.createProgram();
-			_program.upload(vertexProgram, fragmentProgram);
+			_program.upload(_vertexProgram, _fragmentProgram);
 			
 			// Create the positions and texture coordinates vertex buffer
 			_vertexBuffer = _context.createVertexBuffer(4, 5);
