@@ -3,9 +3,9 @@ package framework.Anmaiton
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import flash.geom.Point;
 	
 	
 	public class AtlasBitmapData
@@ -13,7 +13,7 @@ package framework.Anmaiton
 		private var _sprtieSheet:Bitmap;
 		private var _subSpriteSheet: Dictionary;
 		private var _subBitmapNames:Vector.<String >;
-		
+		private var _subBitmapCount : int = 0;
 		public function AtlasBitmapData(sprtieSheet:Bitmap, spriteXml:XML = null)
 		{
 			_subSpriteSheet = new  Dictionary();
@@ -48,12 +48,19 @@ package framework.Anmaiton
 			var tempBitmapData : BitmapData = new BitmapData(region.width,region.height);
 			
 			tempBitmapData.copyPixels(_sprtieSheet.bitmapData,region,new Point(0,0));
-			_subSpriteSheet[name] =  tempBitmapData;
+			
+			_subSpriteSheet[name] =  tempBitmapData ;
+			_subSpriteSheet[_subBitmapCount++]  =  tempBitmapData;
 		}
 		
 		public function get getsubSpriteSheet() :Dictionary
 		{
 			return _subSpriteSheet;
+		}
+		
+		public function get getsubCount() : int
+		{
+			return _subBitmapCount;
 		}
 	}
 }

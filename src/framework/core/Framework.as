@@ -4,14 +4,13 @@ package framework.core
 	import flash.display.Stage3D;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+	import flash.display3D.*;
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.Stage;
@@ -79,6 +78,10 @@ package framework.core
 				true
 			);
 			
+			_context3D.setBlendFactors(
+				Context3DBlendFactor.SOURCE_ALPHA,
+				Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA
+			);
 			_painter = new Painter(_stage3D);
 			
 			makeCurrent();
