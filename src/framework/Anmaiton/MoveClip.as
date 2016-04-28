@@ -11,7 +11,13 @@ package framework.Anmaiton
 		
 		private var _moveClipWidth: int =0;
 		private var _moveClipHeight: int =0;
-		
+		/**
+		 * 
+		 * @param spriteSheet AtlasBitmapData의 객체
+		 * @param x  Clip의 x 좌표
+		 * @param y  Clip의 y 좌표
+		 * 
+		 */		
 		public function MoveClip(spriteSheet : AtlasBitmapData,x:Number=0,y:Number=0)
 		{
 			_spriteSheet = spriteSheet;
@@ -19,12 +25,18 @@ package framework.Anmaiton
 			_moveClipWidth = this.width;
 			_moveClipHeight = this.height;
 		}
-		
+		/**
+		 * 
+		 * 애니매이션 시작하는 함수
+		 */		
 		public function start() : void 
 		{
 			_startFlag = true;
 		}
-		
+		/**
+		 *애니매이션 정지 
+		 * 
+		 */		
 		public function stop() : void 
 		{
 			_startFlag = false;
