@@ -1,25 +1,27 @@
 package framework.Anmaiton
 {
 	import flash.display.BitmapData;
-	import flash.utils.Dictionary;
-	
 	import framework.display.Image;
 
 	public class MoveClip extends Image
 	{
 		private var _startFlag : Boolean = false;
-		private var _spriteSheet : Dictionary;
+		private var _spriteSheet : AtlasBitmapData;
 		private var _frameCount : int = 0;
 		
-		public function MoveClip(x:Number,y:Number,spriteShett : Dictionary )
+		private var _moveClipWidth: int =0;
+		private var _moveClipHeight: int =0;
+		
+		public function MoveClip(spriteSheet : AtlasBitmapData,x:Number=0,y:Number=0)
 		{
-			_spriteSheet = spriteShett;
-			super(x,y,_spriteSheet[0] as BitmapData);
+			_spriteSheet = spriteSheet;
+			super(x,y,_spriteSheet.getsubSpriteSheet[0] as BitmapData);
+			_moveClipWidth = this.width;
+			_moveClipHeight = this.height;
 		}
 		
 		public function start() : void 
 		{
-			
 			_startFlag = true;
 		}
 		
@@ -30,12 +32,19 @@ package framework.Anmaiton
 		
 		public override function nextFrame() : void
 		{
-			//bitmapData = _spriteSheet[14];
 			if(_startFlag == true)
-				bitmapData = _spriteSheet[_frameCount++];
+			{
+				bitmapData = _spriteSheet.getsubSpriteSheet[_frameCount++];
 			
-			if(_frameCount == 10)
+				this.width = _moveClipWidth;
+				this.height = _moveClipHeight;
+			}
+				
+			if(_frameCount == _spriteSheet.getsubCount)
 				_frameCount = 0;
 		}
+		
+		public  function set clipheight(value:Number):void{ _moveClipHeight = value; }
+		public  function set clipwidth(value:Number):void{ _moveClipWidth = value; }
 	}
 }
