@@ -1,5 +1,7 @@
 package framework.display
 {
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
 	public class Stage extends DisplayObjectContainer
@@ -13,6 +15,7 @@ package framework.display
 			_width = width;
 			_height = height;
 			_color = color;
+			
 		}
 		
 		public override function hitTest(localPoint:Point):DisplayObject
@@ -27,6 +30,11 @@ package framework.display
 			// if nothing else is hit, the stage returns itself as target
 			var target:DisplayObject = super.hitTest(localPoint);
 			return target ? target : this;
+		}
+		
+		public override function recursiveSearch() : DisplayObject
+		{
+			return super.recursiveSearch();
 		}
 		
 		public function get stageWidth():int { return _width; }

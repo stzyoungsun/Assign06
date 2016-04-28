@@ -6,7 +6,7 @@ package framework.display
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
-		
+	
 		/**
 		 * 생성자
 		 */
@@ -88,6 +88,19 @@ package framework.display
 			}
 		}
 		
+		public  function recursiveSearch() : DisplayObject
+		{
+			var numChildren:int = _children.length;
+			
+			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
+			for(var i:int = numChildren - 1; i >= 0; --i)
+			{
+				var child:DisplayObject = _children[i];
+				if(child.playerflag == true)
+					return child;
+			}
+			return null;
+		}
 		public override function get bounds():Rectangle
 		{
 			var numChildren:int = _children.length;
@@ -144,8 +157,10 @@ package framework.display
 				var child:DisplayObject = _children[i];
 				child.dispose();
 			}
-			
+			_children = null;
 			super.dispose();
 		}
+		
+		
 	}
 }

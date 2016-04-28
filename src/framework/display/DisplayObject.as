@@ -15,6 +15,7 @@ package framework.display
 		private var _height : Number;
 		private var _visible:Boolean;
 		
+		private var _playerFlag : Boolean = false;
 		public function DisplayObject()
 		{
 			_x = _y = _rotation = 0.0;
@@ -28,8 +29,10 @@ package framework.display
 		
 		public function nextFrame() : void
 		{
-			trace("디스플레이오브젝트 프레임 함수");
+			// Abstract Method
 		}
+		
+		
 		public function dispatchTouchEvent(type:String):void
 		{
 			dispatchEvent(new MouseEvent(type));
@@ -74,5 +77,8 @@ package framework.display
 		public function set visible(visible:Boolean):void { _visible = visible; }
 		
 		public function get bounds():Rectangle { return null; }
+		
+		public function get playerflag():Boolean { return _playerFlag; }
+		public function set playerflag(playerFlag:Boolean):void { _playerFlag = playerFlag;}
 	}
 }

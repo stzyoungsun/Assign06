@@ -4,19 +4,24 @@ package framework.core
 	import flash.display.Stage3D;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.display3D.Context3D;
+	import flash.display3D.Context3DBlendFactor;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.display3D.*;
+	
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
-	import framework.display.Stage;
+	import framework.display.DisplayObjectContainer;
 	import framework.event.TouchPhase;
 	
+	import framework.display.Stage;
+	
 
+	
 	public class Framework  extends EventDispatcher
 	{
 		private var _started:Boolean;
@@ -33,7 +38,7 @@ package framework.core
 
 		private var _painter:Painter;
 		private var _leftMouseDown:Boolean;
-		
+		private var _temp : DisplayObjectContainer;
 		private static var CURRENT:Framework;
 		
 		public function Framework(rootClass:Class, stage:flash.display.Stage)
@@ -88,6 +93,8 @@ package framework.core
 			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_stage.addChildAt(root, 0);
+			
+			_temp = root as DisplayObjectContainer;
 		}
 		
 		private function onTouch(event:Event):void
@@ -124,12 +131,22 @@ package framework.core
 			
 			if(phase == TouchPhase.BEGAN)
 			{
+				trace("클릭됨");
 				var point:Point = new Point(globalX, globalY);
 				var displayObject:DisplayObject = _stage.hitTest(point);
 				if(displayObject != null)
 					displayObject.dispatchTouchEvent(MouseEvent.MOUSE_DOWN);
 			}
+			
+			if(phase == TouchPhase.HOVER)
+			{
+				var displayObject1: DisplayObject = _temp.recursiveSearch();
+					
+				if(displayObject1 != null)
+					trace("이미지 있음");
+			}
 		}
+		
 		
 		public function dispose() : void
 		{
