@@ -46,6 +46,7 @@ package framework.display
 			{
 				throw new Error("Invalid child index");
 			}
+			
 		}
 		
 		public function removeChild(child:DisplayObject, dispose:Boolean=false):void
@@ -80,7 +81,7 @@ package framework.display
 			var numChildren:int = _children.length;
 			
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = numChildren - 1; i >= 0; --i)
+			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				child.render();
@@ -93,7 +94,7 @@ package framework.display
 			var numChildren:int = _children.length;
 			
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = numChildren - 1; i >= 0; --i)
+			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				if(child.playerflag == true)
@@ -134,7 +135,7 @@ package framework.display
 			var localY:Number = localPoint.y;
 			var numChildren:int = _children.length;
 			
-			for (var i:int = numChildren - 1; i >= 0; --i)
+			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				target = child.hitTest(localPoint);
@@ -152,7 +153,7 @@ package framework.display
 			var numChildren:int = _children.length;
 			
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = numChildren - 1; i >= 0; --i)
+			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				child.dispose();

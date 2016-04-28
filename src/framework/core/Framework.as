@@ -6,6 +6,7 @@ package framework.core
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DBlendFactor;
+	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -16,9 +17,8 @@ package framework.core
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.DisplayObjectContainer;
-	import framework.event.TouchPhase;
-	
 	import framework.display.Stage;
+	import framework.event.TouchPhase;
 	
 
 	
@@ -41,6 +41,8 @@ package framework.core
 		private var _temp : DisplayObjectContainer;
 		private static var CURRENT:Framework;
 		
+		private static var _sglobalX:Number;
+		private static var _sglobalY:Number;
 		public function Framework(rootClass:Class, stage:flash.display.Stage)
 		{
 			if (stage == null) throw new ArgumentError("Stage must not be null");
@@ -87,6 +89,7 @@ package framework.core
 				Context3DBlendFactor.SOURCE_ALPHA,
 				Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA
 			);
+			_context3D.setDepthTest(true, Context3DCompareMode.ALWAYS);
 			_painter = new Painter(_stage3D);
 			
 			makeCurrent();
@@ -101,19 +104,18 @@ package framework.core
 		{
 			if(!_started) return;
 			
-			var globalX:Number;
-			var globalY:Number;
+		
 			var phase:String;
 			
 			if(event is MouseEvent)
 			{
-				globalX = (event as MouseEvent).stageX;
-				globalY = (event as MouseEvent).stageY;
+				_sglobalX = (event as MouseEvent).stageX;
+				_sglobalY = (event as MouseEvent).stageY;
 			}
 			else
 			{
-				globalX = (event as TouchEvent).stageX;
-				globalY = (event as TouchEvent).stageY;
+				_sglobalX = (event as TouchEvent).stageX;
+				_sglobalY = (event as TouchEvent).stageY;
 			}
 			
 			switch (event.type)
@@ -126,13 +128,13 @@ package framework.core
 				case MouseEvent.MOUSE_MOVE:		phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
 			}
 			
-			globalX = _stage.stageWidth  * (globalX - _viewPort.x) / _viewPort.width;
-			globalY = _stage.stageHeight * (globalY - _viewPort.y) / _viewPort.height;
+			_sglobalX = _stage.stageWidth  * (_sglobalX - _viewPort.x) / _viewPort.width;
+			_sglobalY = _stage.stageHeight * (_sglobalY - _viewPort.y) / _viewPort.height;
 			
 			if(phase == TouchPhase.BEGAN)
 			{
 				trace("클릭됨");
-				var point:Point = new Point(globalX, globalY);
+				var point:Point = new Point(_sglobalX, _sglobalY);
 				var displayObject:DisplayObject = _stage.hitTest(point);
 				if(displayObject != null)
 					displayObject.dispatchTouchEvent(MouseEvent.MOUSE_DOWN);
@@ -140,10 +142,10 @@ package framework.core
 			
 			if(phase == TouchPhase.HOVER)
 			{
-				var displayObject1: DisplayObject = _temp.recursiveSearch();
+				var displayObjectOVER: DisplayObject = _temp.recursiveSearch();
 					
-				if(displayObject1 != null)
-					trace("이미지 있음");
+				if(displayObjectOVER != null)
+					displayObjectOVER.dispatchTouchEvent(MouseEvent.MOUSE_OVER);
 			}
 		}
 		
@@ -219,6 +221,8 @@ package framework.core
 		public static function get current():Framework { return CURRENT; }
 		public static function get painter():Painter { return CURRENT ? CURRENT._painter : null; }
 		public static function get viewport():Rectangle { return CURRENT ? CURRENT._viewPort : null; }
+		public static function get mousex() : Number {return _sglobalX;};
+		public static function get mousey() : Number {return _sglobalY;};
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
 	}
 }
