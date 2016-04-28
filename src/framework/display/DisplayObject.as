@@ -50,6 +50,11 @@ package framework.display
 			return null;
 		}
 		
+		public function dispose():void
+		{
+			//해제가 필요한 부분 입력
+		}
+		
 		public function get height():Number{ return _height; }
 		public function set height(value:Number):void{ _height = value; }
 		

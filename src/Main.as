@@ -6,6 +6,8 @@ package
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
 	
+	import mx.core.mx_internal;
+	
 	import framework.Anmaiton.AtlasBitmapData;
 	import framework.Anmaiton.MoveClip;
 	import framework.display.Image;
@@ -38,7 +40,7 @@ package
 			
 			var quad : Quad  = new Quad(0,0,100,100,0xfff000);
 			addChild(quad);
-			_image2 = new Image(500,500,(new TEXTURE()).bitmapData as BitmapData);
+			_image2 = new Image(500,800,(new TEXTURE()).bitmapData as BitmapData);
 			addChild(_image2);
 			
 			//_image2.width =500;
@@ -53,7 +55,7 @@ package
 		
 			 atlas  = new AtlasBitmapData(spriteSheet,xmlsprite);		
 		
-			 image4 = new MoveClip(0,0,atlas.getsubSpriteSheet);
+			 image4 = new MoveClip(atlas,0,0);
 			addChild(image4);
 		}
 	
@@ -61,7 +63,9 @@ package
 		{
 			image4.x = 100;
 			image4.y = 100;
-		
+			image4.clipwidth = 500;
+			image4.clipheight = 500;
+			
 			image4.start();
 			trace("hi");
 		}

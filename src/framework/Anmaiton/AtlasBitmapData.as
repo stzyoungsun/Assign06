@@ -40,7 +40,6 @@ package framework.Anmaiton
 				region.setTo(x,y,width,height);
 				createSubBitmap(name, region);
 			}
-			
 		}
 		
 		public function createSubBitmap(name : String, region:Rectangle):void

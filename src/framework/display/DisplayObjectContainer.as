@@ -2,7 +2,7 @@ package framework.display
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
@@ -48,6 +48,30 @@ package framework.display
 			}
 		}
 		
+		public function removeChild(child:DisplayObject, dispose:Boolean=false):void
+		{
+			var childIndex:int = getChildIndex(child);
+			if (childIndex != -1) removeChildAt(childIndex, dispose);
+		}
+		
+		public function removeChildAt(index:int, dispose:Boolean=false):void
+		{
+			if (index >= 0 && index < _children.length)
+			{
+				var child:DisplayObject = _children[index];
+				_children.splice(index, 1);
+				if (dispose) child.dispose();
+			}
+			else
+			{
+				throw new RangeError("Invalid child index");
+			}
+		}
+		
+		public function getChildIndex(child:DisplayObject):int
+		{
+			return _children.indexOf(child);
+		}
 		/**
 		 * 자신에게 등록된 Object들을 rendering하는 메서드
 		 */
@@ -108,6 +132,20 @@ package framework.display
 				}
 			}
 			return null;
+		}
+		
+		public override function dispose():void
+		{
+			var numChildren:int = _children.length;
+			
+			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
+			for(var i:int = numChildren - 1; i >= 0; --i)
+			{
+				var child:DisplayObject = _children[i];
+				child.dispose();
+			}
+			
+			super.dispose();
 		}
 	}
 }
