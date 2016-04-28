@@ -40,6 +40,7 @@ package framework.animaiton
 				region.setTo(x,y,width,height);
 				createSubBitmap(name, region);
 			}
+			region = null;
 		}
 		
 		public function createSubBitmap(name : String, region:Rectangle):void
@@ -62,6 +63,12 @@ package framework.animaiton
 		public function get getsubCount() : int
 		{
 			return _subBitmapCount;
+		}
+		
+		public function dispose() : void
+		{
+			_subSpriteSheet = null;
+			_sprtieSheet = null;
 		}
 	}
 }

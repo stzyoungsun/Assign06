@@ -64,20 +64,26 @@ package
 //			removeChild(quad);
 //			quad.dispose();
 //			
+			var quad : Quad  = new Quad(0,0,100,100,0xfff000);
+			addChild(quad);
+				
+			var quad1: Quad  = new Quad(300,150,100,100,0xff0000);
+			addChild(quad1);
 			
-			_image5 = new Player((new TEXTURE()).bitmapData);
+			var quad2 : Quad  = new Quad(300,500,100,100,0xffff00);
+			addChild(quad2);
+			
+			var quad3 : Quad  = new Quad(600,600,100,100,0xf00000);
+			addChild(quad3);
+			
+			var quad3 : Quad  = new Quad(100,400,100,300,0xf00000);
+			addChild(quad3);
+			_image5 = new Player((new TEXTURE()).bitmapData,(new TEXTURE2()).bitmapData,this);
 			addChild(_image5);
 			
-			_image5.addEventListener(MouseEvent.MOUSE_OVER,onOver);
+			
 		}
 		
-		private function onOver(event:MouseEvent):void
-		{
-			// TODO Auto-generated method stub
-			trace(Framework.mousex);
-			_image5.x= Framework.mousex;
-		
-		}
 		
 		private function onTouch(event:MouseEvent):void
 		{
