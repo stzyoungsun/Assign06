@@ -86,6 +86,8 @@ package framework.display
 				var child:DisplayObject = _children[i];
 				child.render();
 				child.nextFrame();
+				child.createBullet();
+				child.shooting();
 			}
 		}
 		
