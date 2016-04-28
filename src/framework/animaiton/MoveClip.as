@@ -1,4 +1,4 @@
-package framework.Anmaiton
+package framework.animaiton
 {
 	import flash.display.BitmapData;
 	import framework.display.Image;
@@ -47,7 +47,6 @@ package framework.Anmaiton
 			if(_startFlag == true)
 			{
 				bitmapData = _spriteSheet.getsubSpriteSheet[_frameCount++];
-			
 				this.width = _moveClipWidth;
 				this.height = _moveClipHeight;
 			}
@@ -55,8 +54,13 @@ package framework.Anmaiton
 			if(_frameCount == _spriteSheet.getsubCount)
 				_frameCount = 0;
 		}
-		
+		/**
+		 * @param value MoveClip width
+		 */		
 		public  function set clipheight(value:Number):void{ _moveClipHeight = value; }
+		/**
+		 * @param value MoveClip Height
+	    */		
 		public  function set clipwidth(value:Number):void{ _moveClipWidth = value; }
 	}
 }

@@ -1,4 +1,4 @@
-package framework.Anmaiton
+package framework.animaiton
 {
 	
 	import flash.display.Bitmap;
@@ -12,13 +12,13 @@ package framework.Anmaiton
 	{
 		private var _sprtieSheet:Bitmap;
 		private var _subSpriteSheet: Dictionary;
-		private var _subBitmapNames:Vector.<String >;
 		private var _subBitmapCount : int = 0;
+		
 		public function AtlasBitmapData(sprtieSheet:Bitmap, spriteXml:XML = null)
 		{
 			_subSpriteSheet = new  Dictionary();
 			_sprtieSheet = sprtieSheet;
-			
+
 			if (spriteXml)
 			{
 				parseAtlasXml(spriteXml);
@@ -50,6 +50,8 @@ package framework.Anmaiton
 			
 			_subSpriteSheet[name] =  tempBitmapData ;
 			_subSpriteSheet[_subBitmapCount++]  =  tempBitmapData;
+			
+			tempBitmapData = null;
 		}
 		
 		public function get getsubSpriteSheet() :Dictionary
