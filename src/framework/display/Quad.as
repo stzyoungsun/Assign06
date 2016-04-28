@@ -156,10 +156,6 @@ package framework.display
 			return v;
 		}
 		
-		public override function nextFrame() : void
-		{
-			trace("쿼드 프레임 함수");
-		}
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value;this.width = _bitmapData.width; this.height = _bitmapData.height; }
 		

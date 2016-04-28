@@ -10,10 +10,5 @@ package framework.display
 			super(x,y);
 		}
 		
-		public  override function nextFrame() : void
-		{
-			//bitmapData = _spriteSheet[14];
-				trace("이미지 프레임");
-		}
 	}
 }
