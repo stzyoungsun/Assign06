@@ -51,30 +51,19 @@ package framework.display
 			this.x = x;
 			this.y = y;
 			
-			if(width == 0 && height == 0)
-			{
-				this.width = _bitmapData.width;
-				this.height = _bitmapData.height;
-			}
-			else
-			{
-				this.width = width;
-				this.height = height;
-			}
+			this.width = _bitmapData.width;
+			this.height = _bitmapData.height;
 			
 			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
-			
-			bitmapDataControl(_bitmapData);
+			//bitmapDataControl(_bitmapData);
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
 		{
 			var width:uint = bmd.width;
 			var height:uint = bmd.height;
-			
-			if(_texture == null)
-			{
-				if (createTexture(_bitmapData.width, _bitmapData.height))
+
+				if (createTexture(width, height))
 				{
 					// If the new texture doesn't match the BitmapData's dimensions
 					if (width != _textureWidth || height != _textureHeight)
@@ -105,7 +94,7 @@ package framework.display
 						_fragConsts[1] = 1;
 					}
 				}
-			}
+			
 			_texture.uploadFromBitmapData(bmd);
 		}
 		
@@ -119,7 +108,6 @@ package framework.display
 				_texture = _context.createTexture(bitwidth,bitheight,Context3DTextureFormat.BGRA,false);
 				_textureWidth = bitwidth;
 				_textureHeight = bitheight;
-				
 				
 				return true;
 			}
@@ -137,6 +125,7 @@ package framework.display
 		
 		public override function render():void
 		{
+			bitmapDataControl(_bitmapData);
 			controlBitmap();
 			
 			var  mModelViewMatrix : Matrix3D = new Matrix3D();
@@ -167,7 +156,8 @@ package framework.display
 		}
 		
 		public function get texture():Texture { return _texture; }
-		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
+		public function set bitmapData(value:BitmapData):void { _bitmapData = value;this.width = _bitmapData.width; this.height = _bitmapData.height; }
+		
 		public override function get bounds():Rectangle { return new Rectangle(x, y, width, height); }
 	}
 }
