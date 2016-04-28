@@ -26,6 +26,10 @@ package framework.display
 			// Abstract Method
 		}
 		
+		public function nextFrame() : void
+		{
+			trace("디스플레이오브젝트 프레임 함수");
+		}
 		public function dispatchTouchEvent(type:String):void
 		{
 			dispatchEvent(new MouseEvent(type));

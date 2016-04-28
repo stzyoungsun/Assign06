@@ -56,10 +56,11 @@ package framework.display
 			var numChildren:int = _children.length;
 			
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = 0; i < numChildren; i++)
+			for(var i:int = numChildren - 1; i >= 0; --i)
 			{
 				var child:DisplayObject = _children[i];
 				child.render();
+				child.nextFrame();
 			}
 		}
 		
