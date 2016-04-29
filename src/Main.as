@@ -6,6 +6,7 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MoveClip;
@@ -13,6 +14,7 @@ package
 	import framework.display.Image;
 	import framework.display.Quad;
 	import framework.display.Sprite;
+	import framework.gameobject.BulletManager;
 	import framework.gameobject.Player;
 	
 	public class Main extends Sprite
@@ -34,28 +36,13 @@ package
 		private var _image5 : Player;
 		public function Main()
 		{
-//			var image : Image = new Image(500,900,(new TEXTURE()).bitmapData as BitmapData);
-//			addChild(image);
-//			
-//			var image1 : Image = new Image(100,500,(new TEXTURE2()).bitmapData as BitmapData);
-//			addChild(image1);
-			
-//			var quad : Quad  = new Quad(0,0,100,100,0xfff000);
-//			addChild(quad);
-//			_image2 = new Image(500,800,(new TEXTURE()).bitmapData as BitmapData);
-//			addChild(_image2);
-//			
-//			//_image2.width =500;
-//			//_image2.height = 30;
-//			
-//			_image2.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
-//		
-//			
+
+	
 //			var spriteSheet : Bitmap = (new SPRITESHEET()) as Bitmap;
-//		
+////		
 //			var byteArray:ByteArray = new SPRITESHEETXML() as ByteArray;
 //			var xmlsprite:XML = new XML(byteArray.readUTFBytes(byteArray.length));
-//		
+////		
 //			 atlas  = new AtlasBitmapData(spriteSheet,xmlsprite);		
 //		
 //			 image4 = new MoveClip(atlas,0,0);
@@ -64,23 +51,30 @@ package
 //			removeChild(quad);
 //			quad.dispose();
 //			
-			var quad : Quad  = new Quad(0,0,100,100,0xfff000);
-			addChild(quad);
-				
-			var quad1: Quad  = new Quad(300,150,100,100,0xff0000);
-			addChild(quad1);
-			
-			var quad2 : Quad  = new Quad(300,500,100,100,0xffff00);
-			addChild(quad2);
-			
-			var quad3 : Quad  = new Quad(600,600,100,100,0xf00000);
-			addChild(quad3);
-			
-			var quad3 : Quad  = new Quad(100,400,100,300,0xf00000);
-			addChild(quad3);
-			_image5 = new Player((new TEXTURE()).bitmapData,(new TEXTURE2()).bitmapData,this);
+//			var quad : Quad  = new Quad(0,0,100,100,0xfff000);
+//			addChild(quad);
+//				
+//			var quad1: Quad  = new Quad(300,150,100,100,0xff0000);
+//			addChild(quad1);
+//			
+//			var quad2 : Quad  = new Quad(300,500,100,100,0xffff00);
+//			addChild(quad2);
+//			
+//			var quad3 : Quad  = new Quad(600,600,100,100,0xf00000);
+//			addChild(quad3);
+//			
+//			var quad4 : Quad  = new Quad(100,400,100,300,0xf00000);
+//			addChild(quad4);
+			 var bulletmanager : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
+//			
 			
+//			var moiveClip : MoveClip = new MoveClip(atlas,60,100,100);
+//			moiveClip.frame = 1;
+//			moiveClip.start();
+//			
+//			addChild(moiveClip)
 			
 		}
 		
