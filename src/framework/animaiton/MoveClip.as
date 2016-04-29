@@ -23,13 +23,15 @@ package framework.animaiton
 		public function MoveClip(spriteSheet : AtlasBitmapData,frame:Number,x:Number=0,y:Number=0)
 		{
 			_spriteSheet = spriteSheet;
-			super(x,y,_spriteSheet.getsubSpriteSheet[0] as BitmapData);
+		
 			
-			this._objectType = ObjectType.MOVIECLIP;
-			this.curFrame = frame;
+			super(x,y,_spriteSheet.getsubSpriteSheet[0] as BitmapData);
 			
 			_moveClipWidth = this.width;
 			_moveClipHeight = this.height;
+			
+			this._objectType = ObjectType.MOVIECLIP;
+			this.curFrame = frame;
 		}
 		/**
 		 * 
