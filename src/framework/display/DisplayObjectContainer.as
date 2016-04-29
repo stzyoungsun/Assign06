@@ -79,27 +79,33 @@ package framework.display
 		 */
 		public override function render():void
 		{
-			var numChildren:int = _children.length;
-			
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = 0 ; i <numChildren; ++i)
+			for(var i:int = 0 ; i <_children.length; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				
 				if(child.objectType == ObjectType.MOVIECLIP)
 				{
-					var curTimer : int = getTimer();
-					if(curTimer - _prevTime > 1000/child.curFrame)
+					var curTimerMovie : int = getTimer();
+					if(curTimerMovie - _prevTime > 1000/child.curFrame)
 					{
 						child.nextFrame();
 						_prevTime = getTimer();	
 					}
-					
+				}
+				
+				if(child.objectType == ObjectType.PLAYER || child.objectType == ObjectType.ENEMY )
+				{
+					var curTimerBullet : int = getTimer();
+					if(curTimerBullet - _prevTime > 100)
+					{
+						child.shooting()
+						_prevTime = getTimer();	
+					}
 				}
 				
 				child.render();
-				child.createBullet();
-				child.shooting();
+				child.bulletFrame();
 			}
 		}
 		

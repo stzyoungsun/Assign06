@@ -5,6 +5,7 @@ package framework.gameobject
 	
 	import framework.core.Framework;
 	import framework.display.Image;
+	import framework.display.ObjectType;
 	import framework.display.Sprite;
 
 	/**
@@ -15,38 +16,65 @@ package framework.gameobject
 	public class Player extends Image
 	{
 		private var _playBitmapData : BitmapData;
-		private var _bulletBitmapData : BitmapData;
+		private var _bulletManager : BulletManager;
 		
-		private var _bulletArray : Vector.<Bullet> = new Vector.<Bullet>;
-		private var _bulletCount : int = 0;
 		private var _stage:Sprite;
 		
-		public function Player(playBitmapData : BitmapData, bulletBitmap : BitmapData,stage:Sprite )
+		
+		public function Player(playBitmapData : BitmapData, bulletManager  : BulletManager,stage:Sprite )
 		{
 			_playBitmapData = playBitmapData;
-			_bulletBitmapData = bulletBitmap;
+			_bulletManager = bulletManager;
 			
 			y = Framework.viewport.height - _playBitmapData.height*2;
 			super(0,y,_playBitmapData);
 			
-			_playerFlag = true;
-			
 			addEventListener(MouseEvent.MOUSE_OVER,onOver);
+			
+			_bulletManager.createBullet(this.x,this.y);
+			
 			_stage=stage;
-			playBitmapData = null;
+			_playBitmapData = null;
+		}
+		public override function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
+		{
+			this._objectType = ObjectType.PLAYER;
+			super.addEventListener(type,listener);
 		}
 		
 		private function onOver(event:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace(Framework.mousex);
 			this.x= Framework.mousex;
 		}
 		
-		public override function createBullet() : void
+		public override function dispose():void
 		{
-			_bulletArray[_bulletCount] = new Bullet(this.x,this.y,_bulletBitmapData);
-			_stage.addChild(_bulletArray[_bulletCount++]);
+			_stage = null;
+		}
+		
+		public override function shooting() : void
+		{
+			// Abstract Method
+			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
+			
+			_bulletManager.bulletVector[bulletNum].initBullet(this);
+			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+		}
+		
+		public override function bulletFrame() : void
+		{
+			// Abstract Method
+			for(var i :int= 0; i < 30; i ++)
+			{
+				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
+				{
+					_stage.removeChild(_bulletManager.bulletVector[i]);
+					_bulletManager.bulletNumVector.push(i);
+				}
+				else
+					_bulletManager.bulletVector[i].shootingState();
+			}		
 		}
 	}
 }

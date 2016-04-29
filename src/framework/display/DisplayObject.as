@@ -14,7 +14,10 @@ package framework.display
 		private var _width : Number;
 		private var _height : Number;
 		private var _visible:Boolean;
+		
 		private var _curFrame : Number = 0;
+		
+		private var _curbulletCount : Number = 0;
 		
 		protected var _objectType : String = ObjectType.NONE;
 		
@@ -24,22 +27,25 @@ package framework.display
 			_visible = true;
 		}
 		
-		public function render():void
+	
+
+		public virtual function render():void
 		{
 			// Abstract Method
 		}
 		
-		public function nextFrame() : void
+		public virtual function nextFrame() : void
 		{
 			// Abstract Method
 		}
 		
-		public function createBullet() : void
+
+		public virtual function shooting() : void
 		{
 			// Abstract Method
 		}
 		
-		public function shooting() : void
+		public virtual function bulletFrame() : void
 		{
 			// Abstract Method
 		}
@@ -66,6 +72,7 @@ package framework.display
 		public function dispose():void
 		{
 			//해제가 필요한 부분 입력
+			
 		}
 		
 		public function get height():Number{ return _height; }
@@ -88,6 +95,9 @@ package framework.display
 		
 		public function get curFrame():Number{return _curFrame;}
 		public function set curFrame(value:Number):void{_curFrame = value;}
+		
+		public function get curbulletCount():Number{return _curbulletCount;}
+		public function set curbulletCount(value:Number):void {_curbulletCount = value;}
 		
 		public function get bounds():Rectangle { return null; }
 		
