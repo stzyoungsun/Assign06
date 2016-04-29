@@ -2,11 +2,12 @@ package framework.display
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.getTimer;
 	
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
-	
+		private var _prevTime : Number = 0;
 		/**
 		 * 생성자
 		 */
@@ -84,8 +85,19 @@ package framework.display
 			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
+				
+				if(child.objectType == ObjectType.MOVIECLIP)
+				{
+					var curTimer : int = getTimer();
+					if(curTimer - _prevTime > 1000/child.curFrame)
+					{
+						child.nextFrame();
+						_prevTime = getTimer();	
+					}
+					
+				}
+				
 				child.render();
-				child.nextFrame();
 				child.createBullet();
 				child.shooting();
 			}
@@ -99,7 +111,8 @@ package framework.display
 			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
-				if(child.playerflag == true)
+				
+				if(child.objectType == ObjectType.PLAYER)
 					return child;
 			}
 			return null;

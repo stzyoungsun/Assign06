@@ -1,13 +1,15 @@
 package framework.animaiton
 {
 	import flash.display.BitmapData;
+	
 	import framework.display.Image;
+	import framework.display.ObjectType;
 
 	public class MoveClip extends Image
 	{
 		private var _startFlag : Boolean = false;
 		private var _spriteSheet : AtlasBitmapData;
-		private var _frameCount : int = 0;
+		private var _imageCount : int = 0;
 		
 		private var _moveClipWidth: int =0;
 		private var _moveClipHeight: int =0;
@@ -18,10 +20,14 @@ package framework.animaiton
 		 * @param y  Clip의 y 좌표
 		 * 
 		 */		
-		public function MoveClip(spriteSheet : AtlasBitmapData,x:Number=0,y:Number=0)
+		public function MoveClip(spriteSheet : AtlasBitmapData,frame:Number,x:Number=0,y:Number=0)
 		{
 			_spriteSheet = spriteSheet;
 			super(x,y,_spriteSheet.getsubSpriteSheet[0] as BitmapData);
+			
+			this._objectType = ObjectType.MOVIECLIP;
+			this.curFrame = frame;
+			
 			_moveClipWidth = this.width;
 			_moveClipHeight = this.height;
 		}
@@ -46,13 +52,13 @@ package framework.animaiton
 		{
 			if(_startFlag == true)
 			{
-				bitmapData = _spriteSheet.getsubSpriteSheet[_frameCount++];
+				bitmapData = _spriteSheet.getsubSpriteSheet[_imageCount++];
 				this.width = _moveClipWidth;
 				this.height = _moveClipHeight;
 			}
 				
-			if(_frameCount == _spriteSheet.getsubCount)
-				_frameCount = 0;
+			if(_imageCount == _spriteSheet.getsubCount)
+				_imageCount = 0;
 		}
 		/**
 		 * @param value MoveClip width
@@ -62,5 +68,9 @@ package framework.animaiton
 		 * @param value MoveClip Height
 	    */		
 		public  function set clipwidth(value:Number):void{ _moveClipWidth = value; }
+		
+		public function get frame() : Number {return this.curFrame;};
+		public function set frame(value:Number) : void {this.curFrame = value;}
+		;
 	}
 }

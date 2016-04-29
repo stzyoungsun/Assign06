@@ -14,8 +14,10 @@ package framework.display
 		private var _width : Number;
 		private var _height : Number;
 		private var _visible:Boolean;
+		private var _curFrame : Number = 0;
 		
-		protected var _playerFlag : Boolean = false;
+		protected var _objectType : String = ObjectType.NONE;
+		
 		public function DisplayObject()
 		{
 			_x = _y = _rotation = 0.0;
@@ -84,8 +86,11 @@ package framework.display
 		public function get visible():Boolean { return _visible; }
 		public function set visible(visible:Boolean):void { _visible = visible; }
 		
+		public function get curFrame():Number{return _curFrame;}
+		public function set curFrame(value:Number):void{_curFrame = value;}
+		
 		public function get bounds():Rectangle { return null; }
 		
-		public function get playerflag():Boolean { return _playerFlag; }
+		public function get objectType() : String {return _objectType;};
 	}
 }
