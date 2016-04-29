@@ -13,9 +13,11 @@ package framework.gameobject
 	
 		private var _shootingState : Function;
 		
-		public function Bullet(x:int,y:int,bulletBitmap : BitmapData)
+		public function Bullet(objectType : String,x:int,y:int,bulletBitmap : BitmapData)
 		{
 			super(x,y,bulletBitmap);
+			
+			this._objectType = objectType;
 		}
 		
 		public function initBullet(object : DisplayObject) : void

@@ -8,7 +8,8 @@ package framework.display
 		public static const BACKGROUND:String = "background";
 		public static const NONE : String = "none";
 		public static const MOVIECLIP : String = "movieclip";
-		
+		public static const PLAYER_BULLET : String = "player_bullet";
+		public static const ENEMY_BULLET : String = "enemy_bullet";
 		public function ObjectType() { throw new Error("Abstract Class"); }
 	}
 }

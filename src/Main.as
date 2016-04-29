@@ -8,17 +8,18 @@ package
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
+	import enemy.EnemyTwo;
 	import enemy.Enemyone;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MoveClip;
 	import framework.core.Framework;
 	import framework.display.Image;
+	import framework.display.ObjectType;
 	import framework.display.Quad;
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Player;
-	import enemy.EnemyTwo;
 	
 	public class Main extends Sprite
 	{
@@ -70,15 +71,16 @@ package
 //			
 //			var quad4 : Quad  = new Quad(100,400,100,300,0xf00000);
 //			addChild(quad4);
-			 var bulletmanager : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			
+			 var bulletmanager : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
-//			
-			var bulletmanager1 : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			
+			var bulletmanager1 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image6 = new Enemyone((new TEXTURE()).bitmapData,bulletmanager1,this);
 			addChild(_image6);
 			
-			var bulletmanager2 : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			var bulletmanager2 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image7 = new EnemyTwo((new TEXTURE()).bitmapData,bulletmanager2,this);
 			addChild(_image7);
 //			var moiveClip : MoveClip = new MoveClip(atlas,60,100,100);

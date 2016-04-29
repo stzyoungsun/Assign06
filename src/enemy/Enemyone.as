@@ -54,7 +54,7 @@ package enemy
 			}		
 		}
 		
-		public override function AutoMoving():void
+		public override function autoMoving():void
 		{
 			this.x+=_temp;
 			

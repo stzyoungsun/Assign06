@@ -1,6 +1,8 @@
 package framework.gameobject
 {
 	import flash.display.BitmapData;
+	
+	import framework.display.ObjectType;
 
 	public class BulletManager
 	{
@@ -9,12 +11,13 @@ package framework.gameobject
 		
 		private var _bulletBitmapData : BitmapData;
 		private var _totalBullet : int = 0;
+		private var _objectType : String;
 		
-		public function BulletManager(totalBullet : int,bulletBitmap : BitmapData)
+		public function BulletManager(objectType : String,totalBullet : int,bulletBitmap : BitmapData)
 		{
 			_totalBullet = totalBullet;
 			_bulletBitmapData = bulletBitmap;
-			
+			_objectType = objectType;
 		}
 		
 
@@ -24,7 +27,7 @@ package framework.gameobject
 		{
 			for(var i :int =0; i< _totalBullet; i++)
 			{
-				_bulletVector.push(new Bullet(x,y,_bulletBitmapData));
+				_bulletVector.push(new Bullet(_objectType,x,y,_bulletBitmapData));
 				_bulletNumVector.push(i);
 			}
 			
