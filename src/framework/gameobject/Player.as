@@ -65,7 +65,7 @@ package framework.gameobject
 		public override function bulletFrame() : void
 		{
 			// Abstract Method
-			for(var i :int= 0; i < 30; i ++)
+			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
 			{
 				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
 				{

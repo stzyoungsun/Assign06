@@ -8,6 +8,8 @@ package
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
+	import enemy.Enemyone;
+	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MoveClip;
 	import framework.core.Framework;
@@ -16,6 +18,7 @@ package
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Player;
+	import enemy.EnemyTwo;
 	
 	public class Main extends Sprite
 	{
@@ -34,6 +37,8 @@ package
 		private var atlas : AtlasBitmapData;
 		private var _image2 : Image;
 		private var _image5 : Player;
+		private var _image6 : Enemyone;
+		private var _image7 : EnemyTwo;
 		public function Main()
 		{
 
@@ -69,7 +74,13 @@ package
 			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
 //			
+			var bulletmanager1 : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			_image6 = new Enemyone((new TEXTURE()).bitmapData,bulletmanager1,this);
+			addChild(_image6);
 			
+			var bulletmanager2 : BulletManager = new BulletManager(30,(new TEXTURE2()).bitmapData);
+			_image7 = new EnemyTwo((new TEXTURE()).bitmapData,bulletmanager2,this);
+			addChild(_image7);
 //			var moiveClip : MoveClip = new MoveClip(atlas,60,100,100);
 //			moiveClip.frame = 1;
 //			moiveClip.start();

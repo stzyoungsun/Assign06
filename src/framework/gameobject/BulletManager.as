@@ -17,7 +17,6 @@ package framework.gameobject
 			
 		}
 		
-		
 
 		
 
@@ -36,6 +35,7 @@ package framework.gameobject
 			_bulletBitmapData = null;
 		}
 		
+		public function get totalBullet():int{return _totalBullet;}
 		public function get bulletVector():Vector.<Bullet>{return _bulletVector;}
 		public function get bulletNumVector():Vector.<Number>{return _bulletNumVector;}
 		public function set bulletNumVector(value:Vector.<Number>):void{_bulletNumVector = value;}

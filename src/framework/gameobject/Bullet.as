@@ -23,7 +23,7 @@ package framework.gameobject
 			this.x = object.x;
 			this.y = object.y;
 		}
-		public function shootingState(state : Function = null) : void 
+		public function shootingState(state : Function = null, bulletNum : Number =0) : void 
 		{
 			
 			_shootingState = state;
@@ -31,7 +31,7 @@ package framework.gameobject
 				this.y -= 5;
 			
 			else
-				_shootingState();
+				_shootingState(bulletNum);
 		}
 		
 		public override function dispose():void
