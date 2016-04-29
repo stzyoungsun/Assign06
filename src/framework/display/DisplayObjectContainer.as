@@ -4,6 +4,8 @@ package framework.display
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
+	import framework.gameobject.Collision;
+	
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
@@ -97,18 +99,36 @@ package framework.display
 				if(child.objectType == ObjectType.PLAYER || child.objectType == ObjectType.ENEMY )
 				{
 					var curTimerBullet : int = getTimer();
-					if(curTimerBullet - child.prevTime > 1000)
+					if(curTimerBullet - child.prevTime > 500)
 					{
 						child.shooting();
 						child.prevTime = getTimer();	
 					}
 					
 					if(child.objectType == ObjectType.ENEMY)
-						child.AutoMoving();
+						child.autoMoving();
+					
 				}
+				
+				if(child.objectType == ObjectType.PLAYER_BULLET)
+					bulletCollision(i);
 				
 				child.render();
 				child.bulletFrame();
+			}
+		}
+		
+		public override function bulletCollision(curChildNum : Number):void
+		{
+			for(var i:int = 0 ; i <_children.length; ++i)
+			{
+				var child:DisplayObject = _children[i];
+				
+				if(child.objectType == ObjectType.ENEMY)
+				{
+					if(Collision.bulletToObject(_children[curChildNum],child))
+						trace("충돌");  //충돌 시 이벤트 처리
+				}	
 			}
 		}
 		

@@ -37,8 +37,7 @@ package framework.display
 		{
 			// Abstract Method
 		}
-		
-
+	
 		public virtual function shooting() : void
 		{
 			// Abstract Method
@@ -49,9 +48,14 @@ package framework.display
 			// Abstract Method
 		}
 		
-		public virtual function AutoMoving() : void
+		public virtual function autoMoving() : void
 		{
-			
+			// Abstract Method
+		}
+		
+		public virtual function bulletCollision(curChildNum : Number) : void
+		{
+			// Abstract Method
 		}
 		public function dispatchTouchEvent(type:String):void
 		{
