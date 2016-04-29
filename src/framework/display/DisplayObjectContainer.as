@@ -7,7 +7,7 @@ package framework.display
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
-		private var _prevTime : Number = 0;
+		
 		/**
 		 * 생성자
 		 */
@@ -87,21 +87,24 @@ package framework.display
 				if(child.objectType == ObjectType.MOVIECLIP)
 				{
 					var curTimerMovie : int = getTimer();
-					if(curTimerMovie - _prevTime > 1000/child.curFrame)
+					if(curTimerMovie - child.prevTime > 1000/child.curFrame)
 					{
 						child.nextFrame();
-						_prevTime = getTimer();	
+						child.prevTime = getTimer();	
 					}
 				}
 				
 				if(child.objectType == ObjectType.PLAYER || child.objectType == ObjectType.ENEMY )
 				{
 					var curTimerBullet : int = getTimer();
-					if(curTimerBullet - _prevTime > 100)
+					if(curTimerBullet - child.prevTime > 1000)
 					{
-						child.shooting()
-						_prevTime = getTimer();	
+						child.shooting();
+						child.prevTime = getTimer();	
 					}
+					
+					if(child.objectType == ObjectType.ENEMY)
+						child.AutoMoving();
 				}
 				
 				child.render();

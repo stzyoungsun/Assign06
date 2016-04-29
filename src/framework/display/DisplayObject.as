@@ -16,6 +16,7 @@ package framework.display
 		private var _visible:Boolean;
 		
 		private var _curFrame : Number = 0;
+		private var _prevTime : Number = 0;
 		
 		private var _curbulletCount : Number = 0;
 		
@@ -27,8 +28,6 @@ package framework.display
 			_visible = true;
 		}
 		
-	
-
 		public virtual function render():void
 		{
 			// Abstract Method
@@ -48,6 +47,11 @@ package framework.display
 		public virtual function bulletFrame() : void
 		{
 			// Abstract Method
+		}
+		
+		public virtual function AutoMoving() : void
+		{
+			
 		}
 		public function dispatchTouchEvent(type:String):void
 		{
@@ -98,6 +102,9 @@ package framework.display
 		
 		public function get curbulletCount():Number{return _curbulletCount;}
 		public function set curbulletCount(value:Number):void {_curbulletCount = value;}
+		
+		public function get prevTime():Number{return _prevTime;}
+		public function set prevTime(value:Number):void{_prevTime = value;}
 		
 		public function get bounds():Rectangle { return null; }
 		
