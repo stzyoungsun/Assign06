@@ -25,22 +25,17 @@ package framework.animaiton
 		 * @param y  Clip의 y 좌표
 		 * 
 		 */		
-		public function MovieClip(spriteSheet : AtlasBitmapData,frame:Number,x:Number=0,y:Number=0)
+		public function MovieClip(spriteSheet:AtlasBitmapData, frame:Number, x:Number = 0, y:Number = 0)
 		{
 			_spriteSheet = spriteSheet;
-		
 			
-			super(x,y,_spriteSheet.getsubSpriteSheet[0] as BitmapData);
+			super(x, y, _spriteSheet.getsubSpriteSheet[0] as BitmapData);
 			
-			_moveClipWidth = this.width;
-			_moveClipHeight = this.height;
 			if(frame == 0)
 			{
 				throw new Error("Frame value can not set 0");
 			}
 			
-			this._objectType = ObjectType.MOVIECLIP;
-			this.curFrame = frame;
 			_startFlag = false;
 			_movieClipWidth = width;
 			_movieClipHeight = height;
@@ -50,24 +45,23 @@ package framework.animaiton
 			_prevTime = 0;
 			_imageCount = 0;
 		}
+		
 		/**
-		 * 
 		 * 애니매이션 시작하는 함수
 		 */		
 		public function start() : void 
 		{
 			_startFlag = true;
 		}
+		
 		/**
-		 *애니매이션 정지 
-		 * 
+		 * 애니매이션 정지
 		 */		
 		public function stop() : void 
 		{
 			_startFlag = false;
 		}
 		
-		public override function nextFrame() : void
 		public override function render():void
 		{
 			super.render();
@@ -79,28 +73,29 @@ package framework.animaiton
 			}
 		}
 		
+		public function nextFrame() : void
 		{
 			if(_startFlag == true)
 			{
 				bitmapData = _spriteSheet.getsubSpriteSheet[_imageCount++];
-				this.width = _moveClipWidth;
-				this.height = _moveClipHeight;
+				width = _movieClipWidth;
+				height = _movieClipHeight;
 			}
-				
+			
 			if(_imageCount == _spriteSheet.getsubCount)
+			{
 				_imageCount = 0;
+			}
 		}
-		/**
-		 * @param value MoveClip width
-		 */		
-		public  function set clipheight(value:Number):void{ _moveClipHeight = value; }
-		/**
-		 * @param value MoveClip Height
-	    */		
-		public  function set clipwidth(value:Number):void{ _moveClipWidth = value; }
-		
-		public function get frame() : Number {return this.curFrame;};
-		public function set frame(value:Number) : void {this.curFrame = value;}
-		;
+//		/**
+//		 * @param value MoveClip width
+//		 */		
+//		public  function set clipheight(value:Number):void{ _movieClipHeight = value; }
+//		/**
+//		 * @param value MoveClip Height
+//		 */		
+//		public  function set clipwidth(value:Number):void{ _movieClipWidth = value; }
+//		public function get frame() : Number {return this.curFrame;};
+//		public function set frame(value:Number) : void {this.curFrame = value;}
 	}
 }
