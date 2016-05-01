@@ -51,6 +51,17 @@ package framework.animaiton
 		}
 		
 		public override function nextFrame() : void
+		public override function render():void
+		{
+			super.render();
+			
+			if(getTimer() - _prevTime > 1000 / _curFrame)
+			{
+				nextFrame();
+				_prevTime = getTimer();
+			}
+		}
+		
 		{
 			if(_startFlag == true)
 			{
