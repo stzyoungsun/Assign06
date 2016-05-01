@@ -5,7 +5,7 @@ package framework.animaiton
 	import framework.display.Image;
 	import framework.display.ObjectType;
 
-	public class MoveClip extends Image
+	public class MovieClip extends Image
 	{
 		private var _startFlag : Boolean = false;
 		private var _spriteSheet : AtlasBitmapData;
@@ -20,7 +20,7 @@ package framework.animaiton
 		 * @param y  Clip의 y 좌표
 		 * 
 		 */		
-		public function MoveClip(spriteSheet : AtlasBitmapData,frame:Number,x:Number=0,y:Number=0)
+		public function MovieClip(spriteSheet : AtlasBitmapData,frame:Number,x:Number=0,y:Number=0)
 		{
 			_spriteSheet = spriteSheet;
 		
