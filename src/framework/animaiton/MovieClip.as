@@ -1,18 +1,20 @@
 package framework.animaiton
 {
 	import flash.display.BitmapData;
+	import flash.utils.getTimer;
 	
 	import framework.display.Image;
 	import framework.display.ObjectType;
-
+	
 	public class MovieClip extends Image
 	{
-		private var _startFlag : Boolean = false;
-		private var _spriteSheet : AtlasBitmapData;
-		private var _imageCount : int = 0;
+		private var _startFlag:Boolean;
+		private var _spriteSheet:AtlasBitmapData;
+		private var _imageCount:int;
 		
-		private var _moveClipWidth: int =0;
-		private var _moveClipHeight: int =0;
+		private var _movieClipWidth:int;
+		private var _movieClipHeight:int;
+		
 		/**
 		 * 
 		 * @param spriteSheet AtlasBitmapData의 객체
@@ -32,6 +34,12 @@ package framework.animaiton
 			
 			this._objectType = ObjectType.MOVIECLIP;
 			this.curFrame = frame;
+			_startFlag = false;
+			_movieClipWidth = width;
+			_movieClipHeight = height;
+			
+			_objectType = ObjectType.MOVIECLIP;
+			_imageCount = 0;
 		}
 		/**
 		 * 
