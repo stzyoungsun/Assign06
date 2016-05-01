@@ -18,6 +18,8 @@ package
 	import framework.display.ObjectType;
 	import framework.display.Quad;
 	import framework.display.Sprite;
+	import framework.event.Touch;
+	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Player;
@@ -43,9 +45,9 @@ package
 		private var _image5 : Player;
 		private var _image6 : Enemyone;
 		private var _image7 : EnemyTwo;
+		
 		public function Main()
 		{
-
 			Scene.instance.addScene(this,0);
 //			var spriteSheet : Bitmap = (new SPRITESHEET()) as Bitmap;
 ////		
@@ -79,11 +81,11 @@ package
 			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
 			
-			
 			var bulletmanager1 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
+			
 			_image6 = new Enemyone((new TEXTURE()).bitmapData,bulletmanager1,this);
 			addChild(_image6);
-			_image6.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
+			_image6.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			var bulletmanager2 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image7 = new EnemyTwo((new TEXTURE()).bitmapData,bulletmanager2,this);
@@ -94,15 +96,27 @@ package
 //			
 //			addChild(moiveClip)
 			
+			// 현재 스테이지와 플레이어 객체에 이벤트 추가
+			Framework.stage.addEventListener(TouchEvent.TOUCH, onTouchStage);
+			_image5.addEventListener(TouchEvent.TOUCH, onTouchStage);
 		}
 		
-		
-		private function onTouch(event:MouseEvent):void
+		private function onTouch(event:TouchEvent):void
 		{
 			var round : roundone  = new roundone();
 			Scene.instance.addScene(round,1);
 			SceneManager.sceneChange(1);
 			trace("hi");
+		}
+		
+		private function onTouchStage(event:TouchEvent):void
+		{
+			var touch:Touch = event.touch;
+			
+			if(touch.phase == TouchPhase.MOVED)
+			{
+				_image5.x += touch.globalX - touch.previousGlobalX;
+			}
 		}
 	}
 }
