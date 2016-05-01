@@ -227,6 +227,8 @@ package framework.core
 		
 		public static function get mousex() : Number {return _sglobalX;};
 		public static function get mousey() : Number {return _sglobalY;};
+		
+		public static function get stage():DisplayObjectContainer { return CURRENT ? CURRENT._stage : null; }
 		//public function get shareContext() : Boolean { return _painter.shareContext; }
 	}
 }
