@@ -18,8 +18,6 @@ package framework.display
 			_children = new <DisplayObject>[];
 		}
 		
-	
-
 		public function get children():Vector.<DisplayObject>
 		{
 			return _children;
@@ -61,7 +59,6 @@ package framework.display
 			{
 				throw new Error("Invalid child index");
 			}
-			
 		}
 		
 		public function removeChild(child:DisplayObject, dispose:Boolean=false):void
@@ -88,6 +85,7 @@ package framework.display
 		{
 			return _children.indexOf(child);
 		}
+		
 		/**
 		 * 자신에게 등록된 Object들을 rendering하는 메서드
 		 */
@@ -98,39 +96,14 @@ package framework.display
 			{
 				var child:DisplayObject = _children[i];
 				
-				if(child.objectType == ObjectType.MOVIECLIP)
-				{
-					var curTimerMovie : int = getTimer();
-					if(curTimerMovie - child.prevTime > 1000/child.curFrame)
-					{
-						child.nextFrame();
-						child.prevTime = getTimer();	
-					}
-				}
-				
-				if(child.objectType == ObjectType.PLAYER || child.objectType == ObjectType.ENEMY )
-				{
-					var curTimerBullet : int = getTimer();
-					if(curTimerBullet - child.prevTime > 500)
-					{
-						child.shooting();
-						child.prevTime = getTimer();	
-					}
-					
-					if(child.objectType == ObjectType.ENEMY)
-						child.autoMoving();
-					
-				}
-				
 				if(child.objectType == ObjectType.PLAYER_BULLET)
 					bulletCollision(i);
 				
 				child.render();
-				child.bulletFrame();
 			}
 		}
 		
-		public override function bulletCollision(curChildNum : Number):void
+		public function bulletCollision(curChildNum : Number):void
 		{
 			for(var i:int = 0 ; i <_children.length; ++i)
 			{
@@ -144,20 +117,21 @@ package framework.display
 			}
 		}
 		
-		public  function recursiveSearch() : DisplayObject
-		{
-			var numChildren:int = _children.length;
-			
-			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-			for(var i:int = 0 ; i <numChildren; ++i)
-			{
-				var child:DisplayObject = _children[i];
-				
-				if(child.objectType == ObjectType.PLAYER)
-					return child;
-			}
-			return null;
-		}
+//		public  function recursiveSearch() : DisplayObject
+//		{
+//			var numChildren:int = _children.length;
+//			
+//			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
+//			for(var i:int = 0 ; i <numChildren; ++i)
+//			{
+//				var child:DisplayObject = _children[i];
+//				
+//				if(child.objectType == ObjectType.PLAYER)
+//					return child;
+//			}
+//			return null;
+//		}
+		
 		public override function get bounds():Rectangle
 		{
 			var numChildren:int = _children.length;
@@ -217,7 +191,5 @@ package framework.display
 			_children = null;
 			super.dispose();
 		}
-		
-		
 	}
 }

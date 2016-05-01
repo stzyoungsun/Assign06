@@ -1,6 +1,7 @@
 package enemy
 {
 	import flash.display.BitmapData;
+	import flash.utils.getTimer;
 	
 	import framework.core.Framework;
 	import framework.display.Image;
@@ -16,6 +17,8 @@ package enemy
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
+		private var _prevTime:Number;
+		
 		public function EnemyTwo(enemyBitmapData : BitmapData, bulletManager  : BulletManager,stage:Sprite )
 		{
 			_enemyBitmapData = enemyBitmapData;
@@ -28,20 +31,19 @@ package enemy
 			
 			_stage=stage;
 			_bulletManager.createBullet(this.x,this.y);
+			_prevTime = 0;
 		}
 		
-		public override function shooting() : void
+		public function shooting() : void
 		{
-			// Abstract Method
 			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
 			
 			_bulletManager.bulletVector[bulletNum].initBullet(this);
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 		}
 		
-		public override function bulletFrame() : void
+		public function bulletFrame() : void
 		{
-			// Abstract Method
 			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
 			{
 				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
@@ -54,7 +56,7 @@ package enemy
 			}		
 		}
 		
-		public override function autoMoving():void
+		public function autoMoving():void
 		{
 			this.x+=_temp;
 			
@@ -69,6 +71,23 @@ package enemy
 		{
 			_bulletManager.bulletVector[bulletNum].x += 5;
 			_bulletManager.bulletVector[bulletNum].y += 15;
+		}
+		
+		public override function render():void
+		{
+			super.render();
+			
+			var curTimerBullet:int = getTimer();
+			
+			if(curTimerBullet - _prevTime > 500)
+			{
+				shooting();
+				_prevTime = getTimer();
+			}
+			
+			autoMoving();
+			
+			bulletFrame();
 		}
 	}
 }

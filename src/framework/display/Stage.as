@@ -30,10 +30,10 @@ package framework.display
 			return target ? target : this;
 		}
 		
-		public override function recursiveSearch() : DisplayObject
-		{
-			return super.recursiveSearch();
-		}
+//		public override function recursiveSearch() : DisplayObject
+//		{
+//			return super.recursiveSearch();
+//		}
 		
 		public function get stageWidth():int { return _width; }
 		public function set stageWidth(value:int):void { _width = value; }

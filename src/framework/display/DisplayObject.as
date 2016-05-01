@@ -15,9 +15,6 @@ package framework.display
 		private var _height : Number;
 		private var _visible:Boolean;
 		
-		private var _curFrame : Number = 0;
-		private var _prevTime : Number = 0;
-		
 		private var _curbulletCount : Number = 0;
 		
 		protected var _objectType : String = ObjectType.NONE;
@@ -33,30 +30,6 @@ package framework.display
 			// Abstract Method
 		}
 		
-		public virtual function nextFrame() : void
-		{
-			// Abstract Method
-		}
-	
-		public virtual function shooting() : void
-		{
-			// Abstract Method
-		}
-		
-		public virtual function bulletFrame() : void
-		{
-			// Abstract Method
-		}
-		
-		public virtual function autoMoving() : void
-		{
-			// Abstract Method
-		}
-		
-		public virtual function bulletCollision(curChildNum : Number) : void
-		{
-			// Abstract Method
-		}
 		public function dispatchTouchEvent(type:String):void
 		{
 			dispatchEvent(new MouseEvent(type));
@@ -101,14 +74,8 @@ package framework.display
 		public function get visible():Boolean { return _visible; }
 		public function set visible(visible:Boolean):void { _visible = visible; }
 		
-		public function get curFrame():Number{return _curFrame;}
-		public function set curFrame(value:Number):void{_curFrame = value;}
-		
 		public function get curbulletCount():Number{return _curbulletCount;}
 		public function set curbulletCount(value:Number):void {_curbulletCount = value;}
-		
-		public function get prevTime():Number{return _prevTime;}
-		public function set prevTime(value:Number):void{_prevTime = value;}
 		
 		public function get bounds():Rectangle { return null; }
 		
