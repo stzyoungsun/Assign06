@@ -18,9 +18,8 @@ package framework.core
 	import framework.display.DisplayObject;
 	import framework.display.DisplayObjectContainer;
 	import framework.display.Stage;
+	import framework.event.Touch;
 	import framework.event.TouchPhase;
-	
-
 	
 	public class Framework  extends EventDispatcher
 	{
@@ -39,10 +38,14 @@ package framework.core
 		private var _painter:Painter;
 		private var _leftMouseDown:Boolean;
 		private var _sceneStage : DisplayObjectContainer;
-		private static var CURRENT:Framework;
+		private var _touch:Touch;
+		private var _touchedObject:DisplayObject;
 		
+		private static var CURRENT:Framework;
+		private static var POINT:Point = new Point(0, 0);
 		private static var _sglobalX:Number;
 		private static var _sglobalY:Number;
+		
 		public function Framework(rootClass:Class, stage:flash.display.Stage)
 		{
 			if (stage == null) throw new ArgumentError("Stage must not be null");
@@ -96,19 +99,24 @@ package framework.core
 			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_sceneStage = root as DisplayObjectContainer;
+			dispatchEvent(new Event("CREATED"));
 			_stage.addChildAt(_sceneStage, 0);
+			
+			_touch = new Touch();
 		}
 		
 		private function onTouch(event:Event):void
 		{
 			if(!_started) return;
 			
-			var phase:String;
-			
 			if(event is MouseEvent)
 			{
 				_sglobalX = (event as MouseEvent).stageX;
 				_sglobalY = (event as MouseEvent).stageY;
+				
+				// 마우스 클릭 상태인지 체크
+				if (event.type == MouseEvent.MOUSE_DOWN)    _leftMouseDown = true;
+				else if (event.type == MouseEvent.MOUSE_UP) _leftMouseDown = false;
 			}
 			else
 			{
@@ -118,32 +126,45 @@ package framework.core
 			
 			switch (event.type)
 			{
-				case TouchEvent.TOUCH_BEGIN:	phase = TouchPhase.BEGAN; break;
-				case TouchEvent.TOUCH_MOVE:		phase = TouchPhase.MOVED; break;
-				case TouchEvent.TOUCH_END:		phase = TouchPhase.ENDED; break;
-				case MouseEvent.MOUSE_DOWN:		phase = TouchPhase.BEGAN; break;
-				case MouseEvent.MOUSE_UP:		phase = TouchPhase.ENDED; break;
-				case MouseEvent.MOUSE_MOVE:		phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
+				case TouchEvent.TOUCH_BEGIN:	_touch.phase = TouchPhase.BEGAN; break;
+				case TouchEvent.TOUCH_MOVE:		_touch.phase = TouchPhase.MOVED; break;
+				case TouchEvent.TOUCH_END:		_touch.phase = TouchPhase.ENDED; break;
+				case MouseEvent.MOUSE_DOWN:		_touch.phase = TouchPhase.BEGAN; break;
+				case MouseEvent.MOUSE_UP:		_touch.phase = TouchPhase.ENDED; break;
+				case MouseEvent.MOUSE_MOVE:		_touch.phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
 			}
 			
 			_sglobalX = _stage.stageWidth  * (_sglobalX - _viewPort.x) / _viewPort.width;
 			_sglobalY = _stage.stageHeight * (_sglobalY - _viewPort.y) / _viewPort.height;
 			
-			if(phase == TouchPhase.BEGAN)
-			{
-				trace("클릭됨");
-				var point:Point = new Point(_sglobalX, _sglobalY);
-				var displayObject:DisplayObject = _stage.hitTest(point);
-				if(displayObject != null)
-					displayObject.dispatchTouchEvent(MouseEvent.MOUSE_DOWN);
-			}
+			POINT.x = _sglobalX;
+			POINT.y = _sglobalY;
 			
-			if(phase == TouchPhase.HOVER)
+			_touch.globalX = _sglobalX;
+			_touch.globalY = _sglobalY;
+			
+			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트의 dispatchEvent를 호출
+			if(_touch.phase == TouchPhase.HOVER)
 			{
-				var displayObjectOVER: DisplayObject = _sceneStage.recursiveSearch();
-					
-				if(displayObjectOVER != null)
-					displayObjectOVER.dispatchTouchEvent(MouseEvent.MOUSE_OVER);
+				_stage.hitTest(POINT).dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
+			}
+				// 그 외의 상태라면, 터치된 오브젝트를 저장한 후 dispatchEvent를 호출
+			else
+			{
+				// _touchedObject가 null이면 hitTest 메서드로 터치된 오브젝트를 _touchedObject로 저장
+				if(_touchedObject == null)
+				{
+					_touchedObject = _stage.hitTest(POINT);
+				}
+				
+				// _touchedObject에 저장된 오브젝트의 dispatchEvent 호출
+				_touchedObject.dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
+				
+				// 터치 상태가 ENDED면 _touchedObject를 null로 대입
+				if(_touch.phase == TouchPhase.ENDED)
+				{
+					_touchedObject = null;
+				}
 			}
 		}
 		
