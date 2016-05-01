@@ -67,7 +67,8 @@ package enemy
 		
 		public function bulletstate(bulletNum : Number) : void
 		{
-			_bulletManager.bulletVector[bulletNum].y += 5;
+			_bulletManager.bulletVector[bulletNum].x += 5;
+			_bulletManager.bulletVector[bulletNum].y += 15;
 		}
 	}
 }

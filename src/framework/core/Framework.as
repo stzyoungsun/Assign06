@@ -38,7 +38,7 @@ package framework.core
 
 		private var _painter:Painter;
 		private var _leftMouseDown:Boolean;
-		private var _temp : DisplayObjectContainer;
+		private var _sceneStage : DisplayObjectContainer;
 		private static var CURRENT:Framework;
 		
 		private static var _sglobalX:Number;
@@ -95,16 +95,14 @@ package framework.core
 			makeCurrent();
 			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
-			_stage.addChildAt(root, 0);
-			
-			_temp = root as DisplayObjectContainer;
+			_sceneStage = root as DisplayObjectContainer;
+			_stage.addChildAt(_sceneStage, 0);
 		}
 		
 		private function onTouch(event:Event):void
 		{
 			if(!_started) return;
 			
-		
 			var phase:String;
 			
 			if(event is MouseEvent)
@@ -142,7 +140,7 @@ package framework.core
 			
 			if(phase == TouchPhase.HOVER)
 			{
-				var displayObjectOVER: DisplayObject = _temp.recursiveSearch();
+				var displayObjectOVER: DisplayObject = _sceneStage.recursiveSearch();
 					
 				if(displayObjectOVER != null)
 					displayObjectOVER.dispatchTouchEvent(MouseEvent.MOUSE_OVER);
@@ -167,8 +165,10 @@ package framework.core
 			// Note @유영선 스테이트  패턴에 따라 stage가 변경 되면 그에 맞는 frame 출력    
 			
 			//}
+			
 			if(_started && _context3D != null)
 			{
+				_stage.children = _sceneStage.children;
 				render();
 			}
 			
@@ -221,6 +221,10 @@ package framework.core
 		public static function get current():Framework { return CURRENT; }
 		public static function get painter():Painter { return CURRENT ? CURRENT._painter : null; }
 		public static function get viewport():Rectangle { return CURRENT ? CURRENT._viewPort : null; }
+		
+		public static function get sceneStage():DisplayObjectContainer { return CURRENT ? CURRENT._sceneStage : null; }
+		public static function set sceneStage(value:DisplayObjectContainer):void {CURRENT._sceneStage =value; }
+		
 		public static function get mousex() : Number {return _sglobalX;};
 		public static function get mousey() : Number {return _sglobalY;};
 		//public function get shareContext() : Boolean { return _painter.shareContext; }

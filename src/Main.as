@@ -18,8 +18,11 @@ package
 	import framework.display.ObjectType;
 	import framework.display.Quad;
 	import framework.display.Sprite;
+	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Player;
+	import framework.scene.Scene;
+	import framework.scene.SceneManager;
 	
 	public class Main extends Sprite
 	{
@@ -43,7 +46,7 @@ package
 		public function Main()
 		{
 
-	
+			Scene.instance.addScene(this,0);
 //			var spriteSheet : Bitmap = (new SPRITESHEET()) as Bitmap;
 ////		
 //			var byteArray:ByteArray = new SPRITESHEETXML() as ByteArray;
@@ -76,9 +79,11 @@ package
 			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
 			
+			
 			var bulletmanager1 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image6 = new Enemyone((new TEXTURE()).bitmapData,bulletmanager1,this);
 			addChild(_image6);
+			_image6.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
 			
 			var bulletmanager2 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image7 = new EnemyTwo((new TEXTURE()).bitmapData,bulletmanager2,this);
@@ -94,12 +99,9 @@ package
 		
 		private function onTouch(event:MouseEvent):void
 		{
-			image4.x = 100;
-			image4.y = 100;
-			image4.clipwidth = 500;
-			image4.clipheight = 500;
-			
-			image4.start();
+			var round : roundone  = new roundone();
+			Scene.instance.addScene(round,1);
+			SceneManager.sceneChange(1);
 			trace("hi");
 		}
 	}
