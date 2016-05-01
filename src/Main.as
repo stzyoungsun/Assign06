@@ -5,7 +5,6 @@ package
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
 	import enemy.EnemyTwo;
@@ -13,10 +12,10 @@ package
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MoveClip;
+	import framework.background.BackGround;
 	import framework.core.Framework;
 	import framework.display.Image;
 	import framework.display.ObjectType;
-	import framework.display.Quad;
 	import framework.display.Sprite;
 	import framework.event.Touch;
 	import framework.event.TouchEvent;
@@ -37,6 +36,12 @@ package
 		[Embed(source="SpriteSheet.png")]
 		private static const SPRITESHEET:Class;
 		
+		[Embed(source="background1.jpg")]
+		private static const BACK:Class;
+		
+		[Embed(source="background_2.png")]
+		private static const BACK1:Class;
+		
 		[Embed(source="SpriteSheet.xml",mimeType="application/octet-stream")]
 		private static const SPRITESHEETXML:Class;
 		private var image4 : MoveClip;
@@ -45,9 +50,9 @@ package
 		private var _image5 : Player;
 		private var _image6 : Enemyone;
 		private var _image7 : EnemyTwo;
-		
 		public function Main()
 		{
+
 			Scene.instance.addScene(this,0);
 //			var spriteSheet : Bitmap = (new SPRITESHEET()) as Bitmap;
 ////		
@@ -77,46 +82,58 @@ package
 //			var quad4 : Quad  = new Quad(100,400,100,300,0xf00000);
 //			addChild(quad4);
 			
+			var Backgorund : BackGround = new BackGround(2,30,1,(new BACK()).bitmapData);
+			addChild(Backgorund);
+			
+			var Backgorund1 : BackGround = new BackGround(2,60,10,(new BACK1()).bitmapData);
+			addChild(Backgorund1);
+			
 			 var bulletmanager : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image5 = new Player((new TEXTURE()).bitmapData,bulletmanager,this);
 			addChild(_image5);
-			
+			_image5.width = Framework.viewport.width/15;
+			_image5.height= Framework.viewport.height/15;
+			_image5.y = Framework.viewport.height- _image5.height*2;
+				
 			var bulletmanager1 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
-			
 			_image6 = new Enemyone((new TEXTURE()).bitmapData,bulletmanager1,this);
 			addChild(_image6);
-			_image6.addEventListener(TouchEvent.TOUCH, onTouch);
+			_image6.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
+			_image6.width = Framework.viewport.width/20;
+			_image6.height= Framework.viewport.height/20;
 			
 			var bulletmanager2 : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET,30,(new TEXTURE2()).bitmapData);
 			_image7 = new EnemyTwo((new TEXTURE()).bitmapData,bulletmanager2,this);
 			addChild(_image7);
+			_image7.width = Framework.viewport.width/20;
+			_image7.height= Framework.viewport.height/20;
+			
+			Backgorund1.addEventListener(TouchEvent.TOUCH, onTouchStage);
+			_image5.addEventListener(TouchEvent.TOUCH, onTouchStage);
 //			var moiveClip : MoveClip = new MoveClip(atlas,60,100,100);
 //			moiveClip.frame = 1;
 //			moiveClip.start();
 //			
 //			addChild(moiveClip)
 			
-			// 현재 스테이지와 플레이어 객체에 이벤트 추가
-			Framework.stage.addEventListener(TouchEvent.TOUCH, onTouchStage);
-			_image5.addEventListener(TouchEvent.TOUCH, onTouchStage);
 		}
 		
-		private function onTouch(event:TouchEvent):void
+		private function onTouchStage(event:TouchEvent):void
+		{
+			// TODO Auto-generated method stub
+			var touch:Touch = event.touch;
+			if(touch.phase == TouchPhase.MOVED)
+			{
+				_image5.x += touch.globalX - touch.previousGlobalX;
+			}
+		}		
+		
+		private function onTouch(event:MouseEvent):void
 		{
 			var round : roundone  = new roundone();
 			Scene.instance.addScene(round,1);
 			SceneManager.sceneChange(1);
 			trace("hi");
-		}
-		
-		private function onTouchStage(event:TouchEvent):void
-		{
-			var touch:Touch = event.touch;
-			
-			if(touch.phase == TouchPhase.MOVED)
-			{
-				_image5.x += touch.globalX - touch.previousGlobalX;
-			}
 		}
 	}
 }
