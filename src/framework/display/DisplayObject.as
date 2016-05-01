@@ -1,7 +1,6 @@
 package framework.display
 {
 	import flash.events.EventDispatcher;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
@@ -11,11 +10,9 @@ package framework.display
 		private var _y:Number;
 		private var _rotation:Number;
 		private var _parent:DisplayObjectContainer;
-		private var _width : Number;
-		private var _height : Number;
+		private var _width:Number;
+		private var _height:Number;
 		private var _visible:Boolean;
-		
-		private var _curbulletCount : Number = 0;
 		
 		protected var _objectType : String = ObjectType.NONE;
 		
@@ -28,11 +25,6 @@ package framework.display
 		public virtual function render():void
 		{
 			// Abstract Method
-		}
-		
-		public function dispatchTouchEvent(type:String):void
-		{
-			dispatchEvent(new MouseEvent(type));
 		}
 		
 		public function hitTest(localPoint:Point):DisplayObject
@@ -53,7 +45,6 @@ package framework.display
 		public function dispose():void
 		{
 			//해제가 필요한 부분 입력
-			
 		}
 		
 		public function get height():Number{ return _height; }
@@ -73,9 +64,6 @@ package framework.display
 		
 		public function get visible():Boolean { return _visible; }
 		public function set visible(visible:Boolean):void { _visible = visible; }
-		
-		public function get curbulletCount():Number{return _curbulletCount;}
-		public function set curbulletCount(value:Number):void {_curbulletCount = value;}
 		
 		public function get bounds():Rectangle { return null; }
 		

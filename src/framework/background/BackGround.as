@@ -10,15 +10,14 @@ package framework.background
 
 	public class BackGround extends Image
 	{
-		private var _backGroundBitmapData : BitmapData;
-		private var _sliceNum : Number;
-		private var _frame : Number;
+		private var _backGroundBitmapData:BitmapData;
+		private var _sliceNum:Number;
+		private var _frame:Number;
+		private var _step:Number;
+		private var _drawPoint:Number;
+		private var _prevTime:Number;
 		
-		private var _step : Number = 0;
-		private var _drawPoint : Number = 0;
-		private var _prevTime:Number = 0;
-		
-		public function BackGround(sliceNum : Number, frame: Number,step:Number, backGroudBitmapData : BitmapData)
+		public function BackGround(sliceNum:Number, frame:Number,step:Number, backGroudBitmapData:BitmapData)
 		{
 			super(0,0,backGroudBitmapData);
 			
@@ -26,22 +25,21 @@ package framework.background
 			_sliceNum = sliceNum;
 			_frame = frame;
 			_step = step;
+			_drawPoint = 0;
+			_prevTime = 0;
 			
 			createBackGround();
-			
-			_prevTime = 0;
 		}
 		
 		private function createBackGround():void
 		{
-			// TODO Auto Generated method stub
 			var tempbitmapdata : BitmapData = new BitmapData(_backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
 			var tempRegion : Rectangle = new Rectangle(0,_backGroundBitmapData.height/_sliceNum,_backGroundBitmapData.width,_backGroundBitmapData.height/_sliceNum)
 			tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
 			
-			this.bitmapData = tempbitmapdata;
-			this.width = Framework.viewport.width;
-			this.height = Framework.viewport.height;
+			bitmapData = tempbitmapdata;
+			width = Framework.viewport.width;
+			height = Framework.viewport.height;
 		}
 		
 		public override function render():void

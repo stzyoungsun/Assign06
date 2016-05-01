@@ -11,19 +11,15 @@ package framework.animaiton
 		private var _startFlag:Boolean;
 		private var _spriteSheet:AtlasBitmapData;
 		private var _imageCount:int;
-		
 		private var _movieClipWidth:int;
 		private var _movieClipHeight:int;
-		
 		private var _curFrame:Number;
 		private var _prevTime:Number;
 		
 		/**
-		 * 
 		 * @param spriteSheet AtlasBitmapData의 객체
 		 * @param x  Clip의 x 좌표
 		 * @param y  Clip의 y 좌표
-		 * 
 		 */		
 		public function MovieClip(spriteSheet:AtlasBitmapData, frame:Number, x:Number = 0, y:Number = 0)
 		{
@@ -87,15 +83,5 @@ package framework.animaiton
 				_imageCount = 0;
 			}
 		}
-//		/**
-//		 * @param value MoveClip width
-//		 */		
-//		public  function set clipheight(value:Number):void{ _movieClipHeight = value; }
-//		/**
-//		 * @param value MoveClip Height
-//		 */		
-//		public  function set clipwidth(value:Number):void{ _movieClipWidth = value; }
-//		public function get frame() : Number {return this.curFrame;};
-//		public function set frame(value:Number) : void {this.curFrame = value;}
 	}
 }

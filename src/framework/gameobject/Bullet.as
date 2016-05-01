@@ -8,15 +8,12 @@ package framework.gameobject
 	public class Bullet extends Image
 	{
 		private var _bulletBitmapData : BitmapData;
-		private var _bulletArray : Vector.<Bullet> = new Vector.<Bullet>;
-		private var _bulletCount : int = 0;
-	
-		private var _shootingState : Function;
+		private var _bulletArray:Vector.<Bullet> = new Vector.<Bullet>;
+		private var _shootingState:Function;
 		
 		public function Bullet(objectType : String,x:int,y:int,bulletBitmap : BitmapData)
 		{
 			super(x,y,bulletBitmap);
-			
 			this._objectType = objectType;
 		}
 		
@@ -25,13 +22,12 @@ package framework.gameobject
 			this.x = object.x;
 			this.y = object.y;
 		}
+		
 		public function shootingState(state : Function = null, bulletNum : Number =0) : void 
 		{
-			
 			_shootingState = state;
 			if(state == null)
 				this.y -= 5;
-			
 			else
 				_shootingState(bulletNum);
 		}

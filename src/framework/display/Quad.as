@@ -13,7 +13,6 @@ package framework.display
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
-	
 
 	public class Quad extends DisplayObject
 	{
@@ -55,7 +54,6 @@ package framework.display
 			this.height = _bitmapData.height;
 			
 			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
-			//bitmapDataControl(_bitmapData);
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -125,7 +123,6 @@ package framework.display
 		
 		public override function render():void
 		{
-		
 			bitmapDataControl(_bitmapData);
 			controlBitmap();
 			

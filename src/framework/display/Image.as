@@ -9,6 +9,5 @@ package framework.display
 			this.bitmapData = bitmapData;
 			super(x,y);
 		}
-		
 	}
 }

@@ -117,21 +117,6 @@ package framework.display
 			}
 		}
 		
-//		public  function recursiveSearch() : DisplayObject
-//		{
-//			var numChildren:int = _children.length;
-//			
-//			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
-//			for(var i:int = 0 ; i <numChildren; ++i)
-//			{
-//				var child:DisplayObject = _children[i];
-//				
-//				if(child.objectType == ObjectType.PLAYER)
-//					return child;
-//			}
-//			return null;
-//		}
-		
 		public override function get bounds():Rectangle
 		{
 			var numChildren:int = _children.length;

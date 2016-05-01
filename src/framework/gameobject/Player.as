@@ -5,7 +5,6 @@ package framework.gameobject
 	
 	import framework.core.Framework;
 	import framework.display.Image;
-	import framework.display.ObjectType;
 	import framework.display.Sprite;
 
 	/**

@@ -41,10 +41,8 @@ package framework.core
 		private var _touch:Touch;
 		private var _touchedObject:DisplayObject;
 		
-		private static var CURRENT:Framework;
-		private static var POINT:Point = new Point(0, 0);
-		private static var _sglobalX:Number;
-		private static var _sglobalY:Number;
+		private static var _sCurrent:Framework;
+		private static var _sPoint:Point = new Point(0, 0);
 		
 		public function Framework(rootClass:Class, stage:flash.display.Stage)
 		{
@@ -109,10 +107,13 @@ package framework.core
 		{
 			if(!_started) return;
 			
+			var globalX:Number;
+			var globalY:Number;
+			
 			if(event is MouseEvent)
 			{
-				_sglobalX = (event as MouseEvent).stageX;
-				_sglobalY = (event as MouseEvent).stageY;
+				globalX = (event as MouseEvent).stageX;
+				globalY = (event as MouseEvent).stageY;
 				
 				// 마우스 클릭 상태인지 체크
 				if (event.type == MouseEvent.MOUSE_DOWN)    _leftMouseDown = true;
@@ -120,8 +121,8 @@ package framework.core
 			}
 			else
 			{
-				_sglobalX = (event as TouchEvent).stageX;
-				_sglobalY = (event as TouchEvent).stageY;
+				globalX = (event as TouchEvent).stageX;
+				globalY = (event as TouchEvent).stageY;
 			}
 			
 			switch (event.type)
@@ -134,19 +135,13 @@ package framework.core
 				case MouseEvent.MOUSE_MOVE:		_touch.phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
 			}
 			
-			_sglobalX = _stage.stageWidth  * (_sglobalX - _viewPort.x) / _viewPort.width;
-			_sglobalY = _stage.stageHeight * (_sglobalY - _viewPort.y) / _viewPort.height;
-			
-			POINT.x = _sglobalX;
-			POINT.y = _sglobalY;
-			
-			_touch.globalX = _sglobalX;
-			_touch.globalY = _sglobalY;
+			_sPoint.x = _touch.globalX = _stage.stageWidth  * (globalX - _viewPort.x) / _viewPort.width;
+			_sPoint.y = _touch.globalY = _stage.stageHeight * (globalY - _viewPort.y) / _viewPort.height;
 			
 			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트의 dispatchEvent를 호출
 			if(_touch.phase == TouchPhase.HOVER)
 			{
-				_stage.hitTest(POINT).dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
+				_stage.hitTest(_sPoint).dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
 			}
 				// 그 외의 상태라면, 터치된 오브젝트를 저장한 후 dispatchEvent를 호출
 			else
@@ -154,7 +149,7 @@ package framework.core
 				// _touchedObject가 null이면 hitTest 메서드로 터치된 오브젝트를 _touchedObject로 저장
 				if(_touchedObject == null)
 				{
-					_touchedObject = _stage.hitTest(POINT);
+					_touchedObject = _stage.hitTest(_sPoint);
 				}
 				
 				// _touchedObject에 저장된 오브젝트의 dispatchEvent 호출
@@ -168,25 +163,16 @@ package framework.core
 			}
 		}
 		
-		
 		public function dispose() : void
 		{
 			_nativeStage.removeEventListener(Event.ENTER_FRAME, onEnterFrame, false);
 		}
 		
 		/**
-		 * 
 		 * @param event
-		 * 
 		 */        
 		private function onEnterFrame(event:Event):void
-		{
-			//if (!shareContext)
-			//{
-			// Note @유영선 스테이트  패턴에 따라 stage가 변경 되면 그에 맞는 frame 출력    
-			
-			//}
-			
+		{			
 			if(_started && _context3D != null)
 			{
 				_stage.children = _sceneStage.children;
@@ -207,7 +193,6 @@ package framework.core
 		
 		/**
 		 * Note @유영선 FrameWork의 시작을 알리는 함수
-		 * 
 		 */        
 		public function start() : void
 		{
@@ -215,7 +200,6 @@ package framework.core
 		}
 		
 		/**
-		 * 
 		 * @param backGoundRendering stop 후 출력 되고 있는 이미지를 지울껀지의 여부 (true = 그림을 지우지 않습니다)
 		 * 
 		 * Note @유영선 FrameWork의 종료를 알리는 함수
@@ -236,20 +220,16 @@ package framework.core
 		
 		public function makeCurrent():void
 		{
-			CURRENT = this;
+			_sCurrent = this;
 		}
 		
-		public static function get current():Framework { return CURRENT; }
-		public static function get painter():Painter { return CURRENT ? CURRENT._painter : null; }
-		public static function get viewport():Rectangle { return CURRENT ? CURRENT._viewPort : null; }
+		public static function get current():Framework { return _sCurrent; }
+		public static function get painter():Painter { return _sCurrent ? _sCurrent._painter : null; }
+		public static function get viewport():Rectangle { return _sCurrent ? _sCurrent._viewPort : null; }
 		
-		public static function get sceneStage():DisplayObjectContainer { return CURRENT ? CURRENT._sceneStage : null; }
-		public static function set sceneStage(value:DisplayObjectContainer):void {CURRENT._sceneStage =value; }
+		public static function get sceneStage():DisplayObjectContainer { return _sCurrent ? _sCurrent._sceneStage : null; }
+		public static function set sceneStage(value:DisplayObjectContainer):void {_sCurrent._sceneStage =value; }
 		
-		public static function get mousex() : Number {return _sglobalX;};
-		public static function get mousey() : Number {return _sglobalY;};
-		
-		public static function get stage():DisplayObjectContainer { return CURRENT ? CURRENT._stage : null; }
-		//public function get shareContext() : Boolean { return _painter.shareContext; }
+		public static function get stage():DisplayObjectContainer { return _sCurrent ? _sCurrent._stage : null; }
 	}
 }

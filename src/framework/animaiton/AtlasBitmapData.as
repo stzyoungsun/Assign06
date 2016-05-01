@@ -1,24 +1,22 @@
 package framework.animaiton
 {
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
-	
 	public class AtlasBitmapData
 	{
 		private var _sprtieSheet:Bitmap;
-		private var _subSpriteSheet: Dictionary;
-		private var _subBitmapCount : int = 0;
+		private var _subSpriteSheet:Dictionary;
+		private var _subBitmapCount:int;
 		
 		public function AtlasBitmapData(sprtieSheet:Bitmap, spriteXml:XML = null)
 		{
 			_subSpriteSheet = new  Dictionary();
 			_sprtieSheet = sprtieSheet;
-
+			_subBitmapCount = 0;
 			if (spriteXml)
 			{
 				parseAtlasXml(spriteXml);
@@ -29,7 +27,7 @@ package framework.animaiton
 		{
 			var region:Rectangle = new Rectangle();
 		
-			for(var i : int =0; i < spriteXml.child("SubTexture").length(); i++)
+			for(var i:int =0; i < spriteXml.child("SubTexture").length(); i++)
 			{
 				var name:String = spriteXml.child("SubTexture")[i].attribute("name");
 				var x:Number = parseFloat(spriteXml.child("SubTexture")[i].attribute("x"));
@@ -43,9 +41,9 @@ package framework.animaiton
 			region = null;
 		}
 		
-		public function createSubBitmap(name : String, region:Rectangle):void
+		public function createSubBitmap(name:String, region:Rectangle):void
 		{
-			var tempBitmapData : BitmapData = new BitmapData(region.width,region.height);
+			var tempBitmapData:BitmapData = new BitmapData(region.width,region.height);
 			
 			tempBitmapData.copyPixels(_sprtieSheet.bitmapData,region,new Point(0,0));
 			
@@ -55,17 +53,10 @@ package framework.animaiton
 			tempBitmapData = null;
 		}
 		
-		public function get getsubSpriteSheet() :Dictionary
-		{
-			return _subSpriteSheet;
-		}
+		public function get getsubSpriteSheet():Dictionary { return _subSpriteSheet; }
+		public function get getsubCount():int { return _subBitmapCount; }
 		
-		public function get getsubCount() : int
-		{
-			return _subBitmapCount;
-		}
-		
-		public function dispose() : void
+		public function dispose():void
 		{
 			_subSpriteSheet = null;
 			_sprtieSheet = null;

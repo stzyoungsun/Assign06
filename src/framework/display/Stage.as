@@ -13,7 +13,6 @@ package framework.display
 			_width = width;
 			_height = height;
 			_color = color;
-			
 		}
 		
 		public override function hitTest(localPoint:Point):DisplayObject
@@ -29,11 +28,6 @@ package framework.display
 			var target:DisplayObject = super.hitTest(localPoint);
 			return target ? target : this;
 		}
-		
-//		public override function recursiveSearch() : DisplayObject
-//		{
-//			return super.recursiveSearch();
-//		}
 		
 		public function get stageWidth():int { return _width; }
 		public function set stageWidth(value:int):void { _width = value; }

@@ -30,12 +30,6 @@ package framework.Rendering
 			createProgram();
 		}
 		
-//		private function onContextCreated(event:Event):void
-//		{
-//			_context = _stage3D.context3D;
-//			createProgram();
-//		}
-//		
 		private function createProgram():void
 		{
 			_tempAssembler.assemble(
