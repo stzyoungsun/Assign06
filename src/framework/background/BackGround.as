@@ -16,6 +16,7 @@ package framework.background
 		
 		private var _step : Number = 0;
 		private var _drawPoint : Number = 0;
+		private var _prevTime:Number = 0;
 		
 		public function BackGround(sliceNum : Number, frame: Number,step:Number, backGroudBitmapData : BitmapData)
 		{
@@ -27,6 +28,8 @@ package framework.background
 			_step = step;
 			
 			createBackGround();
+			
+			_prevTime = 0;
 		}
 		
 		private function createBackGround():void
@@ -46,7 +49,7 @@ package framework.background
 			super.render();	
 			var curTimerBackGround : int = getTimer();
 			
-			if(curTimerBackGround - this.prevTime > 1000/_frame)
+			if(curTimerBackGround - _prevTime > 1000/_frame)
 			{
 				var tempbitmapdata : BitmapData = new BitmapData(_backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
 				if((_backGroundBitmapData.height*(_sliceNum-1)/_sliceNum)-_drawPoint == 0)
@@ -54,19 +57,20 @@ package framework.background
 					_drawPoint = 0;
 				}
 				
-				var tempRegion : Rectangle = new Rectangle(0, (
-					_backGroundBitmapData.height*(_sliceNum-1)/_sliceNum)-(_drawPoint+=_step), _backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
+				var tempRegion : Rectangle = new Rectangle(
+					0,
+					(_backGroundBitmapData.height * (_sliceNum-1) / _sliceNum) - (_drawPoint += _step),
+					_backGroundBitmapData.width,
+					_backGroundBitmapData.height / _sliceNum
+				);
+				
 				tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
 				
-				this.bitmapData = tempbitmapdata;
-				this.width = Framework.viewport.width;
-				this.height = Framework.viewport.height;
-				this.prevTime = getTimer();	
+				bitmapData = tempbitmapdata;
+				width = Framework.viewport.width;
+				height = Framework.viewport.height;
+				_prevTime = getTimer();	
 			}
-			
-			
-			
 		}
-		
 	}
 }
