@@ -15,6 +15,9 @@ package framework.animaiton
 		private var _movieClipWidth:int;
 		private var _movieClipHeight:int;
 		
+		private var _curFrame:Number;
+		private var _prevTime:Number;
+		
 		/**
 		 * 
 		 * @param spriteSheet AtlasBitmapData의 객체
@@ -31,6 +34,10 @@ package framework.animaiton
 			
 			_moveClipWidth = this.width;
 			_moveClipHeight = this.height;
+			if(frame == 0)
+			{
+				throw new Error("Frame value can not set 0");
+			}
 			
 			this._objectType = ObjectType.MOVIECLIP;
 			this.curFrame = frame;
@@ -39,6 +46,8 @@ package framework.animaiton
 			_movieClipHeight = height;
 			
 			_objectType = ObjectType.MOVIECLIP;
+			_curFrame = frame;
+			_prevTime = 0;
 			_imageCount = 0;
 		}
 		/**
