@@ -191,7 +191,7 @@ package framework.display
 			var localY:Number = localPoint.y;
 			var numChildren:int = _children.length;
 			
-			for(var i:int = 0 ; i <numChildren; ++i)
+			for(var i:int = numChildren-1 ; i >=0; --i)
 			{
 				var child:DisplayObject = _children[i];
 				target = child.hitTest(localPoint);
