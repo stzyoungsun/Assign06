@@ -18,6 +18,18 @@ package framework.display
 			_children = new <DisplayObject>[];
 		}
 		
+	
+
+		public function get children():Vector.<DisplayObject>
+		{
+			return _children;
+		}
+
+		public function set children(value:Vector.<DisplayObject>):void
+		{
+			_children = value;
+		}
+
 		/**
 		 * child를 자식으로 등록하는 메서드.
 		 * @param child - 자식으로 추가하려는 DisplayObject 객체
