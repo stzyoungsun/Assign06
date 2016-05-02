@@ -5,11 +5,14 @@ package framework.display
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.Context3DVertexBufferFormat;
+	import flash.display3D.IndexBuffer3D;
+	import flash.display3D.VertexBuffer3D;
 	import flash.display3D.textures.Texture;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import framework.Rendering.Painter;
+	import framework.Rendering.VertexData;
 	import framework.core.Framework;
 
 	public class Quad extends DisplayObject
@@ -28,7 +31,11 @@ package framework.display
 		
 		private var _fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		
-		public function Quad(x:Number = 0, y:Number =0, width:Number = 0, height:Number =0,color:uint = 0xffffff)
+		private var _vertexData:VertexData;
+		private var _vertexBuffer:VertexBuffer3D;
+		private var _indexBuffer:IndexBuffer3D;
+		
+		public function Quad(x:Number = 0, y:Number = 0, width:Number = 0, height:Number = 0, color:uint = 0xffffff)
 		{
 			_context = Framework.painter.context;
 			
@@ -37,13 +44,25 @@ package framework.display
 				_bitmapData = new BitmapData(width, height, false, color);
 			}
 			
+			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
+			
 			this.x = x;
 			this.y = y;
+//			
+//			this.width = _bitmapData.width;
+//			this.height = _bitmapData.height;
 			
-			this.width = _bitmapData.width;
-			this.height = _bitmapData.height;
+			_vertexData = new VertexData(4);
+			_vertexData.setPosition(0, 0.0, 0.0);
+			_vertexData.setPosition(1, _bitmapData.width, 0.0);
+			_vertexData.setPosition(2, 0.0, _bitmapData.height);
+			_vertexData.setPosition(3, _bitmapData.width, _bitmapData.height);
+//			_vertexData.setUniformColor(color);
 			
-			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
+			_vertexData.setTexCoords(0, 0.0, 0.0);
+			_vertexData.setTexCoords(1, 1.0, 0.0);
+			_vertexData.setTexCoords(2, 0.0, 1.0);
+			_vertexData.setTexCoords(3, 1.0, 1.0);
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -123,9 +142,31 @@ package framework.display
 			return v;
 		}
 		
+		public function get vertexData():VertexData { return _vertexData.clone(); }
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value;this.width = _bitmapData.width; this.height = _bitmapData.height; }
 		
-		public override function get bounds():Rectangle { return new Rectangle(x, y, width, height); }
+		public override function get bounds():Rectangle { return _bounds; }
+		public override function set width(value:Number):void
+		{
+			super.width = value;
+			_vertexData.setPosition(0, 0.0, 0.0);
+			_vertexData.setPosition(1, value, 0.0);
+			_vertexData.setPosition(2, 0.0, height);
+			_vertexData.setPosition(3, value, height);
+			
+			_bounds.width = value;
+		}
+		
+		public override function set height(value:Number):void
+		{
+			super.height = value;
+			_vertexData.setPosition(0, 0.0, 0.0);
+			_vertexData.setPosition(1, width, 0.0);
+			_vertexData.setPosition(2, 0.0, value);
+			_vertexData.setPosition(3, width, value);
+			
+			_bounds.height = value;
+		}
 	}
 }
