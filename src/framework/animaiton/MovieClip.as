@@ -83,5 +83,11 @@ package framework.animaiton
 				_imageCount = 0;
 			}
 		}
+		
+		public function get movieClipHeight():int { return _movieClipHeight; }
+		public function set movieClipHeight(value:int):void { _movieClipHeight = value; }
+		
+		public function get movieClipWidth():int { return _movieClipWidth; }
+		public function set movieClipWidth(value:int):void { _movieClipWidth = value; }
 	}
 }
