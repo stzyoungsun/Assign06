@@ -29,7 +29,12 @@ package framework.Rendering
 		public function Painter(stage3D:Stage3D)
 		{
 			_context = stage3D.context3D;
-			_tempAssembler = new AGALMiniAssembler();
+			_assembler = new AGALMiniAssembler();
+			
+			_matrixStack = new <Matrix3D>[];
+			_projectionMatrix = new Matrix3D();
+			_modelViewMatrix = new Matrix3D();
+			
 			createProgram();
 			
 			loadIdentity();
@@ -98,25 +103,26 @@ package framework.Rendering
 			matrix.prependTranslation(-object.pivotX, -object.pivotY, 0.0);
 		}
 		
-		private function createProgram():void
+		public function createProgram():void
 		{
-			_tempAssembler.assemble(
+			_assembler.assemble(
 				Context3DProgramType.VERTEX,
-				// Apply draw matrix (object -> clip space)
-				"m44 op, va0, vc0\n" +
-				
-				// Scale texture coordinate and copy to varying
-				"mov vt0, va1\n" +
-				"div vt0.xy, vt0.xy, vc4.xy\n" +
-				"mov v0, vt0\n"
+				"m44 op, va0, vc0  			\n" +
+//				"mov v0, va1      			\n" +
+				"mov vt0, va2				\n" +
+				"div vt0.xy, vt0.xy, vc4.xy	\n" +
+				"mov v1, vt0				\n"
 			);
-			_vertexProgram = _tempAssembler.agalcode;
+			_vertexProgram = _assembler.agalcode;
 			
-			_tempAssembler.assemble(
+			_assembler.assemble(
 				Context3DProgramType.FRAGMENT,
-				"tex oc, v0, fs0 <2d,linear,mipnone,clamp>"
+				"tex ft1, v1, fs1 <2d,linear,mipnone,clamp> \n" +
+//				"mul ft2, ft1, v0       \n" +
+				"mul oc, ft1, fc0      \n"
 			);
-			_fragmentProgram = _tempAssembler.agalcode;
+
+			_fragmentProgram = _assembler.agalcode;
 			
 			_program = _context.createProgram();
 			_program.upload(_vertexProgram, _fragmentProgram);
