@@ -112,13 +112,45 @@ package framework.display
 			
 			if (!_texture || _textureWidth != bitwidth || _textureHeight != bitheight)
 			{
-				_texture = _context.createTexture(bitwidth,bitheight,Context3DTextureFormat.BGRA,false);
+				_texture = Framework.painter.context.createTexture(bitwidth, bitheight, Context3DTextureFormat.BGRA,false);
 				_textureWidth = bitwidth;
 				_textureHeight = bitheight;
 			
 				return true;
 			}
 			return false;
+		}
+		
+		public override function render():void
+		{
+//			this.width = _bitmapData.width;
+//			this.height = _bitmapData.height;
+			
+			bitmapDataControl(_bitmapData);
+			
+			var painter:Painter = Framework.painter;
+			var context:Context3D = painter.context;
+			
+			if (_vertexBuffer == null) createVertexBuffer();
+			if (_indexBuffer  == null) createIndexBuffer();
+			
+			painter.setDefaultBlendFactors(true);
+			
+			context.setProgram(painter.program);
+			context.setTextureAt(1, _texture);
+			context.setVertexBufferAt(0, _vertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_3); 
+//			context.setVertexBufferAt(1, _vertexBuffer, VertexData.COLOR_OFFSET,    Context3DVertexBufferFormat.FLOAT_4);
+			context.setVertexBufferAt(2, _vertexBuffer, VertexData.TEXCOORD_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
+			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, painter.mvpMatrix, true);
+			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, _fragConsts);
+			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, new <Number>[1.0, 1.0, 1.0, 1.0], 1);
+
+			context.drawTriangles(_indexBuffer, 0, 2);
+			
+			context.setTextureAt(1, null);
+			context.setVertexBufferAt(0, null);
+//			context.setVertexBufferAt(1, null);
+			context.setVertexBufferAt(2, null);
 		}
 		
 		private function createVertexBuffer():void
