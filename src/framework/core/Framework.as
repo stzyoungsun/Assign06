@@ -37,7 +37,7 @@ package framework.core
 
 		private var _painter:Painter;
 		private var _leftMouseDown:Boolean;
-		private var _sceneStage : DisplayObjectContainer;
+		private var _sceneStage:DisplayObjectContainer;
 		private var _touch:Touch;
 		private var _touchedObject:DisplayObject;
 		

@@ -16,8 +16,10 @@ package framework.scene
 			if (!_isConstructing) throw new Error("Singleton, use Scene.instance");
 		}
 		
-		public static function get instance():Scene {
-			if (_instance == null)  {
+		public static function get instance():Scene
+		{
+			if (_instance == null)
+			{
 				_isConstructing = true;
 				_instance = new Scene();
 				_isConstructing = false;

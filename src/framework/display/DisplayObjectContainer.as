@@ -17,16 +17,6 @@ package framework.display
 		{
 			_children = new <DisplayObject>[];
 		}
-		
-		public function get children():Vector.<DisplayObject>
-		{
-			return _children;
-		}
-
-		public function set children(value:Vector.<DisplayObject>):void
-		{
-			_children = value;
-		}
 
 		/**
 		 * child를 자식으로 등록하는 메서드.
@@ -51,7 +41,8 @@ package framework.display
 			// index가 _children의 범위에 포함될 때 해당 index로 입력
 			if (index >= 0 && index <= numChildren)
 			{
-				_children.insertAt(index, child);				
+				_children.insertAt(index, child);
+				child.parent = this;
 				return child;
 			}
 			// 범위를 벗어나면 Error throw
@@ -123,7 +114,7 @@ package framework.display
 			
 			if (numChildren == 1)
 			{
-				return _children[0].getBounds();
+				return _children[0].bounds;
 			}
 			else
 			{
@@ -176,5 +167,8 @@ package framework.display
 			_children = null;
 			super.dispose();
 		}
+		
+		public function get children():Vector.<DisplayObject> { return _children; }
+		public function set children(value:Vector.<DisplayObject>):void { _children = value; }
 	}
 }

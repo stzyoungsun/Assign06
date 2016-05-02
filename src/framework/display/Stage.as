@@ -34,5 +34,8 @@ package framework.display
 		
 		public function get stageHeight():int { return _height; }
 		public function set stageHeight(value:int):void { _height = value; }
+		
+		public function get color():uint { return _color; }
+		public function set color(value:uint):void { _color = value; }
 	}
 }
