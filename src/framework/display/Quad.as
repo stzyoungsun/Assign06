@@ -183,7 +183,7 @@ package framework.display
 		
 		public function get vertexData():VertexData { return _vertexData.clone(); }
 		public function get texture():Texture { return _texture; }
-		public function set bitmapData(value:BitmapData):void { _bitmapData = value;this.width = _bitmapData.width; this.height = _bitmapData.height; }
+		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
 		
 		public override function get bounds():Rectangle { return _bounds; }
 		public override function set width(value:Number):void
