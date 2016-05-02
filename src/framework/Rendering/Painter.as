@@ -126,27 +126,6 @@ package framework.Rendering
 			
 			_program = _context.createProgram();
 			_program.upload(_vertexProgram, _fragmentProgram);
-			
-			// Create the positions and texture coordinates vertex buffer
-			_vertexBuffer = _context.createVertexBuffer(4, 5);
-			_vertexBuffer.uploadFromVector(
-				new <Number>[
-					// X,  Y,  Z, U, V
-					-1,   -1, 0, 0, 1,
-					-1,    1, 0, 0, 0,
-					1,    1, 0, 1, 0,
-					1,   -1, 0, 1, 1
-				], 0, 4
-			);
-			
-			// Create the triangles index buffer
-			_indexBuffer = _context.createIndexBuffer(6);
-			_indexBuffer.uploadFromVector(
-				new <uint>[
-					0, 1, 2,
-					2, 3, 0
-				], 0, 6
-			);
 		}
 		
 		public function get context():Context3D { return _context; }
