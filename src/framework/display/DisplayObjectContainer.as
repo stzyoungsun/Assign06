@@ -4,6 +4,8 @@ package framework.display
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
+	import framework.Rendering.Painter;
+	import framework.core.Framework;
 	import framework.gameobject.Collision;
 	
 	public class DisplayObjectContainer extends DisplayObject
@@ -82,15 +84,24 @@ package framework.display
 		 */
 		public override function render():void
 		{
+			var painter:Painter = Framework.painter;
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
 			for(var i:int = 0 ; i <_children.length; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				
-				if(child.objectType == ObjectType.PLAYER_BULLET)
-					bulletCollision(i);
-				
-				child.render();
+				if(child.visible)
+				{
+					if(child.objectType == ObjectType.PLAYER_BULLET)
+						bulletCollision(i);
+					
+					painter.pushMatrix();
+					painter.transformMatrix(child);
+					
+					child.render();
+					
+					painter.popMatrix();
+				}
 			}
 		}
 		

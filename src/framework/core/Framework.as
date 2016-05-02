@@ -5,7 +5,6 @@ package framework.core
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
-	import flash.display3D.Context3DBlendFactor;
 	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -86,18 +85,14 @@ package framework.core
 				true
 			);
 			
-			_context3D.setBlendFactors(
-				Context3DBlendFactor.SOURCE_ALPHA,
-				Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA
-			);
 			_context3D.setDepthTest(true, Context3DCompareMode.ALWAYS);
+			
 			_painter = new Painter(_stage3D);
 			
 			makeCurrent();
 			
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_sceneStage = root as DisplayObjectContainer;
-			dispatchEvent(new Event("CREATED"));
 			_stage.addChildAt(_sceneStage, 0);
 			
 			_touch = new Touch();
@@ -175,7 +170,7 @@ package framework.core
 		{			
 			if(_started && _context3D != null)
 			{
-				_stage.children = _sceneStage.children;
+				_stage.children[0] = _sceneStage;
 				render();
 			}
 			
@@ -184,11 +179,17 @@ package framework.core
 		
 		public function render():void
 		{
-			_context3D.clear(1, 1, 1);
+			_painter.setOrthographicProjection(_stage.stageWidth, _stage.stageHeight);
+			
+			_painter.setDefaultBlendFactors(true);
+			
+			_context3D.clear(1.0, 1.0, 1.0, 1.0);
 			
 			_stage.render();
 			
 			_context3D.present();
+			
+			_painter.resetMatrix();
 		}
 		
 		/**
