@@ -121,13 +121,20 @@ package framework.display
 			return false;
 		}
 		
+		private function createVertexBuffer():void
 		{
+			if (_vertexBuffer == null) 
+				_vertexBuffer = Framework.painter.context.createVertexBuffer(4, VertexData.ELEMENTS_PER_VERTEX);
 			
+			_vertexBuffer.uploadFromVector(vertexData.data, 0, 4);
 		}
 		
-		public override function render():void
+		private function createIndexBuffer():void
 		{
+			if (_indexBuffer == null)
+				_indexBuffer = Framework.painter.context.createIndexBuffer(6);
 			
+			_indexBuffer.uploadFromVector(Vector.<uint>([0, 1, 2, 1, 3, 2]), 0, 6);
 		}
 		
 		public static function nextPowerOfTwo(v:uint): uint
