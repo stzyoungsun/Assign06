@@ -115,8 +115,8 @@ package aniPangShootingWorld.round
 			_player.width = Framework.viewport.width/6;
 			_player.height = Framework.viewport.height/6;
 			_player.start();
-			_player.addEventListener(TouchEvent.TOUCH, onTouch);
-			_backSky.addEventListener(TouchEvent.TOUCH, onTouch);
+			
+			addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			addChild(_player);
 			
