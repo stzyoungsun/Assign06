@@ -27,8 +27,6 @@ package framework.display
 		public var _textureWidth:int;
 		public var _textureHeight:int;
 		
-		private var _bounds:Rectangle;
-		
 		private var _fragConsts:Vector.<Number> = new <Number>[1, 1, 1, 1];
 		
 		private var _vertexData:VertexData;
@@ -44,14 +42,6 @@ package framework.display
 				_bitmapData = new BitmapData(width, height, false, color);
 			}
 			
-			_bounds = new Rectangle(x, y, _bitmapData.width, _bitmapData.height);
-			
-			this.x = x;
-			this.y = y;
-//			
-//			this.width = _bitmapData.width;
-//			this.height = _bitmapData.height;
-			
 			_vertexData = new VertexData(4);
 			_vertexData.setPosition(0, 0.0, 0.0);
 			_vertexData.setPosition(1, _bitmapData.width, 0.0);
@@ -63,6 +53,11 @@ package framework.display
 			_vertexData.setTexCoords(1, 1.0, 0.0);
 			_vertexData.setTexCoords(2, 0.0, 1.0);
 			_vertexData.setTexCoords(3, 1.0, 1.0);
+			
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
 		}
 		
 		public function  bitmapDataControl(bmd:BitmapData): void
@@ -185,7 +180,8 @@ package framework.display
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
 		
-		public override function get bounds():Rectangle { return _bounds; }
+		public override function get bounds():Rectangle { return new Rectangle(x - pivotX, y - pivotY, width, height); }
+		
 		public override function set width(value:Number):void
 		{
 			super.width = value;
@@ -193,8 +189,6 @@ package framework.display
 			_vertexData.setPosition(1, value, 0.0);
 			_vertexData.setPosition(2, 0.0, height);
 			_vertexData.setPosition(3, value, height);
-			
-			_bounds.width = value;
 		}
 		
 		public override function set height(value:Number):void
@@ -204,8 +198,6 @@ package framework.display
 			_vertexData.setPosition(1, width, 0.0);
 			_vertexData.setPosition(2, 0.0, value);
 			_vertexData.setPosition(3, width, value);
-			
-			_bounds.height = value;
 		}
 	}
 }
