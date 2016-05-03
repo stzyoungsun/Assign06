@@ -2,13 +2,14 @@
 package aniPangShootingWorld.enemy
 {
 	import flash.display.BitmapData;
-	import flash.utils.getTimer;
+	
+	import aniPangShootingWorld.round.MenuVIew;
 	
 	import framework.core.Framework;
-	import framework.display.Image;
+
+	import framework.display.ObjectType;
 	import framework.display.Sprite;
-	import framework.gameobject.BulletManager;
-	import framework.gameobject.Collision;
+
 
 	public class EnemyPig extends EnemyObject
 	{
@@ -18,8 +19,8 @@ package aniPangShootingWorld.enemy
 		private var _stage:Sprite;
 		private var _temp : int = 1;
 		private var _prevTime:Number;
-		
-		public function EnemyPig(enemyBitmapData : BitmapData/*,bulletManager  : BulletManager,stage:Sprite*/ )
+		private var _hp : Number = 2;
+		public function EnemyPig(enemyBitmapData : BitmapData)
 		{
 			_enemyBitmapData = enemyBitmapData;
 			//_bulletManager = bulletManager;
@@ -27,8 +28,6 @@ package aniPangShootingWorld.enemy
 			
 			this.y = _enemyBitmapData.height/8;
 			this.x =Framework.viewport.width;
-			
-			//_stage=stage;
 			//_bulletManager.createBullet(this.x,this.y);
 			_prevTime = 0;
 		}
@@ -57,11 +56,13 @@ package aniPangShootingWorld.enemy
 		
 		public function autoMoving():void
 		{
-			this.y+=Framework.viewport.height/60;
+			
+			this.y+=Framework.viewport.height/100;
 			
 			if(this.y > Framework.viewport.height)
 			{
 				EnemyObjectUtil._sRedraw = true;
+				EnemyLine._sCurLineCount = 5;
 				this.y = 0;
 			}
 				
@@ -75,18 +76,35 @@ package aniPangShootingWorld.enemy
 		
 		public override function render():void
 		{
-			super.render();
-			
-			var curTimerBullet:int = getTimer();
-			
-			if(curTimerBullet - _prevTime > 500)
+			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
-				//shooting();
-				_prevTime = getTimer();
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
+				autoMoving();
+			}	
+			else if(this.objectType == ObjectType.ENEMY_COLLISION)
+			{
+				this.objectType = ObjectType.ENEMY_GENERAL;
+				_hp--;
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["pig2.png"].bitmapData;
+				
+				if(_hp == 0)
+				{
+					EnemyLine._sCurLineCount--;
+					this.objectType = ObjectType.COIN;
+					
+				}
+				if(EnemyLine._sCurLineCount == 0)
+				{
+					EnemyLine._sCurLineCount = 5;
+					EnemyObjectUtil._sRedraw = true;
+				}
 			}
-			
-			autoMoving();
-			
+			else
+			{
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["coin1.png"].bitmapData;
+				autoMoving();
+			}
+			super.render();
 			//bulletFrame();
 		}
 	}

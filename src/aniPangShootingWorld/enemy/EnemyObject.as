@@ -10,7 +10,7 @@ package aniPangShootingWorld.enemy
 		public function EnemyObject(enemyBitmapData : BitmapData)
 		{
 			super(0,0,enemyBitmapData);
-			this._objectType = ObjectType.ENEMY;
+			this._objectType = ObjectType.ENEMY_GENERAL;
 		}
 	}
 }
