@@ -1,9 +1,11 @@
 package framework.display
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.events.Event;
+	
+	import framework.util.Align;
 
 	public class DisplayObject extends EventDispatcher
 	{
@@ -40,6 +42,8 @@ package framework.display
 				return null;
 			}
 			
+			var bounds:Rectangle = new Rectangle(x - pivotX, y - pivotY, width, height);
+			
 			if (bounds.containsPoint(localPoint))
 			{
 				return this;
@@ -59,6 +63,43 @@ package framework.display
 			return super.dispatchEvent(event);
 		}
 		
+		public function alignPivot(horizontalAlign:String="center", verticalAlign:String="center"):void
+		{
+			// pivotX 설정 - 수평 정렬
+			switch(horizontalAlign)
+			{
+				case Align.LEFT:
+					_pivotX = 0;
+					break;
+				case Align.RIGHT:
+					_pivotX = width;
+					break;
+				case Align.CENTER:
+					_pivotX = width / 2.0;
+					break;
+				default:
+					// 잘못된 값이 입력되면 에러 throw
+					throw new ArgumentError("Invalid horizontal value. Use Align.LEFT, Align.RIGHT, Align.CENTER");
+			}
+			
+			// pivotY 설정 - 수직 정렬
+			switch(verticalAlign)
+			{
+				case Align.TOP:
+					_pivotY = 0;
+					break;
+				case Align.BOTTOM:
+					_pivotY = height;
+					break;
+				case Align.CENTER:
+					_pivotY = height / 2.0;
+					break;
+				default:
+					// 잘못된 값이 입력되면 에러 throw
+					throw new ArgumentError("Invalid vertical value. Use Align.TOP, Align.BOTTOM, Align.CENTER");
+			}
+		}
+		
 		public function dispose():void
 		{
 			//해제가 필요한 부분 입력
@@ -70,10 +111,10 @@ package framework.display
 		}
 		
 		public function get x():Number { return _x; }
-		public function set x(x:Number):void { _x = x; }
+		public function set x(value:Number):void { _x = value; }
 		
 		public function get y():Number { return _y; }
-		public function set y(y:Number):void { _y = y; }
+		public function set y(value:Number):void { _y = value; }
 		
 		public function get scaleX():Number { return _scaleX; }
 		public function set scaleX(value:Number):void { _scaleX = value; }
@@ -102,7 +143,7 @@ package framework.display
 		public function set height(value:Number):void { _height = value; }
 		
 		public function get visible():Boolean { return _visible; }
-		public function set visible(visible:Boolean):void { _visible = visible; }
+		public function set visible(value:Boolean):void { _visible = value; }
 		
 		public function get bounds():Rectangle { return null; }
 		
