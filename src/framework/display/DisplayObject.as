@@ -4,6 +4,7 @@ package framework.display
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	
 	import framework.util.Align;
 
@@ -20,6 +21,7 @@ package framework.display
 		private var _rotation:Number;
 		private var _visible:Boolean;
 		private var _parent:DisplayObjectContainer;
+		private var _eventDictionary:Dictionary;
 		
 		protected var _objectType : String = ObjectType.NONE;
 		
@@ -28,6 +30,7 @@ package framework.display
 			_x = _y = _rotation = _pivotX = _pivotY = 0.0;
 			_scaleX = _scaleY = 1.0;
 			_visible = true;
+			_eventDictionary = new Dictionary();
 		}
 
 	
@@ -101,6 +104,42 @@ package framework.display
 				}
 			}
 		}
+		/**
+		 * flash.events.Eventdispatcher 클래스의 removeEventListener 오버라이딩한 메서드
+		 * 이벤트 제거 후 삭제될 리스너를 Dictionary 객체에서 제거한다
+		 */
+		public override function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void
+		{
+			// super 호출로 이벤트 제거
+			super.removeEventListener(type, listener, useCapture);
+			
+			// Dictionary에 입력된 value가 Vector일 경우 listener에 해당하는 값을 찾아 제거
+			if(_eventDictionary[type] is Vector.<Function>)
+			{
+				var vector:Vector.<Function> = _eventDictionary[type];
+				for(var i:int = 0; i < vector.length; i++)
+				{
+					if(listener == vector[i])
+					{
+						// 해당하는 값을 Vector에서 제거
+						vector.removeAt(i);
+						break;
+					}
+				}
+				
+				// Vector에 요소가 남아있지 않으면 Dictionary에서 제거
+				if(vector.length == 0)
+				{
+					delete _eventDictionary[type];
+				}
+			}
+			// Vector가 아닌 Function 형일 경우 바로 제거
+			else
+			{
+				delete _eventDictionary[type];
+			}
+		}
+		
 		public function alignPivot(horizontalAlign:String="center", verticalAlign:String="center"):void
 		{
 			// pivotX 설정 - 수평 정렬
