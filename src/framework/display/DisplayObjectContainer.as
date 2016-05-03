@@ -188,14 +188,13 @@ package framework.display
 		{
 			var numChildren:int = _children.length;
 			
-			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
+			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
 			for(var i:int = 0 ; i <numChildren; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				child.dispose();
 			}
 			_children = null;
-			super.dispose();
 		}
 		
 		public function get children():Vector.<DisplayObject> { return _children; }
