@@ -12,9 +12,7 @@ package aniPangShootingWorld.round
 	import framework.display.Sprite;
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
-	import framework.scene.Scene;
 	import framework.scene.SceneManager;
-
 	/**
 	 * 
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
@@ -32,8 +30,6 @@ package aniPangShootingWorld.round
 		
 		public function MenuVIew()
 		{
-			Scene.instance.addScene(this,0);
-			
 			_menuImage = new Image(0,0,(new PrevLoadImage.MENUVIEW()).bitmapData);
 			addChild(_menuImage);
 			_menuImage.width = Framework.viewport.width;
@@ -94,7 +90,7 @@ package aniPangShootingWorld.round
 			_menuText.height = Framework.viewport.height/10;
 			_menuText.start();
 			
-			_menuImage.addEventListener(TouchEvent.TOUCH, onTouch);
+			addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			_loaderControl = null;
 		}
@@ -109,9 +105,10 @@ package aniPangShootingWorld.round
 			switch(event.touch.phase)
 			{
 				case TouchPhase.ENDED:
+					SceneManager.instance.addScene(this);
 					var oneRound : OneRound = new OneRound();
-					Scene.instance.addScene(oneRound,1);
-					SceneManager.sceneChange(1); 
+					SceneManager.instance.addScene(oneRound);
+					SceneManager.instance.sceneChange(); 
 					break;
 			}
 			
