@@ -31,43 +31,40 @@ package aniPangShootingWorld.enemy
 			_prevTime = 0;
 		}
 		
-		public function shooting() : void
-		{
-			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
-			
-			_bulletManager.bulletVector[bulletNum].initBullet(this);
-			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
-		}
-		
-		public function bulletFrame() : void
-		{
-			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
-			{
-				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
-				{
-					_stage.removeChild(_bulletManager.bulletVector[i]);
-					_bulletManager.bulletNumVector.push(i);
-				}
-				else
-					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
-			}		
-		}
+//		public function shooting() : void
+//		{
+//			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
+//			
+//			_bulletManager.bulletVector[bulletNum].initBullet(this);
+//			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+//		}
+//		
+//		public function bulletFrame() : void
+//		{
+//			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
+//			{
+//				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
+//				{
+//					_stage.removeChild(_bulletManager.bulletVector[i]);
+//					_bulletManager.bulletNumVector.push(i);
+//				}
+//				else
+//					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
+//			}		
+//		}
 		
 		public function autoMoving():void
 		{
-			this.x += _temp;
+			this.y+=Framework.viewport.height/60;
 			
-			if(this.x >= Framework.viewport.width - _enemyBitmapData.width)
-				_temp = -1;
-			
-			else if(this.x<= 0)
-				_temp = 1;
+			if(this.y > Framework.viewport.height)
+				this.y = 0;
 		}
 		
-		public function bulletstate(bulletNum : Number) : void
-		{
-			_bulletManager.bulletVector[bulletNum].y += 5;
-		}
+//		public function bulletstate(bulletNum : Number) : void
+//		{
+//			_bulletManager.bulletVector[bulletNum].y += 5;
+//		}
 		
 		public override function render():void
 		{
@@ -83,7 +80,7 @@ package aniPangShootingWorld.enemy
 			
 			autoMoving();
 			
-			bulletFrame();
+			//bulletFrame();
 		}
 	}
 }

@@ -60,7 +60,11 @@ package aniPangShootingWorld.enemy
 			this.y+=Framework.viewport.height/60;
 			
 			if(this.y > Framework.viewport.height)
+			{
+				EnemyObjectUtil._sRedraw = true;
 				this.y = 0;
+			}
+				
 		}
 		
 //		public function bulletstate(bulletNum : Number) : void

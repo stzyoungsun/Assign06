@@ -4,9 +4,11 @@ package aniPangShootingWorld.round
 	
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObject;
+	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.enemy.EnemyPig;
 	import aniPangShootingWorld.enemy.EnemyRat;
 	import aniPangShootingWorld.player.Player;
+	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.background.BackGround;
@@ -16,7 +18,7 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
-	import framework.scene.SceneManager;
+	
 
 	public class OneRound extends Sprite
 	{
@@ -27,49 +29,74 @@ package aniPangShootingWorld.round
 		
 		private var _enemyBitmapDataVector : Vector.<BitmapData> = new Vector.<BitmapData>;
 		
-		private var _enemyLine : EnemyLine;
+		private var _enemyLine : EnemyLine = new EnemyLine();;
 		
+		private var _randomArray : Array;
 		public function OneRound()
 		{
 			backGroundDraw();
 			playerDraw();
 			CreateEnemyLine();
-			
-			backSkyDraw();
 		}
+		
 		
 		/**
 		 *Note @유영선 적들을 그립니다 
 		 * 
-		 */		
+		 */
+		public override function render():void
+		{
+			super.render();
+			
+			if(EnemyObjectUtil._sRedraw == true)
+			{
+				CreateEnemyLine()
+				EnemyObjectUtil._sRedraw = false;
+			}
+		}
+		
 		private function CreateEnemyLine():void
 		{
 			// TODO Auto Generated method stub
+			if(_enemyBitmapDataVector.length != 0)
+			{
+				enenmyRemove();
+				removeChild(_backSky);
+			}
+					
+			_randomArray = new Array(0,0,0,0,1);
+			_randomArray = UtilFunction.shuffle(_randomArray,5);
 			
-			_enemyBitmapDataVector[0] = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData
-			_enemyBitmapDataVector[1] = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
-			_enemyBitmapDataVector[2] = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
-			_enemyBitmapDataVector[3] = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
-			_enemyBitmapDataVector[4] = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
-			
-			_enemyLine = new EnemyLine();
+			for(var i : Number =0; i < 5; i++)
+			{
+				_enemyBitmapDataVector[i] = MenuVIew.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_TYPE_ARRAY[_randomArray[i]]].bitmapData
+			}
 			_enemyLine.setEnemyLine(_enemyBitmapDataVector);
-			
+			enenmyDraw();
+			addChild(_backSky);
+		}
+		
+		private function enenmyRemove() : void
+		{
+			removeChild(_enemyLine.enemyVector[0]);
+			removeChild(_enemyLine.enemyVector[1]);
+			removeChild(_enemyLine.enemyVector[2]);
+			removeChild(_enemyLine.enemyVector[3]);
+			removeChild(_enemyLine.enemyVector[4]);
+		}
+		
+		/**
+		 * Note @유영선 enemyLine을 등록합니다.
+		 * 
+		 */		
+		private function enenmyDraw():void
+		{
+			// TODO Auto Generated method stub
 			addChild(_enemyLine.enemyVector[0]);
 			addChild(_enemyLine.enemyVector[1]);
 			addChild(_enemyLine.enemyVector[2]);
 			addChild(_enemyLine.enemyVector[3]);
 			addChild(_enemyLine.enemyVector[4]);
-		}
-		/**
-		 *Note @유영선 배경 하늘을 그립니다 
-		 * 
-		 */		
-		private function backSkyDraw():void
-		{
-			// TODO Auto Generated method stub
-			
-			addChild(_backSky);
 		}
 		
 		/**
@@ -79,7 +106,7 @@ package aniPangShootingWorld.round
 		private function playerDraw():void
 		{
 			// TODO Auto Generated method stub
-			_backSky = new BackGround(2, 60, 10, MenuVIew.sloadedImage.imageDictionary["backSky.png"].bitmapData);
+			_backSky = new BackGround(2, 60, 20, MenuVIew.sloadedImage.imageDictionary["backskysize.png"].bitmapData);
 			
 			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET,30,MenuVIew.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
 			_player = new Player(new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary["Player.png"],MenuVIew.sloadedImage.xmlDictionary["Player.xml"]),5,
@@ -119,7 +146,7 @@ package aniPangShootingWorld.round
 		private function backGroundDraw():void
 		{
 			// TODO Auto Generated method stub
-			_backGround = new BackGround(2, 60, 1, MenuVIew.sloadedImage.imageDictionary["background1.jpg"].bitmapData);
+			_backGround = new BackGround(2, 60, 1, MenuVIew.sloadedImage.imageDictionary["backtree1.png"].bitmapData);
 			addChild(_backGround);
 		}
 		
