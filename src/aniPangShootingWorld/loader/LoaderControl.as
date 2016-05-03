@@ -178,10 +178,11 @@ package aniPangShootingWorld.loader
 		private function chedckedImage() : void
 		{
 			_currentCount++;
-
-			if(_currentCount ==  Math.round(sImageMaxCount*(0.6)))
+			
+			if(_currentCount == 1)
 				_onProgressFunction(60)	;
-			else if(_currentCount == Math.round(sImageMaxCount*(0.9)))
+				
+			if(_currentCount == Math.round(sImageMaxCount*(0.6)))
 				_onProgressFunction(90);
 				
 			if(_currentCount == sImageMaxCount) 
