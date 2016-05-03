@@ -3,6 +3,7 @@ package framework.display
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.events.Event;
 
 	public class DisplayObject extends EventDispatcher
 	{
@@ -45,6 +46,17 @@ package framework.display
 			}
 			
 			return null;
+		}
+		
+		public override function dispatchEvent(event:Event):Boolean
+		{
+			// 부모가 존재하고 bubbles 속성이 true면 부모의 dispatchEvent 호출
+			if(_parent != null && event.bubbles)
+			{
+				_parent.dispatchEvent(event);
+			}
+			// super 호출 후 결과 반환
+			return super.dispatchEvent(event);
 		}
 		
 		public function dispose():void
