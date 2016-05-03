@@ -133,22 +133,19 @@ package framework.core
 			_sPoint.x = _touch.globalX = _stage.stageWidth  * (globalX - _viewPort.x) / _viewPort.width;
 			_sPoint.y = _touch.globalY = _stage.stageHeight * (globalY - _viewPort.y) / _viewPort.height;
 			
-			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트의 dispatchEvent를 호출
+			// 터치이벤트 생성
+			var touchEvent:framework.event.TouchEvent = new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH, true)
+			
+			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트를 _touchedObject에 저장
 			if(_touch.phase == TouchPhase.HOVER)
 			{
-				_stage.hitTest(_sPoint).dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
+				_touchedObject = _stage.hitTest(_sPoint);
 			}
-				// 그 외의 상태라면, 터치된 오브젝트를 저장한 후 dispatchEvent를 호출
+			// 그 외의 상태라면, _touchedObject에 저장된 객체의 dispatchEvent를 호출
 			else
 			{
-				// _touchedObject가 null이면 hitTest 메서드로 터치된 오브젝트를 _touchedObject로 저장
-				if(_touchedObject == null)
-				{
-					_touchedObject = _stage.hitTest(_sPoint);
-				}
-				
 				// _touchedObject에 저장된 오브젝트의 dispatchEvent 호출
-				_touchedObject.dispatchEvent(new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH));
+				_touchedObject.dispatchEvent(touchEvent);
 				
 				// 터치 상태가 ENDED면 _touchedObject를 null로 대입
 				if(_touch.phase == TouchPhase.ENDED)
