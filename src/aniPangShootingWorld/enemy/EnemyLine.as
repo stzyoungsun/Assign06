@@ -7,7 +7,7 @@ package aniPangShootingWorld.enemy
 	public class EnemyLine
 	{
 		private var _enemyBitmapDataVector : Vector.<BitmapData>;
-		private var _enemyVector : Vector.<EnemyObject> = new Vector.<EnemyObject>;
+		private var _enemyVector : Vector.<EnemyObject>;
 		
 		public function EnemyLine()
 		{
@@ -17,12 +17,12 @@ package aniPangShootingWorld.enemy
 		public function setEnemyLine(enemyBitmapDataVector : Vector.<BitmapData>) : void
 		{
 			_enemyBitmapDataVector = enemyBitmapDataVector;
-			
+			_enemyVector = new Vector.<EnemyObject>;
 			for(var i:int = 0; i < 5; i++)
 			{
 				_enemyVector.push(new EnemyPig(_enemyBitmapDataVector[i]));
 				_enemyVector[i].width = Framework.viewport.width*4/25;
-				_enemyVector[i].height = Framework.viewport.height/5;
+				_enemyVector[i].height = _enemyVector[i].width ;
 				_enemyVector[i].x = Framework.viewport.width/30*(i+1) + _enemyVector[i].width*i;
 				_enemyVector[i].y = 0;
 			}
