@@ -156,9 +156,26 @@ package framework.core
 			}
 		}
 		
+		/**
+		 * Framework에서 생성된 이벤트, 객체 등을 제거하는 메서드
+		 */
 		public function dispose() : void
 		{
-			_nativeStage.removeEventListener(Event.ENTER_FRAME, onEnterFrame, false);
+			stop();
+			
+			_nativeStage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_nativeStage.removeEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
+			_nativeStage.removeEventListener(TouchEvent.TOUCH_MOVE, onTouch);
+			_nativeStage.removeEventListener(TouchEvent.TOUCH_END, onTouch);
+			_nativeStage.removeEventListener(MouseEvent.MOUSE_DOWN, onTouch);
+			_nativeStage.removeEventListener(MouseEvent.MOUSE_MOVE, onTouch);
+			_nativeStage.removeEventListener(MouseEvent.MOUSE_UP, onTouch);
+			_nativeStage.removeChild(_nativeOverlay);
+			
+			_stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+			
+			if(_stage) _stage.dispose();
+			if(_sCurrent == this) _sCurrent = null;
 		}
 		
 		/**
