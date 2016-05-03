@@ -11,8 +11,6 @@ package framework.animaiton
 		private var _startFlag:Boolean;
 		private var _spriteSheet:AtlasBitmapData;
 		private var _imageCount:int;
-		private var _movieClipWidth:int;
-		private var _movieClipHeight:int;
 		private var _curFrame:Number;
 		private var _prevTime:Number;
 		
@@ -33,8 +31,6 @@ package framework.animaiton
 			}
 			
 			_startFlag = false;
-			_movieClipWidth = width;
-			_movieClipHeight = height;
 			
 			_objectType = ObjectType.MOVIECLIP;
 			_curFrame = frame;
@@ -74,8 +70,6 @@ package framework.animaiton
 			if(_startFlag == true)
 			{
 				bitmapData = _spriteSheet.getsubSpriteSheet[_imageCount++];
-				width = _movieClipWidth;
-				height = _movieClipHeight;
 			}
 			
 			if(_imageCount == _spriteSheet.getsubCount)
@@ -84,10 +78,5 @@ package framework.animaiton
 			}
 		}
 		
-		public function get movieClipHeight():int { return _movieClipHeight; }
-		public function set movieClipHeight(value:int):void { _movieClipHeight = value; }
-		
-		public function get movieClipWidth():int { return _movieClipWidth; }
-		public function set movieClipWidth(value:int):void { _movieClipWidth = value; }
 	}
 }
