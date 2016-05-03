@@ -4,6 +4,8 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	
+	import aniPangShootingWorld.round.MenuVIew;
+	
 	import framework.core.Framework;
 	
 	[SWF(width="768", height="1004", frameRate="60"]
@@ -18,7 +20,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			var fw:Framework = new Framework(Main, stage);
+			var fw:Framework = new Framework(MenuVIew, stage);
 			fw.start();
 		}
 	}

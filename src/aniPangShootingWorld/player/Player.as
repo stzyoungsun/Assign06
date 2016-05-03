@@ -45,7 +45,7 @@ package aniPangShootingWorld.player
 		{
 			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
 			
-			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.movieClipWidth/2, this.movieClipHeight/2);
+			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/2, this.height/2);
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 		}
 		

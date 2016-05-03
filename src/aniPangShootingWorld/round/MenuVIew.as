@@ -80,8 +80,8 @@ package aniPangShootingWorld.round
 				10,Framework.viewport.width/4,Framework.viewport.height*3/4);
 			addChild(_menuText);
 			
-			_menuText.movieClipWidth = Framework.viewport.width/2;;
-			_menuText.movieClipHeight = Framework.viewport.height/10;
+			_menuText.width = Framework.viewport.width/2;;
+			_menuText.height = Framework.viewport.height/10;
 			_menuText.start();
 			
 			_menuImage.addEventListener(TouchEvent.TOUCH, onTouch);

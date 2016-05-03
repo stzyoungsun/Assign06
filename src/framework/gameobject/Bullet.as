@@ -1,6 +1,8 @@
 package framework.gameobject
 {
 	import flash.display.BitmapData;
+	
+	import framework.core.Framework;
 	import framework.display.Image;
 
 	public class Bullet extends Image
@@ -20,8 +22,8 @@ package framework.gameobject
 		{
 			this.x = x;
 			this.y = y;
-			this.width = _bulletBitmapData.width;
-			this.height = _bulletBitmapData.height;
+			this.width = width;
+			this.height = height;
 		}
 		
 		public function shootingState(state : Function = null, bulletNum : Number =0) : void 

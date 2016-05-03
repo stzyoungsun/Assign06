@@ -78,7 +78,7 @@ package framework.display
 			_rotation = value;
 		}
 		
-		public function get width():Number { return _height; }
+		public function get width():Number { return _width; }
 		public function set width(value:Number):void { _width = value; }
 		
 		public function get height():Number { return _height; }

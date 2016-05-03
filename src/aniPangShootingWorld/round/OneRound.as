@@ -111,9 +111,10 @@ package aniPangShootingWorld.round
 			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET,30,MenuVIew.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
 			_player = new Player(new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary["Player.png"],MenuVIew.sloadedImage.xmlDictionary["Player.xml"]),5,
 				bulletMgr,this);
+			
+			_player.width = Framework.viewport.width/6;
+			_player.height = Framework.viewport.height/6;
 			_player.start();
-			_player.movieClipWidth = Framework.viewport.width/6;
-			_player.movieClipHeight = Framework.viewport.height/6;
 			_player.addEventListener(TouchEvent.TOUCH, onTouch);
 			_backSky.addEventListener(TouchEvent.TOUCH, onTouch);
 			
