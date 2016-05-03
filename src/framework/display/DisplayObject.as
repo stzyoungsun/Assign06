@@ -65,6 +65,42 @@ package framework.display
 			return super.dispatchEvent(event);
 		}
 		
+		/**
+		 * flash.events.Eventdispatcher 클래스의 addEventListener를 오버라이딩한 메서드
+		 * 이벤트를 등록 후 해당 객체에 등록되는 리스너를 Dictionary 객체에 입력한다
+		 */
+		public override function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
+		{
+			// super 호출해서 이벤트 등록
+			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+			
+			// _eventDictionary에 처음 입력되는 type의 경우 listener를 바로 추가
+			if(_eventDictionary[type] == null)
+			{
+				_eventDictionary[type] = listener;
+			}
+			// 이전에 추가된 type이 존재할 경우 - Vector 객체로 관리
+			else
+			{
+				// type에 해당하는 value가 Vector인 경우
+				if(_eventDictionary[type] is Vector.<Function>)
+				{
+					// Vector에 listener 푸시
+					_eventDictionary[type].push(listener);
+				}
+				// 그렇지 않은 경우 Vector 객체 생성
+				else
+				{
+					var vector:Vector.<Function> = new Vector.<Function>();
+					// dictionary에 입력된 listener push
+					vector.push(_eventDictionary[type]);
+					// 새로 입력되는 listener push
+					vector.push(listener);
+					// vector를 value로 설정
+					_eventDictionary[type] = vector;
+				}
+			}
+		}
 		public function alignPivot(horizontalAlign:String="center", verticalAlign:String="center"):void
 		{
 			// pivotX 설정 - 수평 정렬
