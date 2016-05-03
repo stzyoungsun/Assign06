@@ -4,6 +4,8 @@ package framework.display
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
+	import framework.Rendering.Painter;
+	import framework.core.Framework;
 	import framework.gameobject.Collision;
 	
 	public class DisplayObjectContainer extends DisplayObject
@@ -16,16 +18,6 @@ package framework.display
 		public function DisplayObjectContainer()
 		{
 			_children = new <DisplayObject>[];
-		}
-		
-		public function get children():Vector.<DisplayObject>
-		{
-			return _children;
-		}
-
-		public function set children(value:Vector.<DisplayObject>):void
-		{
-			_children = value;
 		}
 
 		/**
@@ -51,7 +43,8 @@ package framework.display
 			// index가 _children의 범위에 포함될 때 해당 index로 입력
 			if (index >= 0 && index <= numChildren)
 			{
-				_children.insertAt(index, child);				
+				_children.insertAt(index, child);
+				child.parent = this;
 				return child;
 			}
 			// 범위를 벗어나면 Error throw
@@ -91,15 +84,24 @@ package framework.display
 		 */
 		public override function render():void
 		{
+			var painter:Painter = Framework.painter;
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
 			for(var i:int = 0 ; i <_children.length; ++i)
 			{
 				var child:DisplayObject = _children[i];
 				
-				if(child.objectType == ObjectType.PLAYER_BULLET)
-					bulletCollision(i);
-				
-				child.render();
+				if(child.visible)
+				{
+					if(child.objectType == ObjectType.PLAYER_BULLET)
+						bulletCollision(i);
+					
+					painter.pushMatrix();
+					painter.transformMatrix(child);
+					
+					child.render();
+					
+					painter.popMatrix();
+				}
 			}
 		}
 		
@@ -123,7 +125,7 @@ package framework.display
 			
 			if (numChildren == 1)
 			{
-				return _children[0].getBounds();
+				return _children[0].bounds;
 			}
 			else
 			{
@@ -176,5 +178,8 @@ package framework.display
 			_children = null;
 			super.dispose();
 		}
+		
+		public function get children():Vector.<DisplayObject> { return _children; }
+		public function set children(value:Vector.<DisplayObject>):void { _children = value; }
 	}
 }

@@ -5,9 +5,8 @@ package
 	import flash.display.StageScaleMode;
 	
 	import framework.core.Framework;
-	import framework.scene.Scene;
 	
-	[SWF(width="768", height="1004", frameRate="60", backgroundColor="#FFFFF0")]
+	[SWF(width="768", height="1004", frameRate="60"]
 	
 	public class Assignment06 extends Sprite
 	{
@@ -18,7 +17,6 @@ package
 			// support autoOrients
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			
 			
 			var fw:Framework = new Framework(Main, stage);
 			fw.start();
