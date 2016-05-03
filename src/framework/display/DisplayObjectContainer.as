@@ -2,7 +2,6 @@ package framework.display
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.getTimer;
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
@@ -137,9 +136,9 @@ package framework.display
 			}
 			else if(_children[curChildNum].objectType == ObjectType.PLAYER_GENERAL)
 			{
-				for(var i:int = 0 ; i <_children.length; ++i)
+				for(i = 0 ; i <_children.length; ++i)
 				{
-					var child:DisplayObject = _children[i];
+					child = _children[i];
 					if(child.objectType == ObjectType.ENEMY_BULLET_MOVING)
 					{
 						if(Collision.ObjectToObject(child,_children[curChildNum]))

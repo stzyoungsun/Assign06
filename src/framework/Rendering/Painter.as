@@ -59,7 +59,10 @@ package framework.Rendering
 		
 		public function transformMatrix(object:DisplayObject):void
 		{
-			transformMatrixForObject(_modelViewMatrix, object);   
+			_modelViewMatrix.prependTranslation(object.x, object.y, 0.0);
+			_modelViewMatrix.prependRotation(object.rotation / Math.PI * 180.0, Vector3D.Z_AXIS);
+			_modelViewMatrix.prependScale(object.scaleX, object.scaleY, 1.0);
+			_modelViewMatrix.prependTranslation(-object.pivotX, -object.pivotY, 0.0);
 		}
 		
 		public function pushMatrix():void
@@ -93,14 +96,6 @@ package framework.Rendering
 			mvpMatrix.append(_modelViewMatrix);
 			mvpMatrix.append(_projectionMatrix);
 			return mvpMatrix;
-		}
-		
-		public static function transformMatrixForObject(matrix:Matrix3D, object:DisplayObject):void
-		{
-			matrix.prependTranslation(object.x, object.y, 0.0);
-			matrix.prependRotation(object.rotation / Math.PI * 180.0, Vector3D.Z_AXIS);
-			matrix.prependScale(object.scaleX, object.scaleY, 1.0);
-			matrix.prependTranslation(-object.pivotX, -object.pivotY, 0.0);
 		}
 		
 		public function createProgram():void

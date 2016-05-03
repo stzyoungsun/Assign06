@@ -1,7 +1,5 @@
 package framework.scene
 {
-	import flash.utils.Dictionary;
-	
 	import framework.core.Framework;
 	import framework.display.Sprite;
 
@@ -33,11 +31,9 @@ package framework.scene
 			_sceneVector.push(scene);
 		}
 		
-		public  function sceneChange() : void
+		public function sceneChange() : void
 		{
 			Framework.sceneStage = _sceneVector.pop();
 		}
-		
-
 	}
 }
