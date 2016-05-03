@@ -3,7 +3,10 @@ package aniPangShootingWorld.enemy
 	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.round.MenuVIew;
+	
 	import framework.core.Framework;
+	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Collision;
@@ -16,17 +19,18 @@ package aniPangShootingWorld.enemy
 		private var _stage:Sprite;
 		private var _temp : int = 1;
 		private var _prevTime:Number;
+		private var _enemyHP : Number = 5;
 		
-		public function EnemyRat(enemyBitmapData : BitmapData, bulletManager  : BulletManager,stage:Sprite )
+		public function EnemyRat(enemyBitmapData : BitmapData)
 		{
 			_enemyBitmapData = enemyBitmapData;
-			_bulletManager = bulletManager;
+			//_bulletManager = bulletManager;
 			super(_enemyBitmapData);
 			
 			this.y = _enemyBitmapData.height*2;
 			this.x =10;
 			
-			_stage=stage;
+			//_stage=stage;
 			//_bulletManager.createBullet(this.x,this.y);
 			_prevTime = 0;
 		}
@@ -52,35 +56,43 @@ package aniPangShootingWorld.enemy
 //					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
 //			}		
 //		}
-		
-		public function autoMoving():void
-		{
-			this.y+=Framework.viewport.height/60;
-			
-			if(this.y > Framework.viewport.height)
-				this.y = 0;
-		}
-		
 //		public function bulletstate(bulletNum : Number) : void
 //		{
 //			_bulletManager.bulletVector[bulletNum].y += 5;
 //		}
 		
+		
 		public override function render():void
 		{
-			super.render();
-			
-			var curTimerBullet:int = getTimer();
-			
-			if(curTimerBullet - _prevTime > 500)
+			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
-				//shooting();
-				_prevTime = getTimer();
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["rat1.png"].bitmapData;
+				autoMoving();
+			}	
+			else if(this.objectType == ObjectType.ENEMY_COLLISION)
+			{
+				this.objectType = ObjectType.ENEMY_GENERAL;
+				_enemyHP--;
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["rat2.png"].bitmapData;
+				
+				if(_enemyHP == 0)
+				{
+					EnemyLine._sCurLineCount--;
+					this.objectType = ObjectType.COIN;
+					
+				}
+				if(EnemyLine._sCurLineCount == 0)
+				{
+					EnemyLine._sCurLineCount = 5;
+					EnemyObjectUtil._sRedraw = true;
+				}
 			}
-			
-			autoMoving();
-			
-			//bulletFrame();
+			else
+			{
+				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["eat2.png"].bitmapData;
+				autoMoving();
+			}
+			super.render();
 		}
 	}
 }
