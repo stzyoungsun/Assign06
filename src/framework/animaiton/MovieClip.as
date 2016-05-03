@@ -32,7 +32,6 @@ package framework.animaiton
 			
 			_startFlag = false;
 			
-			_objectType = ObjectType.MOVIECLIP;
 			_curFrame = frame;
 			_prevTime = 0;
 			_imageCount = 0;

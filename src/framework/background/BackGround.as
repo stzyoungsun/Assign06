@@ -50,7 +50,7 @@ package framework.background
 			if(curTimerBackGround - _prevTime > 1000/_frame)
 			{
 				var tempbitmapdata : BitmapData = new BitmapData(_backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
-				if((_backGroundBitmapData.height*(_sliceNum-1)/_sliceNum)-_drawPoint == 0)
+				if((_backGroundBitmapData.height*(_sliceNum-1)/_sliceNum)-_drawPoint <= 0)
 				{
 					_drawPoint = 0;
 				}

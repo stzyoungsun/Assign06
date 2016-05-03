@@ -27,6 +27,8 @@ package framework.display
 			_visible = true;
 		}
 
+	
+
 		public virtual function render():void
 		{
 			// Abstract Method
@@ -90,6 +92,7 @@ package framework.display
 		public function get bounds():Rectangle { return null; }
 		
 		public function get objectType():String { return _objectType; }
+		public function set objectType(value:String):void{_objectType = value;}
 		
 		internal function set parent(value:DisplayObjectContainer):void { _parent = value; }
 	}

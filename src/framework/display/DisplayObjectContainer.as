@@ -92,9 +92,9 @@ package framework.display
 				
 				if(child.visible)
 				{
-					if(child.objectType == ObjectType.PLAYER_BULLET)
-						bulletCollision(i);
 					
+					objectCollision(i);
+				
 					painter.pushMatrix();
 					painter.transformMatrix(child);
 					
@@ -105,17 +105,36 @@ package framework.display
 			}
 		}
 		
-		public function bulletCollision(curChildNum : Number):void
+		public function objectCollision(curChildNum : Number):void
 		{
-			for(var i:int = 0 ; i <_children.length; ++i)
+			
+			if(_children[curChildNum].objectType == ObjectType.ENEMY_GENERAL)
 			{
-				var child:DisplayObject = _children[i];
-				
-				if(child.objectType == ObjectType.ENEMY)
+				for(var i:int = 0 ; i <_children.length; ++i)
 				{
-					if(Collision.bulletToObject(_children[curChildNum],child))
-						trace("충돌");  //충돌 시 이벤트 처리
-				}	
+					var child:DisplayObject = _children[i];
+					
+					if(child.objectType == ObjectType.PLAYER_BULLET_MOVING)
+					{
+						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						{
+							trace("충돌");
+							child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
+							_children[curChildNum].objectType = ObjectType.ENEMY_COLLISION
+						}
+					}
+					
+					if(child.objectType == ObjectType.PLAYER_GENERAL)
+					{
+						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						{
+							trace("플레이어 충돌");
+							child.objectType = ObjectType.PLAYER_COLLISION;
+							_children[curChildNum].objectType = ObjectType.COIN;
+						}
+					}
+				}
+			
 			}
 		}
 		
