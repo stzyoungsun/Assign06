@@ -1,6 +1,5 @@
 package aniPangShootingWorld.player
 {
-	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -29,7 +28,7 @@ package aniPangShootingWorld.player
 			_playerAtlas = playerAtlas;
 			_bulletManager = bulletManager;
 			
-			y = Framework.viewport.height - Framework.viewport.height/3;
+			y = Framework.viewport.height - Framework.viewport.height/5;
 			super(_playerAtlas, frame, 0, y);
 			this.objectType = ObjectType.PLAYER_GENERAL;
 			_bulletManager.createBullet(this.x,this.y);
@@ -89,7 +88,7 @@ package aniPangShootingWorld.player
 			
 			var curTimerBullet:int = getTimer();
 			
-			if(curTimerBullet - _prevTime > 300)
+			if(curTimerBullet - _prevTime > 100)
 			{
 				shooting();
 				_prevTime = getTimer();
@@ -105,7 +104,7 @@ package aniPangShootingWorld.player
 			if(_playerHP == 0)
 			{
 				
-				SceneManager.sceneChange(0);
+				SceneManager.instance.sceneChange();
 			}
 				
 			
