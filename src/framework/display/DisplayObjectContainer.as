@@ -44,7 +44,7 @@ package framework.display
 			if (index >= 0 && index <= numChildren)
 			{
 				_children.insertAt(index, child);
-				child.parent = this;
+				child.setParent(this);
 				return child;
 			}
 			// 범위를 벗어나면 Error throw

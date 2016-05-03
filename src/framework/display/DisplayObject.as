@@ -52,6 +52,11 @@ package framework.display
 			//해제가 필요한 부분 입력
 		}
 		
+		internal function setParent(parent:DisplayObjectContainer):void
+		{
+			_parent = parent;
+		}
+		
 		public function get x():Number { return _x; }
 		public function set x(x:Number):void { _x = x; }
 		
@@ -91,6 +96,6 @@ package framework.display
 		
 		public function get objectType():String { return _objectType; }
 		
-		internal function set parent(value:DisplayObjectContainer):void { _parent = value; }
+		public function get parent():DisplayObjectContainer { return _parent; }
 	}
 }
