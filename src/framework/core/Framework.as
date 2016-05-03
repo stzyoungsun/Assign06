@@ -22,19 +22,17 @@ package framework.core
 	
 	public class Framework  extends EventDispatcher
 	{
-		private var _started:Boolean;
-		private var _rendering:Boolean;
-		
 		private var _nativeStage:flash.display.Stage;
 		private var _nativeOverlay:Sprite;
 		
-		private var _context3D:Context3D;
 		private var _stage:Stage;
-		private var _viewPort:Rectangle;
-		private var _rootClass:Class;
 		private var _stage3D:Stage3D;
-
+		private var _context3D:Context3D;
+		private var _rootClass:Class;
+		private var _viewPort:Rectangle;
 		private var _painter:Painter;
+
+		private var _started:Boolean;
 		private var _leftMouseDown:Boolean;
 		private var _sceneStage:DisplayObjectContainer;
 		private var _touch:Touch;
@@ -43,41 +41,58 @@ package framework.core
 		private static var _sCurrent:Framework;
 		private static var _sPoint:Point = new Point(0, 0);
 		
+		/**
+		 * 생성자 - native stage 설정, 이벤트 리스너 등록, Stage3D context 생성 요청 등을 수행
+		 * @param rootClass - start() 메서드 이후로 실행할 클래스
+		 * @param stage - native application의 stage 객체
+		 */
 		public function Framework(rootClass:Class, stage:flash.display.Stage)
 		{
 			if (stage == null) throw new ArgumentError("Stage must not be null");
 			
-			_viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-			_stage = new Stage(_viewPort.width, _viewPort.height, stage.color);
-			_rootClass = rootClass;
-			
+			// native stage 설정
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			_stage3D = stage.stage3Ds[0];
+			// viewport 설정, Framework.display.stage 객체 생성
+			_viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+			_stage = new Stage(_viewPort.width, _viewPort.height, stage.color);
 			
-			_nativeOverlay = new Sprite();    //Note @유영선 framework의 큰 틀을 stage에 덮어씀
+			// 시작 클래스 설정
+			_rootClass = rootClass;
+			
+			//Note @유영선 framework의 큰 틀을 stage에 덮어씀
+			_nativeOverlay = new Sprite();
 			_nativeStage = stage;
 			_nativeStage.addChild(_nativeOverlay);
 			
-			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
-			stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouch);
-			stage.addEventListener(TouchEvent.TOUCH_END, onTouch);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
-			stage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
+			// 이벤트 리스너 등록
+			_nativeStage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			_nativeStage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouch);
+			_nativeStage.addEventListener(TouchEvent.TOUCH_MOVE, onTouch);
+			_nativeStage.addEventListener(TouchEvent.TOUCH_END, onTouch);
+			_nativeStage.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
+			_nativeStage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
+			_nativeStage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
 			
-			stage.stage3Ds[0].addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
-			stage.stage3Ds[0].requestContext3D();
+			// Stage3D context 생성 요청
+			_stage3D = _nativeStage.stage3Ds[0];
+			_stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+			_stage3D.requestContext3D();
 		}
 		
+		/**
+		 * Stage3D의 context가 생성되면 호출되는 메서드 
+		 * @param event - 발생한 이벤트 정보를 갖고있는 Event 객체
+		 */
 		private function onContextCreated(event:Event):void
 		{
+			// 이벤트 리스너 제거
 			_stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			
 			_context3D = _stage3D.context3D;
-		
+			
+			// 렌더링 버퍼의 크기 설정
 			_context3D.configureBackBuffer(
 				_nativeStage.stageWidth,
 				_nativeStage.stageHeight,
@@ -85,19 +100,29 @@ package framework.core
 				true
 			);
 			
+			// depth 비교 설정
 			_context3D.setDepthTest(true, Context3DCompareMode.ALWAYS);
 			
+			// Painter 객체 생성
 			_painter = new Painter(_stage3D);
 			
-			makeCurrent();
+			// 외부에서 static 메서드를 호출할 때 사용하는 변수
+			_sCurrent = this;
 			
+			// 메인으로 설정한 클래스를 stage의 첫 번째 자식으로 등록
 			var root:DisplayObject = new _rootClass() as DisplayObject;
 			_sceneStage = root as DisplayObjectContainer;
 			_stage.addChildAt(_sceneStage, 0);
 			
+			// Touch 객체 생성
 			_touch = new Touch();
 		}
 		
+		/**
+		 * flash.events.MouseEvent와 flash.events.TouchEvent가 발생했을 때 호출되는 메서드
+		 * 발생한 이벤트는 Framework.event.TouchEvent로 재생성해서 이벤트를 디스패치한다
+		 * @param event - 발생한 마우스 이벤트 혹은 터치 이벤트 정보를 가진 객체
+		 */
 		private function onTouch(event:Event):void
 		{
 			if(!_started) return;
@@ -120,6 +145,7 @@ package framework.core
 				globalY = (event as TouchEvent).stageY;
 			}
 			
+			// event.type에 따라서 터치 상태를 정의
 			switch (event.type)
 			{
 				case TouchEvent.TOUCH_BEGIN:	_touch.phase = TouchPhase.BEGAN; break;
@@ -130,13 +156,14 @@ package framework.core
 				case MouseEvent.MOUSE_MOVE:		_touch.phase = (_leftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
 			}
 			
+			// 터치 위치를 _sPoint, _touch에 입력
 			_sPoint.x = _touch.globalX = _stage.stageWidth  * (globalX - _viewPort.x) / _viewPort.width;
 			_sPoint.y = _touch.globalY = _stage.stageHeight * (globalY - _viewPort.y) / _viewPort.height;
 			
 			// 터치이벤트 생성
 			var touchEvent:framework.event.TouchEvent = new framework.event.TouchEvent(_touch, framework.event.TouchEvent.TOUCH, true)
 			
-			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트를 _touchedObject에 저장
+			// 터치의 상태가 HOVER이면 터치된 위치에 존재하는 오브젝트를 _touchedObject에 저장 후 dispatchEvent 호출
 			if(_touch.phase == TouchPhase.HOVER)
 			{
 				_touchedObject = _stage.hitTest(_sPoint);
@@ -147,12 +174,6 @@ package framework.core
 			{
 				// _touchedObject에 저장된 오브젝트의 dispatchEvent 호출
 				_touchedObject.dispatchEvent(touchEvent);
-				
-				// 터치 상태가 ENDED면 _touchedObject를 null로 대입
-				if(_touch.phase == TouchPhase.ENDED)
-				{
-					_touchedObject = null;
-				}
 			}
 		}
 		
@@ -179,8 +200,9 @@ package framework.core
 		}
 		
 		/**
-		 * @param event
-		 */        
+		 * 매 프레임마다 호출되는 메서드. render 메서드와 updateNativeOverlay 메서드를 호출한다
+		 * @param event - 발생한 이벤트 정보를 가진 객체
+		 */
 		private function onEnterFrame(event:Event):void
 		{			
 			if(_started && _context3D != null)
@@ -192,23 +214,27 @@ package framework.core
 			updateNativeOverlay();
 		}
 		
+		/**
+		 * Stage3D에 객체를 출력시키는 메서드. 매 프레임마다 호출된다
+		 */
 		public function render():void
 		{
+			// 스테이지의 크기에 맞춰 직교투영 행렬을 설정
 			_painter.setOrthographicProjection(_stage.stageWidth, _stage.stageHeight);
-			
+			// blendFactor 설정
 			_painter.setDefaultBlendFactors(true);
-			
+			// 렌더링 버퍼 클리어
 			_context3D.clear(1.0, 1.0, 1.0, 1.0);
-			
+			// 스테이지에 등록된 모든 객체의 render 메서드 호출
 			_stage.render();
-			
+			// 버퍼에 그려진 데이터를 화면에 출력
 			_context3D.present();
-			
+			// 행렬 초기화
 			_painter.resetMatrix();
 		}
 		
 		/**
-		 * Note @유영선 FrameWork의 시작을 알리는 함수
+		 * Note @유영선 Framework의 시작을 알리는 함수
 		 */        
 		public function start() : void
 		{
@@ -216,14 +242,11 @@ package framework.core
 		}
 		
 		/**
-		 * @param backGoundRendering stop 후 출력 되고 있는 이미지를 지울껀지의 여부 (true = 그림을 지우지 않습니다)
-		 * 
 		 * Note @유영선 FrameWork의 종료를 알리는 함수
 		 */        
-		public function stop(backGoundRendering : Boolean = true) : void
+		public function stop() : void
 		{
 			_started = false;
-			_rendering = backGoundRendering;
 		}
 		
 		private function updateNativeOverlay():void
@@ -234,18 +257,12 @@ package framework.core
 			_nativeOverlay.scaleY = _viewPort.height / _stage.stageHeight;
 		}
 		
-		public function makeCurrent():void
-		{
-			_sCurrent = this;
-		}
-		
+		// static get 메서드
 		public static function get current():Framework { return _sCurrent; }
 		public static function get painter():Painter { return _sCurrent ? _sCurrent._painter : null; }
 		public static function get viewport():Rectangle { return _sCurrent ? _sCurrent._viewPort : null; }
-		
 		public static function get sceneStage():DisplayObjectContainer { return _sCurrent ? _sCurrent._sceneStage : null; }
-		public static function set sceneStage(value:DisplayObjectContainer):void {_sCurrent._sceneStage =value; }
-		
+		public static function set sceneStage(value:DisplayObjectContainer):void {_sCurrent._sceneStage = value; }
 		public static function get stage():DisplayObjectContainer { return _sCurrent ? _sCurrent._stage : null; }
 	}
 }
