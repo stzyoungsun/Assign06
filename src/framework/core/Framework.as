@@ -140,6 +140,7 @@ package framework.core
 			if(_touch.phase == TouchPhase.HOVER)
 			{
 				_touchedObject = _stage.hitTest(_sPoint);
+				_touchedObject.dispatchEvent(touchEvent);
 			}
 			// 그 외의 상태라면, _touchedObject에 저장된 객체의 dispatchEvent를 호출
 			else
