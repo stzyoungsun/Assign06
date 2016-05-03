@@ -33,8 +33,6 @@ package framework.display
 			_eventDictionary = new Dictionary();
 		}
 
-	
-
 		public virtual function render():void
 		{
 			// Abstract Method
@@ -104,6 +102,35 @@ package framework.display
 				}
 			}
 		}
+		
+		/**
+		 * 해당 객체에 생성된 자원을 제거하는 메서드
+		 */
+		public function dispose():void
+		{
+			// Dictionary에 존재하는 모든 리스너를 제거
+			for(var event:String in _eventDictionary)
+			{
+				// Dictionary의 value가 Vector일 경우 Vector에 존재하는 모든 요소를 제거
+				if(_eventDictionary[event] is Vector.<Function>)
+				{
+					var vector:Vector.<Function> = _eventDictionary[event];
+					while(vector.length != 0)
+					{
+						removeEventListener(event, vector.pop());
+					}
+				}
+				// Vector가 아닌 Function 형일 경우 바로 제거
+				else
+				{
+					removeEventListener(event, _eventDictionary[event]);
+				}
+			}
+			
+			// Dictionary 객체에 null 입력
+			_eventDictionary = null;
+		}
+		
 		/**
 		 * flash.events.Eventdispatcher 클래스의 removeEventListener 오버라이딩한 메서드
 		 * 이벤트 제거 후 삭제될 리스너를 Dictionary 객체에서 제거한다
@@ -175,11 +202,6 @@ package framework.display
 					// 잘못된 값이 입력되면 에러 throw
 					throw new ArgumentError("Invalid vertical value. Use Align.TOP, Align.BOTTOM, Align.CENTER");
 			}
-		}
-		
-		public function dispose():void
-		{
-			//해제가 필요한 부분 입력
 		}
 		
 		internal function setParent(parent:DisplayObjectContainer):void
