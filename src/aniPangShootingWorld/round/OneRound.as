@@ -33,6 +33,7 @@ package aniPangShootingWorld.round
 		private var _randomArray : Array;
 		public function OneRound()
 		{
+			EnemyLine._sCurLineCount = 5;
 			backGroundDraw();
 			playerDraw();
 			CreateEnemyLine();
@@ -63,25 +64,22 @@ package aniPangShootingWorld.round
 				removeChild(_backSky);
 			}
 					
-			_randomArray = new Array(0,0,0,0,1);
+			_randomArray = new Array(0,0,1,0,1);
 			_randomArray = UtilFunction.shuffle(_randomArray,5);
 			
 			for(var i : Number =0; i < 5; i++)
 			{
 				_enemyBitmapDataVector[i] = MenuVIew.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_TYPE_ARRAY[_randomArray[i]]].bitmapData
 			}
-			_enemyLine.setEnemyLine(_enemyBitmapDataVector);
+			_enemyLine.setEnemyLine(_enemyBitmapDataVector,_randomArray, this);
 			enenmyDraw();
 			addChild(_backSky);
 		}
 		
 		private function enenmyRemove() : void
 		{
-			removeChild(_enemyLine.enemyVector[0]);
-			removeChild(_enemyLine.enemyVector[1]);
-			removeChild(_enemyLine.enemyVector[2]);
-			removeChild(_enemyLine.enemyVector[3]);
-			removeChild(_enemyLine.enemyVector[4]);
+			for(var i: int =0; i < EnemyLine._sCurLineCount; i ++)
+				removeChild(_enemyLine.enemyVector[i]);
 		}
 		
 		/**
@@ -91,12 +89,8 @@ package aniPangShootingWorld.round
 		private function enenmyDraw():void
 		{
 			// TODO Auto Generated method stub
-			addChild(_enemyLine.enemyVector[0]);
-			addChild(_enemyLine.enemyVector[1]);
-			addChild(_enemyLine.enemyVector[2]);
-			addChild(_enemyLine.enemyVector[3]);
-			addChild(_enemyLine.enemyVector[4]);
-
+			for(var i: int =0; i < EnemyLine._sCurLineCount; i ++)
+				addChild(_enemyLine.enemyVector[i]);
 		}
 		
 		/**

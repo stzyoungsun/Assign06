@@ -134,7 +134,23 @@ package framework.display
 						}
 					}
 				}
-			
+			}
+			else if(_children[curChildNum].objectType == ObjectType.PLAYER_GENERAL)
+			{
+				for(var i:int = 0 ; i <_children.length; ++i)
+				{
+					var child:DisplayObject = _children[i];
+					if(child.objectType == ObjectType.ENEMY_BULLET_MOVING)
+					{
+						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						{
+							trace("적 미사일 플레이어 충돌");
+							child.objectType = ObjectType.ENEMY_BULLET_COLLISION;
+							_children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
+						}
+						
+					}
+				}
 			}
 		}
 		
