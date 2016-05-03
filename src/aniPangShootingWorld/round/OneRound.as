@@ -3,10 +3,9 @@ package aniPangShootingWorld.round
 	import flash.display.BitmapData;
 	
 	import aniPangShootingWorld.enemy.EnemyLine;
-	import aniPangShootingWorld.enemy.EnemyObject;
+
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
-	import aniPangShootingWorld.enemy.EnemyPig;
-	import aniPangShootingWorld.enemy.EnemyRat;
+
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.util.UtilFunction;
 	
@@ -97,6 +96,7 @@ package aniPangShootingWorld.round
 			addChild(_enemyLine.enemyVector[2]);
 			addChild(_enemyLine.enemyVector[3]);
 			addChild(_enemyLine.enemyVector[4]);
+
 		}
 		
 		/**
@@ -106,9 +106,9 @@ package aniPangShootingWorld.round
 		private function playerDraw():void
 		{
 			// TODO Auto Generated method stub
-			_backSky = new BackGround(2, 60, 20, MenuVIew.sloadedImage.imageDictionary["backskysize.png"].bitmapData);
+			_backSky = new BackGround(2, 60, 10.24, MenuVIew.sloadedImage.imageDictionary["backskycur.png"].bitmapData);
 			
-			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET,30,MenuVIew.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
+			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_MOVING,30,MenuVIew.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
 			_player = new Player(new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary["Player.png"],MenuVIew.sloadedImage.xmlDictionary["Player.xml"]),5,
 				bulletMgr,this);
 			
@@ -147,7 +147,7 @@ package aniPangShootingWorld.round
 		private function backGroundDraw():void
 		{
 			// TODO Auto Generated method stub
-			_backGround = new BackGround(2, 60, 1, MenuVIew.sloadedImage.imageDictionary["backtree1.png"].bitmapData);
+			_backGround = new BackGround(2, 60, 1, MenuVIew.sloadedImage.imageDictionary["backtree.jpg"].bitmapData);
 			addChild(_backGround);
 		}
 		
@@ -159,6 +159,9 @@ package aniPangShootingWorld.round
 			
 			_backSky.dispose();
 			_backSky = null;
+			
+			_enemyLine = null;
 		}
+		
 	}
 }

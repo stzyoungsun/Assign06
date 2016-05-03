@@ -54,9 +54,19 @@ package aniPangShootingWorld.round
 		private function onProgress(progressCount : Number) : void
 		{
 			if(progressCount == 60)
+			{
 				_loadingImage.bitmapData = (new PrevLoadImage.LOADING60()).bitmapData;
+				_loadingImage.width = Framework.viewport.width/2;
+				_loadingImage.height = Framework.viewport.height/20;
+				Framework.current.render();
+			}
 			else
+			{
 				_loadingImage.bitmapData = (new PrevLoadImage.LOADING90()).bitmapData;
+				_loadingImage.width = Framework.viewport.width/2;
+				_loadingImage.height = Framework.viewport.height/20;
+				Framework.current.render();
+			}
 			
 			_loadingImage.width = Framework.viewport.width/2;
 			_loadingImage.height = Framework.viewport.height/20;
