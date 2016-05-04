@@ -20,8 +20,7 @@ package aniPangShootingWorld.player
 		private var _playerAtlas:AtlasBitmapData;
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
-		private var _prevTime:Number;
-		
+			
 		private var _playerHP : Number = 2;
 		/**
 		 * 

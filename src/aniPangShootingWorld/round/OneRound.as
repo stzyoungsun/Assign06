@@ -1,11 +1,10 @@
 package aniPangShootingWorld.round
 {
 	import flash.display.BitmapData;
+	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.enemy.EnemyLine;
-
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
-
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.util.UtilFunction;
 	
@@ -55,6 +54,15 @@ package aniPangShootingWorld.round
 		public override function render():void
 		{
 			super.render();
+			
+			var curTimerBullet:int = getTimer();
+			
+			//@Note 유영선  플레이어가 발사 속도를 조절
+			if(curTimerBullet - _prevTime > 100)
+			{
+				_prevTime = getTimer();
+			}
+			
 			//Note @유영선 _sRedraw의 값에 따라 화면에 적을 지우고 다시 그립니다.
 			if(EnemyObjectUtil._sRedraw == true)
 			{

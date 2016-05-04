@@ -22,7 +22,6 @@ package aniPangShootingWorld.enemy
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
-		private var _prevTime:Number;
 		private var _enemyHP : Number = 1;
 		
 		public function EnemyPig(enemyBitmapData : BitmapData, bulletManager : BulletManager, stage : Sprite)
