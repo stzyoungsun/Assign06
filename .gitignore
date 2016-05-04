@@ -1,4 +1,5 @@
 bin-debug/
+bin-release-temp/
 .project
 .settings/org.eclipse.core.resources.prefs
 .actionScriptProperties
