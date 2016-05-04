@@ -22,7 +22,7 @@ package aniPangShootingWorld.enemy
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
-		private var _enemyHP : Number = 5;
+		private var _enemyHP : Number = 2;
 		
 		public function EnemyRat(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
@@ -52,12 +52,8 @@ package aniPangShootingWorld.enemy
 				{
 					EnemyLine._sCurLineCount--;
 					this.objectType = ObjectType.ITEM_IDLE;
-					
 				}
-				if(EnemyLine._sCurLineCount == 0)
-				{
-					EnemyObjectUtil._sRedraw = true;
-				}
+
 			}
 			super.render();
 		}

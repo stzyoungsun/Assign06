@@ -32,7 +32,7 @@ package aniPangShootingWorld.round
 		private var _enemyLine : EnemyLine = new EnemyLine();
 		
 		//Note @유영선 적들의 Type을  랜덤으로 저장 할 임시 변수
-		private var _randomArray : Array = new Array(EnemyObjectUtil.ENEMY_PIG,EnemyObjectUtil.ENEMY_PIG,EnemyObjectUtil.ENEMY_PIG,EnemyObjectUtil.ENEMY_PIG,EnemyObjectUtil.ENEMY_PIG);
+		private var _randomArray : Array = new Array(EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT);
 		//Note @유영선 적의 타입을 담고 있는 randomArray의 값을 조절하는 변수
 		private var _randomArrayControl : Number = 0;
 		//Note @유영선 적들의 Type을 저장 할 변수 초기화

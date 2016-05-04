@@ -46,15 +46,15 @@ package aniPangShootingWorld.enemy
 				//Note @유영선 타입배열에 따라 설정 한 값으로 분기하여 객체를 생성 
 				switch(enemyTypeArray[i])
 				{
-					case EnemyObjectUtil.ENEMY_PIG:
+					case EnemyObjectUtil.ENEMY_RAT:
 					{
-						_enemyVector.push(new EnemyPig(_enemyAtlasVector[i],10,bulletMgr,stage));
+						_enemyVector.push(new EnemyRat(_enemyAtlasVector[i],10,stage));
 						break;
 					}
 						
-					case EnemyObjectUtil.ENEMY_RAT :
+					case EnemyObjectUtil.ENEMY_PIG :
 					{
-						_enemyVector.push(new EnemyRat(_enemyAtlasVector[i],10,stage));
+						_enemyVector.push(new EnemyPig(_enemyAtlasVector[i],10,bulletMgr,stage));
 						break;
 					}
 				}
