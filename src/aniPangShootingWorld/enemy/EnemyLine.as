@@ -4,6 +4,7 @@ package aniPangShootingWorld.enemy
 	
 	import aniPangShootingWorld.round.MenuVIew;
 	
+	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
@@ -11,7 +12,7 @@ package aniPangShootingWorld.enemy
 
 	public class EnemyLine
 	{
-		private var _enemyBitmapDataVector : Vector.<BitmapData>;
+		private var _enemyAtlasVector : Vector.<AtlasBitmapData>;
 		private var _enemyVector : Vector.<EnemyObject>;
 		public static var _sCurLineCount :  Number = 5;
 		
@@ -29,10 +30,10 @@ package aniPangShootingWorld.enemy
 		 * @param enemyTypeArray 5명의 적의 Type 순서를 담은 배열
 		 * Note @유영선 5명의 적을 Type 배열의 순서에 따라 일렬로 출력합니다.
 		 */		
-		public function setEnemyLine(enemyBitmapDataVector : Vector.<BitmapData> , enemyTypeArray : Array, stage : Sprite) : void
+		public function setEnemyLine(enemyAtlasVector : Vector.<AtlasBitmapData> , enemyTypeArray : Array, stage : Sprite) : void
 		{
 			//Note @유영선 저장되어있는 비트맵 데이터
-			_enemyBitmapDataVector = enemyBitmapDataVector;
+			_enemyAtlasVector = enemyAtlasVector;
 			//적들의 객체를 저장 할 벡터
 			_enemyVector = new Vector.<EnemyObject>;
 			
@@ -47,13 +48,13 @@ package aniPangShootingWorld.enemy
 				{
 					case EnemyObjectUtil.ENEMY_PIG:
 					{
-						_enemyVector.push(new EnemyPig(_enemyBitmapDataVector[i],bulletMgr,stage));
+						_enemyVector.push(new EnemyPig(_enemyAtlasVector[i],10,bulletMgr,stage));
 						break;
 					}
 						
 					case EnemyObjectUtil.ENEMY_RAT :
 					{
-						_enemyVector.push(new EnemyRat(_enemyBitmapDataVector[i]));
+						_enemyVector.push(new EnemyRat(_enemyAtlasVector[i],10,stage));
 						break;
 					}
 				}

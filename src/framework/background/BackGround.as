@@ -67,7 +67,7 @@ package framework.background
 				bitmapData = tempbitmapdata;
 				width = Framework.viewport.width;
 				height = Framework.viewport.height;
-				_prevTime = getTimer();	
+				_prevTime = 0;
 			}
 		}
 	}
