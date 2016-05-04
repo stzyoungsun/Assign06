@@ -1,16 +1,18 @@
 package aniPangShootingWorld.enemy
 {
 	import flash.display.BitmapData;
-	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.round.MenuVIew;
 	
-	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
-	import framework.gameobject.Collision;
-
+	
+	/**
+	 * Note @유영선 pig 객체와 거의 동일 하고 각각 객체 마다 특징을 가짐
+	 * (객체에 대한 자세한 설명은 pig 객체 참고)
+	 * RAT 적의 특징 : 체력이 높음
+	 */	
 	public class EnemyRat extends EnemyObject
 	{
 		private var _enemyBitmapData : BitmapData;
@@ -24,43 +26,13 @@ package aniPangShootingWorld.enemy
 		public function EnemyRat(enemyBitmapData : BitmapData)
 		{
 			_enemyBitmapData = enemyBitmapData;
-			//_bulletManager = bulletManager;
 			super(_enemyBitmapData);
 			
 			this.y = _enemyBitmapData.height*2;
 			this.x =10;
-			
-			//_stage=stage;
-			//_bulletManager.createBullet(this.x,this.y);
+	
 			_prevTime = 0;
 		}
-		
-//		public function shooting() : void
-//		{
-//			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
-//			
-//			_bulletManager.bulletVector[bulletNum].initBullet(this);
-//			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
-//		}
-//		
-//		public function bulletFrame() : void
-//		{
-//			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
-//			{
-//				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
-//				{
-//					_stage.removeChild(_bulletManager.bulletVector[i]);
-//					_bulletManager.bulletNumVector.push(i);
-//				}
-//				else
-//					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
-//			}		
-//		}
-//		public function bulletstate(bulletNum : Number) : void
-//		{
-//			_bulletManager.bulletVector[bulletNum].y += 5;
-//		}
-		
 		
 		public override function render():void
 		{

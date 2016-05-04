@@ -20,12 +20,13 @@ package aniPangShootingWorld.loader
 	{
 		private var _currentCount : int = 0;
 		public static var sImageMaxCount :int;
+		//로더에서 이미지 로드가 완료 된 xml과 image 파일이 저장 된 객체
+		private var _loadedImage : LoadedImage = new LoadedImage();  
 		
-		private var _loadedImage : LoadedImage = new LoadedImage();  //로더에서 이미지 로드가 완료 된 xml과 image 파일이 저장 된 객체
-		
-		private var _urlImageArray:Array = new Array();					//파일명이 담긴 배열
-		private var _urlXmlVector : Vector.<String> = new Vector.<String>;  //XML 한 개씩 출력으르 조절 하기 위한 변수
-		
+		//파일명이 담긴 배열
+		private var _urlImageArray:Array = new Array();		
+		//XML 한 개씩 출력으르 조절 하기 위한 변수
+		private var _urlXmlVector : Vector.<String> = new Vector.<String>; 
 		private var _loaderXML:URLLoader;
 
 		private var _onCompleteFunction:Function;
@@ -47,11 +48,10 @@ package aniPangShootingWorld.loader
 			buildXMLLoader();
 		}
 		
-		/**
-		 * 
+		/** 
 		 * @return 
-		 * Note @유영선불러올 폴더명 지정
-		 * 폴더 안에 이미지 로드
+		 * Note @유영선 불러올 폴더명 지정
+		 * 폴더를 끝까지 탐색하여 폴더 안에 있는 모든 이미지, xml을 탐색
 		 */		
 		private function getFolderResource(...files):void
 		{
@@ -68,21 +68,19 @@ package aniPangShootingWorld.loader
 					if(extension == "png" || extension == "jpg" || extension == "PNG" || extension == "JPG")
 					{
 						_imageLength++;
-						trace("이미지 개수 : " + _imageLength);
-						trace("image" + url);
 						_urlImageArray.push(url);
 					}
+					
 					else if(extension == "XML" || extension == "xml")
 					{
-						trace("xml" + file["url"]);
 						_urlXmlVector.push(url);
 					}
+					
 					else
 					{
-						trace("둘다 아님" + file["url"]);
+						continue;
 					}
 				}
-				
 				files = null;
 			}
 		}
@@ -95,13 +93,14 @@ package aniPangShootingWorld.loader
 		{
 			if(_urlXmlVector.length == 0)
 			{
-				trace("파일 내 xml 존재 하지 않음");
 				return;
 			}
+			
 			sImageMaxCount+=_urlXmlVector.length;
 			_loaderXML = new URLLoader(new URLRequest(_urlXmlVector[0]));
 			_loaderXML.addEventListener(Event.COMPLETE, onLoadXMLComplete);
 		}
+		
 		/**
 		 *Note @유영선 이미지 파일 로드 
 		 * 
@@ -110,7 +109,6 @@ package aniPangShootingWorld.loader
 		{
 			if(_urlImageArray.length == 0 )
 			{
-				trace("파일 내 Image 존재 하지 않음");
 				return;
 			}
 			
@@ -126,7 +124,6 @@ package aniPangShootingWorld.loader
 		}
 		
 		/**
-		 * 
 		 * @param e
 		 * Note @유영선 한 이미지가 완료 후 다른 이미지 로딩 진행
 		 */		
@@ -154,7 +151,6 @@ package aniPangShootingWorld.loader
 		 */		
 		private function onLoadXMLComplete(e:Event):void
 		{
-
 			_loaderXML.removeEventListener(Event.COMPLETE, onLoadXMLComplete);
 			_loaderXML = null;
 		
@@ -196,7 +192,6 @@ package aniPangShootingWorld.loader
 		public function dispose() : void
 		{
 			// TODD @유영선 해제 필요 하면 여기다 추가
-			trace("로더 클래스 해제");
 			
 			_loaderXML.removeEventListener(Event.COMPLETE,onLoadXMLComplete);
 			
@@ -206,10 +201,9 @@ package aniPangShootingWorld.loader
 			_loadedImage.dispose();
 			_loadedImage = null;
 		}
+		
 		/**
-		 * 
 		 * @return  이미지 로드가 완료 된 객체
-		 *  
 		 */		
 		public function get loadedImage():LoadedImage{return _loadedImage;}
 	}
