@@ -48,7 +48,7 @@ package aniPangShootingWorld.player
 			
 			_stage=stage;
 			_playerAtlas = null;
-			_prevTime = 0;
+			_prevTime = getTimer();
 		}
 		
 		public override function dispose():void
@@ -75,8 +75,6 @@ package aniPangShootingWorld.player
 			//Note @유영선 round의 stage에 addChild
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.PLAYER_BULLET_MOVING;
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);
-			
-			
 		}
 		
 		/**
@@ -115,7 +113,6 @@ package aniPangShootingWorld.player
 		 */		
 		public function bulletstate(bulletNum : Number) : void
 		{
-
 			_bulletManager.bulletVector[bulletNum].y -= Framework.viewport.height/20;
 		}
 		
@@ -140,13 +137,14 @@ package aniPangShootingWorld.player
 			{
 				_playerHP--;
 				this.objectType = ObjectType.PLAYER_GENERAL;
+				
 			}
 				
 			//@Note 유영선 플레이어 체력이 0이 되었을 경우 메뉴 화면으로 돌아감
 			if(_playerHP == 0)
 			{
-				_stage.dispose();
 				ItemManager.sGoldCount = 0;
+				_stage.dispose();
 				SceneManager.instance.sceneChange();
 				return;
 			}

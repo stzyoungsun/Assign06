@@ -1,10 +1,6 @@
 
 package aniPangShootingWorld.enemy
 {
-	import flash.display.BitmapData;
-	
-	import aniPangShootingWorld.round.MenuVIew;
-	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -32,11 +28,6 @@ package aniPangShootingWorld.enemy
 			//Note @유영선 적 들의 bulletManager
 			_bulletManager = bulletManager;
 			super(_enemyAtlas,frame,stage);
-			
-//			//Note @유영선 적의 시작 위치를 설정
-//			this.y = _enemyBitmapData.height/8;
-//			this.x =Framework.viewport.width;
-			
 			//Note @유영선 적의 미사일의 시작 위치를 설정
 			_bulletManager.createBullet(this.x,this.y);
 			//Note @유영선 ronud의 stage
@@ -119,11 +110,6 @@ package aniPangShootingWorld.enemy
 				}
 				
 				//Note @유영선 적 라인의 모든 적을이 죽었을 경우 _sRedraw의 상태를 true로 변경
-				if(EnemyLine._sCurLineCount == 0)
-				{
-					EnemyLine._sCurLineCount = 5;
-					EnemyObjectUtil._sRedraw = true;
-				}
 			}
 			
 			if(_bulletManager.bulletVector[0].objectType != ObjectType.ENEMY_BULLET_IDLE) 
@@ -135,6 +121,9 @@ package aniPangShootingWorld.enemy
 		{
 			super.dispose();
 			this.stop();
+			
+			if(_stage.getChildIndex(_bulletManager.bulletVector[0]) != -1)
+				_stage.removeChild(_bulletManager.bulletVector[0]);
 			
 			_enemyAtlas.dispose();
 			_enemyAtlas = null;
