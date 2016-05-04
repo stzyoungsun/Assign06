@@ -6,6 +6,8 @@ package framework.display
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
+	import avmplus.getQualifiedClassName;
+	
 	import framework.util.Align;
 
 	public class DisplayObject extends EventDispatcher
@@ -26,19 +28,34 @@ package framework.display
 		protected var _prevTime:Number;
 		protected var _objectType : String = ObjectType.NONE;
 		
+		/**
+		 * 생성자 - 객체를 생성자를 통해 직접 만들 수는 없고 상속해서 사용 가능
+		 */
 		public function DisplayObject()
 		{
+			if (getQualifiedClassName(this) == "framework.display::DisplayObject")
+				throw new Error("This class is Abstract. Use this class extends to your custom class.");
+				
 			_x = _y = _rotation = _pivotX = _pivotY = 0.0;
 			_scaleX = _scaleY = 1.0;
 			_visible = true;
 			_eventDictionary = new Dictionary();
 		}
 
+		/**
+		 * Vertex 데이터와 Index 데이터를 각각의 버퍼에 올려서 화면에 출력하도록 하는 메서드<br/>
+		 * 이 메서드는 가상(추상) 메서드이며 DisplayObject를 상속받은 클래스에서 오버라이딩해서 사용해야한다
+		 */
 		public virtual function render():void
 		{
 			// Abstract Method
 		}
 		
+		/**
+		 * localPoint가 해당 객체의 범위안에 들어있는지 검사하는 메서드
+		 * @param localPoint - 검사하려는 위치가 담긴 Point 객체
+		 * @return 포함되어 있으면 객체 자신을 반환, 없으면 null 반환
+		 */
 		public function hitTest(localPoint:Point):DisplayObject
 		{
 			if (!_visible)
@@ -48,6 +65,7 @@ package framework.display
 			
 			var bounds:Rectangle = new Rectangle(x - pivotX, y - pivotY, width, height);
 			
+			// 포함되어있는지 검사
 			if (bounds.containsPoint(localPoint))
 			{
 				return this;
@@ -56,6 +74,11 @@ package framework.display
 			return null;
 		}
 		
+		/**
+		 * 이벤트를 발생시키는 메서드 
+		 * @param event - 발생시키려는 Event 객체
+		 * @return flash.events.Event.dispatchEvent 메서드 호출
+		 */
 		public override function dispatchEvent(event:Event):Boolean
 		{
 			// 부모가 존재하고 bubbles 속성이 true면 부모의 dispatchEvent 호출
@@ -127,7 +150,6 @@ package framework.display
 					removeEventListener(event, _eventDictionary[event]);
 				}
 			}
-			
 			// Dictionary 객체에 null 입력
 			_eventDictionary = null;
 		}
@@ -168,6 +190,11 @@ package framework.display
 			}
 		}
 		
+		/**
+		 * DisplayObject의 Pivot을 설정해주는 메서드. Framework.util.Align 클래스를 이용해 설정 가능
+		 * @param horizontalAlign - 수평 정렬 (Align.LEFT, Align.RIGHT, Align.CENTER)
+		 * @param verticalAlign - 수직 정렬 (Align.TOP, Align.BOTTOM, Align.CENTER)
+		 */
 		public function alignPivot(horizontalAlign:String="center", verticalAlign:String="center"):void
 		{
 			// pivotX 설정 - 수평 정렬
@@ -205,6 +232,10 @@ package framework.display
 			}
 		}
 		
+		/**
+		 * DisplayObject의 부모를 정하는 메서드. DisplayObjectContainer에서 addChild 이후 사용 
+		 * @param parent - 부모로 설정하려는 DisplayObjectContainer 객체
+		 */
 		internal function setParent(parent:DisplayObjectContainer):void
 		{
 			_parent = parent;
