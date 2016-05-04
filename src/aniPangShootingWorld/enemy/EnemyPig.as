@@ -105,7 +105,7 @@ package aniPangShootingWorld.enemy
 				{				
 					shooting();
 			
-					EnemyLine._sCurLineCount--;
+					//EnemyLine._sCurLineCount--;
 					this.objectType = ObjectType.ITEM_IDLE;
 				}
 				

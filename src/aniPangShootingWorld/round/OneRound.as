@@ -47,7 +47,6 @@ package aniPangShootingWorld.round
 		{
 			this.objectType = ObjectType.ROUND_GENERAL;
 			
-			EnemyLine._sCurLineCount = 5;
 			_prevTime = getTimer();
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
@@ -64,11 +63,11 @@ package aniPangShootingWorld.round
 		public override function render():void
 		{
 			super.render();
-			
+			if(super.children == null) return;
 			var curTimer:int = getTimer();
 		
 			//@Note 유영선 스테이지 난이도 시간에 따라 조절
-			if(curTimer - _prevTime > 10000 && EnemyObjectUtil._sRedraw == true)
+			if(curTimer - _prevTime > 10000 )
 			{
 				//난이도 상승 임시 방편 (아직 몬스터 객체가 얼마 없어서)
 				if(_randomArray[ENEMY_MAX_COUNT-1] < ENEMY_MAX_LEVEL)
@@ -83,7 +82,6 @@ package aniPangShootingWorld.round
 				{
 					//boss 모드 구현
 					this.objectType = ObjectType.ROUND_BOSS;
-					EnemyObjectUtil._sRedraw = false
 					enenmyRemove();
 				}
 			}
@@ -91,13 +89,20 @@ package aniPangShootingWorld.round
 			if(this.objectType == ObjectType.ROUND_BOSS)
 				trace("보스모드 랜더");
 			
-			//Note @유영선 _sRedraw의 값에 따라 화면에 적을 지우고 다시 그립니다.
-			if(EnemyObjectUtil._sRedraw == true)
+			if(checkEnemy())
 			{
 				CreateEnemyLine()
-				EnemyObjectUtil._sRedraw = false;
 			}
-			
+		}
+		
+		private function checkEnemy():Boolean
+		{
+			for(var i:Number = 0; i < 5; i++)
+			{
+				if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
+					return false;
+			}
+			return true;
 		}
 		
 		private function CreateEnemyLine():void
@@ -110,12 +115,12 @@ package aniPangShootingWorld.round
 			}
 			
 			//Note @유영선 적들의 타입 배열을 랜덤하게 섞음
-			for(var cnt : int =0 ; cnt < EnemyLine._sCurLineCount; cnt++)
+			for(var cnt : int =0 ; cnt < EnemyObjectUtil.MAX_LINE_COUNT; cnt++)
 				_typeArray[cnt] = _randomArray[cnt]
 					
 				_typeArray = UtilFunction.shuffle(_typeArray,5);
 			
-			for(var i : Number =0; i < EnemyLine._sCurLineCount; i++)
+			for(var i : Number =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
 				_enemyAtlasVector[i] = new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
 					,MenuVIew.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
@@ -127,10 +132,14 @@ package aniPangShootingWorld.round
 		
 		private function enenmyRemove() : void
 		{
-			for(var i: int =0; i < EnemyLine._sCurLineCount; i ++)
+			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
 				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
+				{
 					removeChild(_enemyLine.enemyVector[i]);
+					_enemyLine.enemyVector[i].dispose();
+				}
+					
 			}
 		}
 		
@@ -139,7 +148,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function enenmyDraw():void
 		{
-			for(var i: int =0; i < EnemyLine._sCurLineCount; i ++)
+			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 				addChild(_enemyLine.enemyVector[i]);
 		}
 		

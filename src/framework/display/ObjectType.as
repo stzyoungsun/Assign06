@@ -7,6 +7,7 @@ package framework.display
 		
 		public static const ENEMY_GENERAL : String = "enemy_general";
 		public static const ENEMY_COLLISION : String = "enemy_conllision";
+		public static const ENEMY_REMOVE : String = "enemy_remove";
 		
 		public static const PLAYER_BULLET_IDLE : String = "player_bullet_idle";
 		public static const PLAYER_BULLET_MOVING : String = "player_bullet_moving";

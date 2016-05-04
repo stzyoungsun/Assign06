@@ -15,6 +15,7 @@ package aniPangShootingWorld.enemy
 	public class EnemyObject extends MovieClip
 	{
 		private var _stage : Sprite;
+		public static var _getCoinCount : Number = 0;
 		
 		public function EnemyObject(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
@@ -32,9 +33,7 @@ package aniPangShootingWorld.enemy
 			
 			if(this.y > Framework.viewport.height)
 			{
-				EnemyObjectUtil._sRedraw = true;
-				EnemyLine._sCurLineCount = 5;
-				this.y = 0;
+				this.objectType = ObjectType.ENEMY_REMOVE;
 			}
 		}
 		
@@ -52,16 +51,11 @@ package aniPangShootingWorld.enemy
 				autoMoving();
 			}
 			
-			if(EnemyLine._sCurLineCount == 0)
-			{
-				EnemyLine._sCurLineCount = 5;
-				return;
-			}	
-			
 			else if(this.objectType == ObjectType.ITEM_COLLISON)
 			{
-				_stage.removeChild(this);
-				this.dispose();
+				this.x = -999;
+				
+				this.objectType = ObjectType.ENEMY_REMOVE;
 				ItemManager.sGoldCount++;
 				trace(ItemManager.sGoldCount);
 			}

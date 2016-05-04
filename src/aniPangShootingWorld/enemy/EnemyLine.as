@@ -14,7 +14,6 @@ package aniPangShootingWorld.enemy
 	{
 		private var _enemyAtlasVector : Vector.<AtlasBitmapData>;
 		private var _enemyVector : Vector.<EnemyObject>;
-		public static var _sCurLineCount :  Number = 5;
 		
 		/**
 		 *Note @유영선 적 5명을 일렬로 세우기 위한 클래스 
@@ -38,7 +37,7 @@ package aniPangShootingWorld.enemy
 			_enemyVector = new Vector.<EnemyObject>;
 			
 			//Note @유영선 한 라인 당 정해 놓은 갯수만큼 정해 놓은 TypeArray에 따라 객체를 생성하고 벡터에 저장 
-			for(var i:int = 0; i < _sCurLineCount; i++)
+			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
 				//Note @유영선 적들의 미사이를 설정하는 bulletManager 
 				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuVIew.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
