@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas ImagePath="Coin_Sprite.png">
+<SubTexture name="coin1.png" x="0" y="0" width="200" height="200 "/>
+<SubTexture name="coin2.png" x="200" y="0" width="200" height="200 "/>
+</TextureAtlas>
