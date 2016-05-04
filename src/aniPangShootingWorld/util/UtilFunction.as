@@ -10,14 +10,13 @@ package aniPangShootingWorld.util
 		private static var _maximum : Number;
 		private static var _roundTolnerval : Number;
 		private static var _randomArray : Array;
+		
 		/**
-		 * 
 		 * @param minimum 큰 수
 		 * @param maximum 작 은수
 		 * @param roundTolnerval 범위
 		 * @return 랜덤 수
-		 * 
-		 * 
+		 * 랜덤 수를 구하는 함수입니다
 		 */		
 		public static function random(minimum : Number = 0, maximum : Number = 0, roundTolnerval : Number = 1) : Number
 		{
@@ -28,6 +27,13 @@ package aniPangShootingWorld.util
 			return (minimum != 0 || maximum != 0) ? original() : section();	
 		}
 		
+		/**
+		 * 
+		 * @param randomArray 셔플을 적용 할 배열
+		 * @param maxNum 셔플을 적용 할 값으 최대 값
+		 * @return 셔플이 완료 된 배열
+		 * 배열의 값들을 랜덤하게 섞어 줍니다.
+		 */		
 		public static function shuffle(randomArray : Array, maxNum : Number) : Array
 		{
 			_randomArray = randomArray;
@@ -48,13 +54,11 @@ package aniPangShootingWorld.util
 									
 		private static function section():Number
 		{
-			// TODO Auto Generated method stub
 			return Math.random();
 		}
 		
 		private static function original():Number
 		{
-			// TODO Auto Generated method stub
 			if(_minimum > _maximum)
 			{
 				var tmp : Number = _minimum;
