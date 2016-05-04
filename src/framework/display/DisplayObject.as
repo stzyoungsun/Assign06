@@ -109,6 +109,7 @@ package framework.display
 		 */
 		public function dispose():void
 		{
+			_prevTime = 0;
 			// Dictionary에 존재하는 모든 리스너를 제거
 			for(var event:String in _eventDictionary)
 			{

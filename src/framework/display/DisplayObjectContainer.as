@@ -155,11 +155,12 @@ package framework.display
 						{
 							trace("플레이어 충돌");
 							child.objectType = ObjectType.PLAYER_COLLISION;
-							_children[curChildNum].objectType = ObjectType.COIN;
+							_children[curChildNum].objectType = ObjectType.ITEM_IDLE;
 						}
 					}
 				}
 			}
+			
 			else if(_children[curChildNum].objectType == ObjectType.PLAYER_GENERAL)
 			{
 				for(i = 0 ; i <_children.length; ++i)
@@ -173,7 +174,15 @@ package framework.display
 							child.objectType = ObjectType.ENEMY_BULLET_COLLISION;
 							_children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
 						}
+					}
 						
+					else if(child.objectType == ObjectType.ITEM_IDLE)
+					{
+						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						{
+							trace("아이템과 충돌");
+							child.objectType = ObjectType.ITEM_COLLISON;
+						}
 					}
 				}
 			}
@@ -247,16 +256,12 @@ package framework.display
 			// 자기 자신의 자원 해제
 			super.dispose();
 			
-			// 자식들의 자원 해제
-			var numChildren:int = _children.length;
-			
 			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
-			for(var i:int = 0; i < numChildren; i++)
+			for(var i:int = 0; i < _children.length; i++)
 			{
 				var child:DisplayObject = _children[i];
 				child.dispose();
 			}
-			
 			_children = null;
 		}
 		
