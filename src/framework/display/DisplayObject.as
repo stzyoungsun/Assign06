@@ -23,6 +23,7 @@ package framework.display
 		private var _parent:DisplayObjectContainer;
 		private var _eventDictionary:Dictionary;
 		
+		protected var _prevTime:Number;
 		protected var _objectType : String = ObjectType.NONE;
 		
 		public function DisplayObject()

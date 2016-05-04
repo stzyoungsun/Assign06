@@ -13,21 +13,28 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.scene.SceneManager;
+	
 	/**
-	 * 
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
-	 * 
 	 */
 	public class MenuVIew extends Sprite
 	{
-		private var _loaderControl : LoaderControl;		//리소스를 로드하는 LoaderControl 생성
+		//Note @유영선 리소스를 로드하는 LoaderControl 생성
+		private var _loaderControl : LoaderControl;		
 		
+		//Note @유영선 static 변수로 로드한 이미지 들을 저장
 		private  static var _sloadedImage : LoadedImage;
 		
+		//Note @유영선 메뉴 화면 이미지
 		private var _menuImage : Image;
+		//로딩 중 이미지
 		private var _loadingImage : Image;
+		//Note @유영선 화면을 터치해주세요 이미지
 		private var _menuText : MovieClip;
 		
+		/**
+		 * 로드 전 이미지를 불러와서 화면에 출력합니다.
+		 */		
 		public function MenuVIew()
 		{
 			_menuImage = new Image(0,0,(new PrevLoadImage.MENUVIEW()).bitmapData);
@@ -49,6 +56,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function onProgress(progressCount : Number) : void
 		{
+			//Note @유영선 각각 상태 카운터에 따라 로딩 이미지를 설정
 			if(progressCount == 60)
 			{
 				_loadingImage.bitmapData = (new PrevLoadImage.LOADING60()).bitmapData;
@@ -94,6 +102,7 @@ package aniPangShootingWorld.round
 			
 			_loaderControl = null;
 		}
+		
 		/**
 		 * 
 		 * @param event
@@ -101,7 +110,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function onTouch(event:TouchEvent):void
 		{
-			// TODO Auto-generated method stub
+			//Note @유영선 로드 완료 후 화면을 터치 하면 oneRound로 넘어 갑니다.
 			switch(event.touch.phase)
 			{
 				case TouchPhase.ENDED:
@@ -111,7 +120,6 @@ package aniPangShootingWorld.round
 					SceneManager.instance.sceneChange(); 
 					break;
 			}
-			
 		}
 		
 		public override function dispose() : void
