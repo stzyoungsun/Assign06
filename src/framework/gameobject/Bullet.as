@@ -3,6 +3,7 @@ package framework.gameobject
 	import flash.display.BitmapData;
 	
 	import framework.display.Image;
+	import framework.display.ObjectType;
 
 	public class Bullet extends Image
 	{

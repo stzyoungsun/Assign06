@@ -2,6 +2,8 @@ package aniPangShootingWorld.player
 {
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.item.ItemManager;
+	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -68,14 +70,13 @@ package aniPangShootingWorld.player
 		{
 			//Note @유영선 발사 할 미사일 번호를 저장하는 변수
 			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
-			
-			//Note @유영선 선택 된 미사일을  PLAYER_BULLET_MOVING 상태로 설정
-			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.PLAYER_BULLET_MOVING;
-			
 			//Note @유영선 선택 된 미사일을 플레이어 위치에 따라 재설정 그리고 크거 조절
 			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/2, this.height/2);
 			//Note @유영선 round의 stage에 addChild
-			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.PLAYER_BULLET_MOVING;
+			_stage.addChild(_bulletManager.bulletVector[bulletNum]);
+			
+			
 		}
 		
 		/**
@@ -86,17 +87,18 @@ package aniPangShootingWorld.player
 			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
 			{
 				//@Note 유영선  플레이어 미사일이 벽과 충돌 했는지 확인합니다ㅣ.
-				if(Collision.bulletToWall(_bulletManager.bulletVector[i]))
+				if(Collision.bulletToWall(_bulletManager.bulletVector[i]) && _bulletManager.bulletVector[i].objectType == ObjectType.PLAYER_BULLET_MOVING)
 				{
 					_stage.removeChild(_bulletManager.bulletVector[i]);
+					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_bulletManager.bulletNumVector.push(i);
 				}
 				
 				//@Note 유영선  플레이어 미사일이 적들과 충돌 했으면 그 미사일을 제거합니다.
 				else if(_bulletManager.bulletVector[i].objectType == ObjectType.PLAYER_BULLET_COLLISION)
 				{
-					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_MOVING;
 					_stage.removeChild(_bulletManager.bulletVector[i]);
+					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_bulletManager.bulletNumVector.push(i);
 				}
 				
@@ -144,6 +146,7 @@ package aniPangShootingWorld.player
 			if(_playerHP == 0)
 			{
 				_stage.dispose();
+				ItemManager.sGoldCount = 0;
 				SceneManager.instance.sceneChange();
 				return;
 			}

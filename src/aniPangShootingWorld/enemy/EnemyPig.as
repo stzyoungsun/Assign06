@@ -5,6 +5,7 @@ package aniPangShootingWorld.enemy
 	
 	import aniPangShootingWorld.round.MenuVIew;
 	
+	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
@@ -17,24 +18,24 @@ package aniPangShootingWorld.enemy
 	 */
 	public class EnemyPig extends EnemyObject
 	{
-		private var _enemyBitmapData : BitmapData;
+		private var _enemyAtlas : AtlasBitmapData;
 		private var _bulletManager : BulletManager;
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
 		private var _enemyHP : Number = 1;
 		
-		public function EnemyPig(enemyBitmapData : BitmapData, bulletManager : BulletManager, stage : Sprite)
+		public function EnemyPig(enemyAtlas : AtlasBitmapData, frame : Number, bulletManager : BulletManager, stage : Sprite)
 		{
 			//Note @유영선 적 객체의 비트맵데이터
-			_enemyBitmapData = enemyBitmapData;
+			_enemyAtlas = enemyAtlas;
 			//Note @유영선 적 들의 bulletManager
 			_bulletManager = bulletManager;
-			super(enemyBitmapData);
+			super(_enemyAtlas,frame,stage);
 			
-			//Note @유영선 적의 시작 위치를 설정
-			this.y = _enemyBitmapData.height/8;
-			this.x =Framework.viewport.width;
+//			//Note @유영선 적의 시작 위치를 설정
+//			this.y = _enemyBitmapData.height/8;
+//			this.x =Framework.viewport.width;
 			
 			//Note @유영선 적의 미사일의 시작 위치를 설정
 			_bulletManager.createBullet(this.x,this.y);
@@ -66,12 +67,12 @@ package aniPangShootingWorld.enemy
 		 */		
 		public function bulletFrame() : void
 		{
-			
 			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
 			{
 				//Note @유영선 충돌 체크 매니져를 이용하여 벽과의 충돌과 미사일의 상태가 ENEMY_BULLET_COLLISION이면 stage에서 제거
-				if(Collision.bulletToWall(_bulletManager.bulletVector[i]) || _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
+				if((Collision.bulletToWall(_bulletManager.bulletVector[i])&& _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_MOVING)|| _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
 				{
+					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_stage.removeChild(_bulletManager.bulletVector[i]);
 				}
 				else
@@ -98,7 +99,7 @@ package aniPangShootingWorld.enemy
 			//Note @유영선 적이 일반 상태 일 경우 일반 상태에 맞는 비트맵으로 설정
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
-				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["pig1.png"].bitmapData;
+				this.showImageAt(0);
 				autoMoving();
 			}
 			//Note @유영선 적이 충돌 상태일 경우 hp를 감소시키고 충돌 상태에 맞는 비트맵으로 설정
@@ -106,7 +107,7 @@ package aniPangShootingWorld.enemy
 			{
 				this.objectType = ObjectType.ENEMY_GENERAL;
 				_enemyHP--;
-				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["pig2.png"].bitmapData;
+				this.showImageAt(1);
 	
 				//Note @유영선 적의 체력이 0 일 경우 상태를 ObjectType.COIN으로 변경
 				if(_enemyHP == 0)
@@ -114,7 +115,7 @@ package aniPangShootingWorld.enemy
 					shooting();
 			
 					EnemyLine._sCurLineCount--;
-					this.objectType = ObjectType.COIN;
+					this.objectType = ObjectType.ITEM_IDLE;
 				}
 				
 				//Note @유영선 적 라인의 모든 적을이 죽었을 경우 _sRedraw의 상태를 true로 변경
@@ -125,13 +126,6 @@ package aniPangShootingWorld.enemy
 				}
 			}
 			
-			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
-			else
-			{
-				this.bitmapData = MenuVIew.sloadedImage.imageDictionary["coin1.png"].bitmapData;
-				autoMoving();
-			}
-			
 			if(_bulletManager.bulletVector[0].objectType != ObjectType.ENEMY_BULLET_IDLE) 
 				bulletFrame();
 			super.render();
@@ -140,8 +134,10 @@ package aniPangShootingWorld.enemy
 		public override function dispose():void
 		{
 			super.dispose();
+			this.stop();
 			
-			_enemyBitmapData = null;
+			_enemyAtlas.dispose();
+			_enemyAtlas = null;
 			_stage = null;
 			_bulletManager.dispose();
 			_bulletManager = null;
