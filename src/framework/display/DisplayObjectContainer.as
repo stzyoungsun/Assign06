@@ -100,6 +100,8 @@ package framework.display
 					child.render();
 					
 					painter.popMatrix();
+					
+					if(_children == null) return;
 				}
 			}
 		}
@@ -201,6 +203,7 @@ package framework.display
 		
 		public override function dispose():void
 		{
+			super.dispose();
 			var numChildren:int = _children.length;
 			
 			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
