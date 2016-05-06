@@ -6,10 +6,13 @@ package aniPangShootingWorld.loader
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.filesystem.File;
+	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
 	import avmplus.getQualifiedClassName;
+	
+	import framework.sound.SoundManager;
 	
 	/**
 	 * 이미지와 xml 2가지를  분리하여 Dictionary에 저장
@@ -22,6 +25,8 @@ package aniPangShootingWorld.loader
 		
 		// @jihwan.ryu 이미지 리소스의 URL을 담은 Array 객체
 		private var _urlImageArray:Array;
+		// @jihwan.ryu 사운드 리소스의 URL을 담은 Array 객체
+		private var _urlSoundArray:Array;
 		// XML 한 개씩 출력으르 조절 하기 위한 변수
 		private var _urlXmlVector : Vector.<String>;
 
@@ -43,6 +48,7 @@ package aniPangShootingWorld.loader
 			_loadedImage = new LoadedImage();
 			
 			_urlImageArray = new Array();
+			_urlSoundArray = new Array();
 			_urlXmlVector = new Vector.<String>();
 			
 			_currentCount = 0;
@@ -53,6 +59,7 @@ package aniPangShootingWorld.loader
 		{
 			getFolderResource(File.applicationDirectory.resolvePath(directoryName));
 			
+			buildSoundLoader();
 			buildLoader();
 			buildXMLLoader();
 		}
@@ -61,7 +68,8 @@ package aniPangShootingWorld.loader
 		 * @return 
 		 * Note @유영선 불러올 폴더명 지정
 		 * 폴더를 끝까지 탐색하여 폴더 안에 있는 모든 이미지, xml을 탐색
-		 */		
+		 * Note @jihwan.ryu mp3 파일도 검색하도록 수정
+		 */
 		private function getFolderResource(...files):void
 		{
 			for each(var file:Object in files)
@@ -86,6 +94,11 @@ package aniPangShootingWorld.loader
 						case "xml":
 						case "XML":
 							_urlXmlVector.push(url);
+							break;
+						// Note @jihwan.ryu 사운드 파일목록을 추가하는 구문
+						case "mp3":
+						case "MP3":
+							_urlSoundArray.push(url);
 							break;
 						default:
 							continue;
@@ -112,7 +125,7 @@ package aniPangShootingWorld.loader
 		}
 		
 		/**
-		 *Note @유영선 이미지 파일 로드 
+		 * Note @유영선 이미지 파일 로드 
 		 */		
 		private function buildLoader():void
 		{
@@ -175,7 +188,41 @@ package aniPangShootingWorld.loader
 		}
 		
 		/**
-		 * 
+		 * Note @jihwan.ryu 사운드 파일을 로딩하는 메서드
+		 */
+		private function buildSoundLoader():void
+		{
+			if(_urlSoundArray.length == 0 )
+			{
+				return;
+			}
+			
+			for(var i:int = 0; i < _urlSoundArray.length; ++i)
+			{
+				var sound:Sound = new Sound();
+				sound.load(new URLRequest(_urlSoundArray[i]));
+				sound.addEventListener(Event.COMPLETE, onLoadSoundComplete);
+			}
+		}
+		
+		/**
+		 * Note @jihwan.ryu 사운드 파일의 로딩이 완료되면 호출되는 메서드. 로딩된 사운드 리소스는 SoundManager에 등록된다. 
+		 * @param event - 이벤트 정보를 가진 Event 객체
+		 */
+		private function onLoadSoundComplete(event:Event):void
+		{
+			var sound:Sound = event.currentTarget as Sound;
+			sound.removeEventListener(Event.COMPLETE, onLoadSoundComplete);
+			
+			var filename:String = decodeURIComponent(sound.url);
+			var extension:Array = filename.split('/');
+			
+			// 사운드 매니저에 입력
+			var soundManager:SoundManager = SoundManager.getInstance();
+			soundManager.addSound(extension[extension.length - 1], sound);
+		}
+		
+		/**
 		 * Note @유영선 이미지가 모두 로딩 된 후에 Mainclass에 완료 함수 호출
 		 */		
 		private function chedckedImage() : void
@@ -204,6 +251,7 @@ package aniPangShootingWorld.loader
 			
 			_urlXmlVector = null;
 			_urlImageArray = null;
+			_urlSoundArray = null;
 			
 			_loadedImage.dispose();
 			_loadedImage = null;
