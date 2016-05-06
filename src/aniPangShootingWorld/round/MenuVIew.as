@@ -17,7 +17,7 @@ package aniPangShootingWorld.round
 	/**
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
 	 */
-	public class MenuVIew extends Sprite
+	public class MenuView extends Sprite
 	{
 		//Note @유영선 리소스를 로드하는 LoaderControl 생성
 		private var _loaderControl : LoaderControl;		
@@ -35,7 +35,7 @@ package aniPangShootingWorld.round
 		/**
 		 * 로드 전 이미지를 불러와서 화면에 출력합니다.
 		 */		
-		public function MenuVIew()
+		public function MenuView()
 		{
 			_menuImage = new Image(0,0,(new PrevLoadImage.MENUVIEW()).bitmapData);
 			addChild(_menuImage);
