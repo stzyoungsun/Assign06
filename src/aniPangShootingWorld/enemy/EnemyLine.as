@@ -2,7 +2,7 @@ package aniPangShootingWorld.enemy
 {
 	import flash.display.BitmapData;
 	
-	import aniPangShootingWorld.round.MenuVIew;
+	import aniPangShootingWorld.round.MenuView;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
@@ -40,7 +40,7 @@ package aniPangShootingWorld.enemy
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
 				//Note @유영선 적들의 미사이를 설정하는 bulletManager 
-				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuVIew.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
+				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuView.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
 				
 				//Note @유영선 타입배열에 따라 설정 한 값으로 분기하여 객체를 생성 
 				switch(enemyTypeArray[i])

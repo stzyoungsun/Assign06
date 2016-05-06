@@ -1,7 +1,7 @@
 package aniPangShootingWorld.enemy
 {
 	import aniPangShootingWorld.item.ItemManager;
-	import aniPangShootingWorld.round.MenuVIew;
+	import aniPangShootingWorld.round.MenuView;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
@@ -46,7 +46,7 @@ package aniPangShootingWorld.enemy
 			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
 			if(this.objectType == ObjectType.ITEM_IDLE)
 			{
-				this.spriteSheet = new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuVIew.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
+				this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
 				this.start();
 				autoMoving();
 			}

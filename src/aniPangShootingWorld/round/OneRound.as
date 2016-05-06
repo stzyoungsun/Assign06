@@ -122,8 +122,8 @@ package aniPangShootingWorld.round
 			
 			for(var i : Number =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
-				_enemyAtlasVector[i] = new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
-					,MenuVIew.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
+				_enemyAtlasVector[i] = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
+					,MenuView.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
 			}
 			_enemyLine.setEnemyLine(_enemyAtlasVector,_typeArray, this);
 			enenmyDraw();
@@ -157,10 +157,10 @@ package aniPangShootingWorld.round
 		 */		
 		private function playerDraw():void
 		{
-			_backSky = new BackGround(2, 60, 10.24, MenuVIew.sloadedImage.imageDictionary["backskycur.png"].bitmapData);
+			_backSky = new BackGround(2, 60, 10.24, MenuView.sloadedImage.imageDictionary["backskycur.png"].bitmapData);
 			
-			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE,30,MenuVIew.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
-			_player = new Player(new AtlasBitmapData(MenuVIew.sloadedImage.imageDictionary["Player.png"],MenuVIew.sloadedImage.xmlDictionary["Player.xml"]),5,
+			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE,30,MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
+			_player = new Player(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Player.png"],MenuView.sloadedImage.xmlDictionary["Player.xml"]),5,
 				bulletMgr,this);
 			
 			_player.width = Framework.viewport.width/6;
@@ -195,7 +195,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function backGroundDraw():void
 		{
-			_backGround = new BackGround(2, 60, 1, MenuVIew.sloadedImage.imageDictionary["backtree.jpg"].bitmapData);
+			_backGround = new BackGround(2, 60, 1, MenuView.sloadedImage.imageDictionary["backtree.jpg"].bitmapData);
 			addChild(_backGround);
 		}
 		

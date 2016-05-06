@@ -3,7 +3,7 @@ package aniPangShootingWorld.enemy
 	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
-	import aniPangShootingWorld.round.MenuVIew;
+	import aniPangShootingWorld.round.MenuView;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.display.ObjectType;
