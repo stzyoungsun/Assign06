@@ -6,6 +6,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.Player;
+	import aniPangShootingWorld.resource.SoundResource;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -16,6 +17,7 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
+	import framework.sound.SoundManager;
 	
 
 	public class OneRound extends Sprite
@@ -38,6 +40,8 @@ package aniPangShootingWorld.round
 		//Note @유영선 적들의 Type을 저장 할 변수 초기화
 		private var _typeArray : Array = new Array();
 		
+		private var _soundManager:SoundManager;
+		
 		private const ENEMY_MAX_LEVEL : Number = 1;
 		private const ENEMY_MAX_COUNT : Number = 3;
 		/**
@@ -54,6 +58,10 @@ package aniPangShootingWorld.round
 			playerDraw();
 			//Note @유영선 적 라인을 설정 하고 적들을 화면에 출력하고 배경 스카이를 출력
 			CreateEnemyLine();
+			
+			_soundManager = SoundManager.getInstance();
+			// Note @jihwan.ryu BGM 반복 재생
+			_soundManager.play(SoundResource.BGM_1, true);
 		}
 		
 		/**
@@ -67,7 +75,7 @@ package aniPangShootingWorld.round
 			var curTimer:int = getTimer();
 		
 			//@Note 유영선 스테이지 난이도 시간에 따라 조절
-			if(curTimer - _prevTime > 10000 )
+			if(curTimer - _prevTime > 10000)
 			{
 				//난이도 상승 임시 방편 (아직 몬스터 객체가 얼마 없어서)
 				if(_randomArray[ENEMY_MAX_COUNT-1] < ENEMY_MAX_LEVEL)
@@ -80,6 +88,14 @@ package aniPangShootingWorld.round
 				
 				else
 				{
+					// FIXME @jihwan.ryu 한번만 실행하기 위해서 임시방편으로 if문 설정하였는데, 더 좋은 방법을 강구할 예정
+					if(objectType != ObjectType.ROUND_BOSS)
+					{
+						// Note @jihwan.ryu BGM 재생 중지
+						_soundManager.stopLoopedPlaying();
+						// Note @jihwan.ryu 보스 등장 경고음 재생
+						_soundManager.play(SoundResource.BOSS_WARNING);
+					}
 					//boss 모드 구현
 					this.objectType = ObjectType.ROUND_BOSS;
 					enenmyRemove();

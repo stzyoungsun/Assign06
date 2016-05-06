@@ -3,6 +3,7 @@ package aniPangShootingWorld.player
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.item.ItemManager;
+	import aniPangShootingWorld.resource.SoundResource;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
@@ -12,6 +13,7 @@ package aniPangShootingWorld.player
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Collision;
 	import framework.scene.SceneManager;
+	import framework.sound.SoundManager;
 
 	/**
 	 * Note @유영선 사용자가 직접 조종하는 객체입니다
@@ -22,6 +24,7 @@ package aniPangShootingWorld.player
 		private var _playerAtlas:AtlasBitmapData;
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
+		private var _soundManager:SoundManager;
 			
 		private var _playerHP : Number = 2;
 		/**
@@ -49,6 +52,8 @@ package aniPangShootingWorld.player
 			_stage=stage;
 			_playerAtlas = null;
 			_prevTime = getTimer();
+			
+			_soundManager = SoundManager.getInstance();
 		}
 		
 		public override function dispose():void
@@ -75,6 +80,8 @@ package aniPangShootingWorld.player
 			//Note @유영선 round의 stage에 addChild
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.PLAYER_BULLET_MOVING;
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);
+			// Note @jihwan.ryu 미사일 발사마다 효과음 재생
+			_soundManager.play(SoundResource.PLAYER_MISSILE);
 		}
 		
 		/**
