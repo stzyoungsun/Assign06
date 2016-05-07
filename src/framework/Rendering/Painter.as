@@ -16,11 +16,9 @@ package framework.Rendering
 	public class Painter
 	{
 		private var _context:Context3D;
-		private var _program:Program3D;
-		
+		private var _quadProgram:Program3D;
+		private var _imageProgram:Program3D;
 		private var _assembler:AGALMiniAssembler;
-		private var _vertexProgram:ByteArray;
-		private var _fragmentProgram:ByteArray;
 		
 		private var _projectionMatrix:Matrix3D;
 		private var _modelViewMatrix:Matrix3D;
@@ -35,7 +33,8 @@ package framework.Rendering
 			_projectionMatrix = new Matrix3D();
 			_modelViewMatrix = new Matrix3D();
 			
-			createProgram();
+			createQuadProgram();
+			createImageProgram();
 			
 			loadIdentity();
 		}
@@ -98,33 +97,58 @@ package framework.Rendering
 			return mvpMatrix;
 		}
 		
-		public function createProgram():void
+		public function createQuadProgram():void
 		{
+			var vertexProgram:ByteArray;
+			var fragmentProgram:ByteArray;
+			
 			_assembler.assemble(
 				Context3DProgramType.VERTEX,
-				"m44 op, va0, vc0  			\n" +
-//				"mov v0, va1      			\n" +
-				"mov vt0, va2				\n" +
-				"div vt0.xy, vt0.xy, vc4.xy	\n" +
-				"mov v1, vt0				\n"
+				"m44 op, va0, vc0	\n" +
+				"mov v0, va1		\n"
 			);
-			_vertexProgram = _assembler.agalcode;
+			vertexProgram = _assembler.agalcode;
 			
 			_assembler.assemble(
 				Context3DProgramType.FRAGMENT,
-				"tex ft1, v1, fs1 <2d,linear,mipnone,clamp> \n" +
-//				"mul ft2, ft1, v0       \n" +
-				"mul oc, ft1, fc0      \n"
+				"mul ft0, v0, fc0	\n" +
+				"mov oc, ft0		\n"
 			);
-
-			_fragmentProgram = _assembler.agalcode;
+			fragmentProgram = _assembler.agalcode;
 			
-			_program = _context.createProgram();
-			_program.upload(_vertexProgram, _fragmentProgram);
+			_quadProgram = _context.createProgram();
+			_quadProgram.upload(vertexProgram, fragmentProgram);
+		}
+		
+		public function createImageProgram():void
+		{
+			var vertexProgram:ByteArray;
+			var fragmentProgram:ByteArray;
+			
+			_assembler.assemble(
+				Context3DProgramType.VERTEX,
+				"m44 op, va0, vc0			\n" +
+				"mov vt0, va1		 		\n" +
+				"div vt0.xy, vt0.xy, vc4.xy	\n" +
+				"mov v1	vt0					\n"
+			);
+			vertexProgram = _assembler.agalcode;
+			
+			_assembler.assemble(
+				Context3DProgramType.FRAGMENT,
+				"tex ft1, v1, fs1 <2d, linear, mipnone, clamp>	\n" +
+				"mul ft2, ft1, fc0								\n" +
+				"mov oc ft2										\n"
+			);
+			fragmentProgram = _assembler.agalcode;
+			
+			_imageProgram = _context.createProgram();
+			_imageProgram.upload(vertexProgram, fragmentProgram);
 		}
 		
 		public function get context():Context3D { return _context; }
-		public function get program():Program3D { return _program; }
+		public function get quadProgram():Program3D { return _quadProgram; }
+		public function get imageProgram():Program3D { return _imageProgram; }
 		public function get projectionMatrix():Matrix3D { return _projectionMatrix; }
 		public function get modelViewMatrix():Matrix3D { return _modelViewMatrix; }
 	}
