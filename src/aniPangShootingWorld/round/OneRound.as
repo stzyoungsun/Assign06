@@ -3,15 +3,20 @@ package aniPangShootingWorld.round
 	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.boss.BossObject;
+	import aniPangShootingWorld.boss.OneRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
+	import aniPangShootingWorld.enemy.EnemyPig;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.resource.SoundResource;
+	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.background.BackGround;
 	import framework.core.Framework;
+	import framework.display.Image;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.event.TouchEvent;
@@ -41,17 +46,29 @@ package aniPangShootingWorld.round
 		private var _typeArray : Array = new Array();
 		
 		private var _soundManager:SoundManager;
+		//Note @유영선 적의 라인이 나온 횟수를 검사하는 변수
+		private var _EnemyCnt : Number = 0;
 		
-		private const ENEMY_MAX_LEVEL : Number = 1;
+		//Note @유영선 보스 나오기 전  화면을 조절하는 시간
+		private var _bossWarningTime : Number = 0;
+		private var _bossWarningView : Image;
+		
+		private const ENEMY_TWO_LEVEL : Number = 1;
+		private const ENEMY_THREE_LEVEL : Number = 2;
+		private const ENEMY_BOSS_LEVEL : Number = 3;
+		
 		private const ENEMY_MAX_COUNT : Number = 3;
+		//Note @유영선 보스 
+		private var _boss : Vector.<OneRoundBoss> = new Vector.<OneRoundBoss>;
+		//Note @유영선 보스의 체력바
+		private var _bossHPbar : Vector.<HPbar> = new Vector.<HPbar>;
+		
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */		
 		public function OneRound()
 		{
 			this.objectType = ObjectType.ROUND_GENERAL;
-			
-			_prevTime = getTimer();
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 플레이어를 화면에 출력
@@ -72,45 +89,85 @@ package aniPangShootingWorld.round
 		{
 			super.render();
 			if(super.children == null) return;
-			var curTimer:int = getTimer();
-		
-			//@Note 유영선 스테이지 난이도 시간에 따라 조절
-			if(curTimer - _prevTime > 10000)
+
+			if(this.objectType == ObjectType.ROUND_BOSS_WARNING)
 			{
-				//난이도 상승 임시 방편 (아직 몬스터 객체가 얼마 없어서)
-				if(_randomArray[ENEMY_MAX_COUNT-1] < ENEMY_MAX_LEVEL)
+				var curBossWarningTime : int = getTimer();
+				//Note @유영선 보스 워닝 화면 5초간 출력
+				if(curBossWarningTime - _bossWarningTime < 5000)
 				{
-					_randomArray[_randomArrayControl]++;
-					_randomArrayControl++;
-					if(_randomArrayControl == 5) _randomArrayControl = 0;
-					_prevTime = getTimer();
+					_bossWarningView.visible = true;
+					_bossWarningView.width = Framework.viewport.width;
+					_bossWarningView.height = Framework.viewport.height;
 				}
-				
-				else
+				//Note @유영선 보스 워닝하면 5초간 출력 후 보스 등장
+				else 
 				{
-					// FIXME @jihwan.ryu 한번만 실행하기 위해서 임시방편으로 if문 설정하였는데, 더 좋은 방법을 강구할 예정
-					if(objectType != ObjectType.ROUND_BOSS)
-					{
-						// Note @jihwan.ryu BGM 재생 중지
-						_soundManager.stopLoopedPlaying();
-						// Note @jihwan.ryu 보스 등장 경고음 재생
-						_soundManager.play(SoundResource.BOSS_WARNING);
-					}
-					//boss 모드 구현
 					this.objectType = ObjectType.ROUND_BOSS;
-					enenmyRemove();
+					removeChild(_bossWarningView);
+					_bossWarningView.dispose();
+					_bossWarningView = null;
 				}
 			}
 			
-			if(this.objectType == ObjectType.ROUND_BOSS)
-				trace("보스모드 랜더");
-			
-			if(checkEnemy())
+			if(checkEnemy() && this.objectType == ObjectType.ROUND_GENERAL)
 			{
 				CreateEnemyLine()
 			}
+			
+			if(this.objectType == ObjectType.ROUND_BOSS)
+			{
+				bossDraw();
+			}
 		}
 		
+		/**
+		 *Note @유영선 보스를 생성 합니다. 
+		 */		
+		private function bossDraw() : void
+		{
+			if(OneRoundBoss.sBossLevel == 0)
+			{
+				if(_boss[0].visible == false)
+					_boss[0].visible = true;
+				if(_boss[0].play == false);
+					_boss[0].start();
+				if(_bossHPbar[0].visible == false)
+					_bossHPbar[0].visible = true;
+							
+			    _bossHPbar[0].calcHP(OneRoundBoss.ONE_BOSS_HP,_boss[0].oneBossHP);
+			}
+			
+			else 
+			{
+				_boss[0].visible = false;
+				_bossHPbar[0].visible = false;
+				for(var i : Number = 1; i < 3; i++)
+				{
+					if(_boss[i].objectType == ObjectType.BOSS_DIE)
+					{
+						_boss[i].visible = false;
+						_bossHPbar[i].visible = false;
+					}
+					
+					else
+					{
+					 if(_boss[i].play == false);
+						_boss[i].start();
+					
+						_boss[i].visible = true;
+						_bossHPbar[i].visible = true;
+						
+						_bossHPbar[i].calcHP(OneRoundBoss.ONE_BOSS_HP,_boss[i].oneBossHP);
+					}
+				}
+			}
+		}
+		
+		/**
+		 * @return true : 모두 사려졌을 경우
+		 * Note @유영선 적들이 다 사라졌는지 체크합니다.
+		 */		
 		private function checkEnemy():Boolean
 		{
 			for(var i:Number = 0; i < 5; i++)
@@ -146,26 +203,101 @@ package aniPangShootingWorld.round
 			addChild(_backSky);
 		}
 		
+		/**
+		 * Note @유영선 enemyLine을 화면에 그립니다
+		 */		
+		private function enenmyDraw():void
+		{
+			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
+				addChild(_enemyLine.enemyVector[i]);
+		}
+		
+		/**
+		 * Note @유영선 화면에서 적을 지웁니다.
+		 */		
 		private function enenmyRemove() : void
 		{
 			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
 				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
 				{
-					removeChild(_enemyLine.enemyVector[i]);
-					_enemyLine.enemyVector[i].dispose();
-				}
-					
+					removeChild(_enemyLine.enemyVector[i],true);
+				}	
 			}
+			_EnemyCnt++;	//Note @유영선 제거 개수 (라운드에 level 조절)
+			roundUp();
 		}
 		
 		/**
-		 * Note @유영선 enemyLine을 등록합니다.
+		 *Note @유영선 적 라인이 나온 개수를 체크하여 라운드의 난이도를 업시킵니다. 
 		 */		
-		private function enenmyDraw():void
+		private function roundUp() : void
 		{
-			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
-				addChild(_enemyLine.enemyVector[i]);
+			switch(_EnemyCnt)
+			{
+				case ENEMY_TWO_LEVEL:
+				{
+					_randomArray[0]++;
+					break;
+				}
+				case ENEMY_THREE_LEVEL:
+				{
+					_randomArray[1]++;
+					break;
+				}
+				
+				case ENEMY_BOSS_LEVEL:
+				{
+					_soundManager.stopLoopedPlaying();
+					_soundManager.play(SoundResource.BOSS_WARNING);
+					_bossWarningTime = getTimer();
+					this.objectType = ObjectType.ROUND_BOSS_WARNING;
+					enenmyRemove();
+					
+					bossInit();
+				}
+			}
+		}
+		// Note @유영선 보스 슬라임의 초기화
+		private function bossInit():void
+		{
+			var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuView.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
+			//Note @유영선 1 -> 2 쪼개지는 보스 까지 포함한 3마리의 초기화
+			for(var i : Number = 0; i < 3; ++i)
+			{
+				_boss.push(new OneRoundBoss(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["boss_Sheet.png"]
+					,MenuView.sloadedImage.xmlDictionary["boss_Sheet.xml"]),10,bulletMgr,this));
+				
+				switch(i)
+				{
+					case 0:
+					{
+						_boss[i].x =Framework.viewport.width/8;
+						_boss[i].y = 0;
+						_boss[i].width = Framework.viewport.width*3/4;
+						_boss[i].height = Framework.viewport.height/3;
+						break;
+					}
+					case 1:
+					case 2:
+					{
+						_boss[i].width = Framework.viewport.width*3/8;
+						_boss[i].height = Framework.viewport.height/6;
+						_boss[i].x = _boss[i].width/3+_boss[i].width*(i-1);
+						_boss[i].y = 0;
+						break;
+					}
+				}
+				_boss[i].visible = false;
+				
+				addChild(_boss[i]);
+				
+				_bossHPbar.push(new HPbar(0,0,MenuView.sloadedImage.imageDictionary["100per.png"].bitmapData));
+				_bossHPbar[i].hpBarInit(_boss[i]);
+				_bossHPbar[i].visible = false;
+				addChild(_bossHPbar[i]);
+			}
+			bulletMgr = null;
 		}
 		
 		/**
@@ -213,6 +345,11 @@ package aniPangShootingWorld.round
 		{
 			_backGround = new BackGround(2, 60, 1, MenuView.sloadedImage.imageDictionary["backtree.jpg"].bitmapData);
 			addChild(_backGround);
+			
+			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
+			_bossWarningView = new Image(0,0,MenuView.sloadedImage.imageDictionary["warning.png"].bitmapData);
+			_bossWarningView.visible = false;
+			addChild(_bossWarningView);
 		}
 		
 		public override function dispose():void
@@ -231,7 +368,19 @@ package aniPangShootingWorld.round
 			
 			_typeArray = null;
 			_randomArray = null;
-		}
-		
+			
+			for(var i : Number = 0; i < 3; ++i)
+			{
+				if(_bossHPbar.length != 0 && _boss.length != 0)
+				{
+					_bossHPbar[i].dispose();
+					_bossHPbar[i] = null;
+					_boss[i].dispose();
+					_boss[i] = null;
+				}
+			}
+			_bossHPbar = null;
+			_boss = null;
+		}	
 	}
 }
