@@ -63,8 +63,8 @@ package aniPangShootingWorld.enemy
 				//Note @유영선 충돌 체크 매니져를 이용하여 벽과의 충돌과 미사일의 상태가 ENEMY_BULLET_COLLISION이면 stage에서 제거
 				if((Collision.bulletToWall(_bulletManager.bulletVector[i])&& _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_MOVING)|| _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
 				{
-					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_stage.removeChild(_bulletManager.bulletVector[i]);
+					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 				}
 				else
 					//Note @유영선 충돌 상태가 아닐 경우 shootingState의 함수에 bulletstate 함수를 설정
@@ -99,13 +99,10 @@ package aniPangShootingWorld.enemy
 				this.objectType = ObjectType.ENEMY_GENERAL;
 				_enemyHP--;
 				this.showImageAt(1);
-	
 				//Note @유영선 적의 체력이 0 일 경우 상태를 ObjectType.COIN으로 변경
 				if(_enemyHP == 0)
 				{				
 					shooting();
-			
-					//EnemyLine._sCurLineCount--;
 					this.objectType = ObjectType.ITEM_IDLE;
 				}
 				

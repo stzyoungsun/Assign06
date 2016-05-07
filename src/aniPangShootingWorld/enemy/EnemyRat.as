@@ -52,5 +52,13 @@ package aniPangShootingWorld.enemy
 			}
 			super.render();
 		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			_bulletManager = null;
+			_stage = null;
+			_enemyAtlas = null;
+		}
 	}
 }

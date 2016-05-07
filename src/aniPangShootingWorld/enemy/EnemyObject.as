@@ -36,7 +36,6 @@ package aniPangShootingWorld.enemy
 				this.objectType = ObjectType.ENEMY_REMOVE;
 			}
 		}
-		
 		/**
 		 *Note @유영선 몬스터가 죽어서 아이템이 되었을 경우에는 공통 적인 부분 이므로 부모 클래스에서 처리합니다. 
 		 * 
@@ -53,7 +52,7 @@ package aniPangShootingWorld.enemy
 			
 			else if(this.objectType == ObjectType.ITEM_COLLISON)
 			{
-				this.x = -999;
+				this.visible = false;
 				
 				this.objectType = ObjectType.ENEMY_REMOVE;
 				ItemManager.sGoldCount++;
@@ -61,6 +60,12 @@ package aniPangShootingWorld.enemy
 			}
 			
 			super.render();
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+ 
 		}
 	}
 }

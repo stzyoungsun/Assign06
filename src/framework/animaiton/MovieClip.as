@@ -114,5 +114,7 @@ package framework.animaiton
 		public function get currentIndex():int { return _imageCount; }
 		
 		public function set spriteSheet(value:AtlasBitmapData):void{_spriteSheet = value;}
+		
+		public function get play():Boolean{return _play;}
 	}
 }
