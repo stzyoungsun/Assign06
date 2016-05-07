@@ -186,6 +186,23 @@ package framework.display
 					}
 				}
 			}
+			
+			else if(_children[curChildNum].objectType == ObjectType.BOSS_GENERAL && this.visible == true)
+			{
+				for(i = 0 ; i <_children.length; ++i)
+				{
+					child = _children[i];
+					if(child.objectType == ObjectType.PLAYER_BULLET_MOVING)
+					{
+						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						{
+							trace("보스 플레이어 미사일 충돌 충돌");
+							child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
+							_children[curChildNum].objectType = ObjectType.BOSS_COLLISION;
+						}
+					}
+				}
+			}
 		}
 		
 		/**
