@@ -98,6 +98,7 @@ package framework.display
 		public function getChildIndex(child:DisplayObject):int
 		{
 			return _children.indexOf(child);
+			
 		}
 		
 		/**

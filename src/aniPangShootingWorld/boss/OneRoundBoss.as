@@ -10,7 +10,7 @@ package aniPangShootingWorld.boss
 	import aniPangShootingWorld.round.MenuView;
 	public class OneRoundBoss extends BossObject
 	{
-		public static const ONE_BOSS_HP : Number  = 10;
+		public static const ONE_BOSS_HP : Number  = 50;
 		
 		private var _bossAtlas : AtlasBitmapData;
 		private var _bulletManager : BulletManager;

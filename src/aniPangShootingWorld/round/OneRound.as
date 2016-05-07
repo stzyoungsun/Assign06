@@ -53,9 +53,9 @@ package aniPangShootingWorld.round
 		private var _bossWarningTime : Number = 0;
 		private var _bossWarningView : Image;
 		
-		private const ENEMY_TWO_LEVEL : Number = 1;
-		private const ENEMY_THREE_LEVEL : Number = 2;
-		private const ENEMY_BOSS_LEVEL : Number = 3;
+		private const ENEMY_TWO_LEVEL : Number = 3;
+		private const ENEMY_THREE_LEVEL : Number = 6;
+		private const ENEMY_BOSS_LEVEL : Number = 9;
 		
 		private const ENEMY_MAX_COUNT : Number = 3;
 		//Note @유영선 보스 
@@ -89,7 +89,13 @@ package aniPangShootingWorld.round
 		{
 			super.render();
 			if(super.children == null) return;
-
+			//Note @유영선 모든 적들이 지워졌는지 체크 (일반 몬스터 모드)
+			if(checkEnemy() && this.objectType == ObjectType.ROUND_GENERAL)
+			{
+				CreateEnemyLine();
+			}
+			
+			//Note @유영선 보스 전 시작 경고 화면
 			if(this.objectType == ObjectType.ROUND_BOSS_WARNING)
 			{
 				var curBossWarningTime : int = getTimer();
@@ -110,11 +116,7 @@ package aniPangShootingWorld.round
 				}
 			}
 			
-			if(checkEnemy() && this.objectType == ObjectType.ROUND_GENERAL)
-			{
-				CreateEnemyLine()
-			}
-			
+			//Note @유영선 보스전 출력
 			if(this.objectType == ObjectType.ROUND_BOSS)
 			{
 				bossDraw();
@@ -122,7 +124,7 @@ package aniPangShootingWorld.round
 		}
 		
 		/**
-		 *Note @유영선 보스를 생성 합니다. 
+		 *Note @유영선 보스를 화면에 출력 합니다.
 		 */		
 		private function bossDraw() : void
 		{
@@ -152,6 +154,7 @@ package aniPangShootingWorld.round
 					
 					else
 					{
+						
 					 if(_boss[i].play == false);
 						_boss[i].start();
 					
@@ -208,6 +211,8 @@ package aniPangShootingWorld.round
 		 */		
 		private function enenmyDraw():void
 		{
+			if(this.objectType != ObjectType.ROUND_GENERAL) return;
+			
 			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 				addChild(_enemyLine.enemyVector[i]);
 		}

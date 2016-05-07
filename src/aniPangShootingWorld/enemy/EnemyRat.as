@@ -22,7 +22,7 @@ package aniPangShootingWorld.enemy
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
-		private var _enemyHP : Number = 1;
+		private var _enemyHP : Number = 2;
 		
 		public function EnemyRat(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
