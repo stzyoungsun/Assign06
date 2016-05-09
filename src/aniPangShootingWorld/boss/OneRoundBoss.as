@@ -7,7 +7,6 @@ package aniPangShootingWorld.boss
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 
-	import aniPangShootingWorld.round.MenuView;
 	public class OneRoundBoss extends BossObject
 	{
 		public static const ONE_BOSS_HP : Number  = 50;
