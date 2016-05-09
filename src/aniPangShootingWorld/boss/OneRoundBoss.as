@@ -44,7 +44,7 @@ package aniPangShootingWorld.boss
 					//Note @유영선 2초간 죽는 모션
 					if(curBossTime - this._prevTime < 2000)
 					{
-						this.bitmapData = MenuView.sloadedImage.imageDictionary["bossdie.png"].bitmapData;
+						//this.bitmapData = MenuView.sloadedImage.imageDictionary["bossdie.png"].bitmapData;
 					}
 					
 					else

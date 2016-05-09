@@ -25,7 +25,6 @@ package framework.animaiton
 		public function MovieClip(spriteSheet:AtlasBitmapData, frame:Number, x:Number = 0, y:Number = 0, playOnce:Boolean = false)
 		{
 			_spriteSheet = spriteSheet;
-			trace(this);
 			super(x, y, _spriteSheet.getsubSpriteSheet[0] as BitmapData);
 			
 			if((_curFrame = frame) == 0)
@@ -113,7 +112,7 @@ package framework.animaiton
 		
 		public function get currentIndex():int { return _imageCount; }
 		
-		public function set spriteSheet(value:AtlasBitmapData):void{_spriteSheet = value;}
+		public function set spriteSheet(value:AtlasBitmapData):void{_spriteSheet = value; _imageCount = 0;}
 		
 		public function get play():Boolean{return _play;}
 	}
