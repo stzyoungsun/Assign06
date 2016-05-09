@@ -4,15 +4,18 @@ package aniPangShootingWorld.player
 	
 	import aniPangShootingWorld.round.MenuView;
 	
+	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.Image;
 	import framework.display.Stage;
+	import framework.display.TextImageField;
 
 	public class PlayerState extends Stage
 	{
 		private var _mainStateDlg : Image;
 		private var _heartDlg : Image;
 		private var _powerDlg : Image;
+		private var _coinDlg : TextImageField;
 		
 		public static const MAX_HERAT : Number = 5;
 		public static const MAX_POWER : Number = 5;
@@ -38,9 +41,17 @@ package aniPangShootingWorld.player
 			_powerDlg.width = Framework.viewport.width*2/13;
 			_powerDlg.height = Framework.viewport.height/41;
 			
+			if(MenuView.sloadedImage.checkXml("Number_Sprite.xml"))
+			{
+				var numberAtlas : AtlasBitmapData = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Number_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Number_Sprite.xml"])
+			}
+		
+			_coinDlg = new TextImageField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width*2/13,Framework.viewport.height/41,numberAtlas);
+			
 			addChild(_mainStateDlg);
 			addChild(_heartDlg);
 			addChild(_powerDlg);
+			addChild(_coinDlg);
 		}
 		
 		/**
@@ -52,11 +63,15 @@ package aniPangShootingWorld.player
 		{
 			observedHeart(sPlayerHeart);
 			observedPower(sPlayerPower);
+			observedCoin(sGoldCount);
 		}
+		
 		
 		public override function render():void
 		{
 			super.render();
+			if(super.children == null) return;
+			
 			observedState();
 			
 			if(sSuperPowerFlag == true)
@@ -73,6 +88,12 @@ package aniPangShootingWorld.player
 					_prevTime = getTimer();
 				}
 			}
+		}
+		
+		private function observedCoin(sGoldCount:Number):void
+		{
+			// TODO Auto Generated method stub
+			_coinDlg.createTextImage(sGoldCount);
 		}
 		
 		/**
@@ -170,6 +191,12 @@ package aniPangShootingWorld.player
 					break;
 				}
 			}
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			
 		}
 	}
 }

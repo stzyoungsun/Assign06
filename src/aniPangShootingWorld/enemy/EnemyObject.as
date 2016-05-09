@@ -48,6 +48,7 @@ package aniPangShootingWorld.enemy
 		{
 			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
 			autoMoving();
+			
 			if(this.objectType == ObjectType.ENEMY_REMOVE) return;
 			
 			switch(this.objectType)
@@ -81,7 +82,7 @@ package aniPangShootingWorld.enemy
 				{
 		
 					this.objectType = ObjectType.ENEMY_REMOVE;
-					PlayerState.sGoldCount++;
+					PlayerState.sGoldCount+=1;
 					break;
 				}
 				
