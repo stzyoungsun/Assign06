@@ -18,7 +18,12 @@ package framework.display
 		public static const ENEMY_BULLET_COLLISION : String = "enemy_bullet_collision";
 		
 		public static const	ITEM_IDLE : String = "item_idle";
-		public static const	ITEM_COLLISON : String = "item_collison";
+		public static const	ITEM_COIN : String = "item_coin";
+		public static const	ITEM_HEART : String = "item_heart";
+		public static const	ITEM_POWER : String = "item_poser";
+		public static const	ITEM_COIN_COLLISON : String = "item_coin_collison";
+		public static const	ITEM_HERAT_COLLISON : String = "item_heart_collison";
+		public static const	ITEM_POWER_COLLISON : String = "item_power_collison";
 		
 		public static const ROUND_PREV : String = "round_prev";
 		public static const ROUND_GENERAL : String = "round_general";

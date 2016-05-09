@@ -98,7 +98,6 @@ package framework.display
 		public function getChildIndex(child:DisplayObject):int
 		{
 			return _children.indexOf(child);
-			
 		}
 		
 		/**
@@ -134,74 +133,120 @@ package framework.display
 		
 		public function objectCollision(curChildNum : Number):void
 		{
-			if(_children[curChildNum].objectType == ObjectType.ENEMY_GENERAL)
+			switch(_children[curChildNum].objectType)
 			{
-				for(var i:int = 0 ; i <_children.length; ++i)
+				case ObjectType.ENEMY_GENERAL:
 				{
-					var child:DisplayObject = _children[i];
-					
-					if(child.objectType == ObjectType.PLAYER_BULLET_MOVING)
+					for(var i:int = 0 ; i <_children.length; ++i)
 					{
-						if(Collision.ObjectToObject(child,_children[curChildNum]))
-						{
-							trace("충돌");
-							child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
-							_children[curChildNum].objectType = ObjectType.ENEMY_COLLISION
-						}
-					}
-					
-					if(child.objectType == ObjectType.PLAYER_GENERAL)
-					{
-						if(Collision.ObjectToObject(child,_children[curChildNum]))
-						{
-							trace("플레이어 충돌");
-							child.objectType = ObjectType.PLAYER_COLLISION;
-							_children[curChildNum].objectType = ObjectType.ITEM_IDLE;
-						}
-					}
-				}
-			}
-			
-			else if(_children[curChildNum].objectType == ObjectType.PLAYER_GENERAL)
-			{
-				for(i = 0 ; i <_children.length; ++i)
-				{
-					child = _children[i];
-					if(child.objectType == ObjectType.ENEMY_BULLET_MOVING)
-					{
-						if(Collision.ObjectToObject(child,_children[curChildNum]))
-						{
-							trace("적 미사일 플레이어 충돌");
-							child.objectType = ObjectType.ENEMY_BULLET_COLLISION;
-							_children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
-						}
-					}
+						var child:DisplayObject = _children[i];
 						
-					else if(child.objectType == ObjectType.ITEM_IDLE)
-					{
-						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						switch(child.objectType)
 						{
-							trace("아이템과 충돌");
-							child.objectType = ObjectType.ITEM_COLLISON;
+							case ObjectType.PLAYER_BULLET_MOVING:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
+									_children[curChildNum].objectType = ObjectType.ENEMY_COLLISION
+								}
+								break;
+							}
+								
+							case ObjectType.PLAYER_GENERAL:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									trace("플레이어 충돌");
+									child.objectType = ObjectType.PLAYER_COLLISION;
+									_children[curChildNum].objectType = ObjectType.ITEM_IDLE;
+								}
+								break;
+							}
 						}
 					}
+					break;
 				}
-			}
-			
-			else if(_children[curChildNum].objectType == ObjectType.BOSS_GENERAL && this.visible == true)
-			{
-				for(i = 0 ; i <_children.length; ++i)
+					
+				case ObjectType.PLAYER_GENERAL:
 				{
-					child = _children[i];
-					if(child.objectType == ObjectType.PLAYER_BULLET_MOVING)
+					for(i = 0 ; i <_children.length; ++i)
 					{
-						if(Collision.ObjectToObject(child,_children[curChildNum]))
+						child = _children[i];
+						switch(child.objectType)
 						{
-							trace("보스 플레이어 미사일 충돌 충돌");
-							child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
-							_children[curChildNum].objectType = ObjectType.BOSS_COLLISION;
+							case ObjectType.ENEMY_BULLET_MOVING:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									trace("적 미사일 플레이어 충돌");
+									child.objectType = ObjectType.ENEMY_BULLET_COLLISION;
+									_children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
+								}
+								break;
+							}
+								
+							case ObjectType.ITEM_COIN:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									trace("아이템과 충돌");
+									child.objectType = ObjectType.ITEM_COIN_COLLISON;
+								}
+								break;
+							}
+								
+							case ObjectType.ITEM_HEART:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									trace("아이템과 충돌");
+									child.objectType = ObjectType.ITEM_HERAT_COLLISON;
+								}
+								break;
+							}
+								
+							case ObjectType.ITEM_POWER:
+							{
+								if(Collision.ObjectToObject(child,_children[curChildNum]))
+								{
+									trace("아이템과 충돌");
+									child.objectType = ObjectType.ITEM_POWER_COLLISON;
+								}
+								break;
+							}
 						}
 					}
+					break;
+				}
+					
+				case ObjectType.BOSS_GENERAL:
+				{
+					if(this.visible == true)
+					{
+						for(i = 0 ; i <_children.length; ++i)
+						{
+							child = _children[i];
+							switch(child.objectType)
+							{
+								case  ObjectType.PLAYER_BULLET_MOVING:
+								{
+									if(child.objectType == ObjectType.PLAYER_BULLET_MOVING)
+									{
+										if(Collision.ObjectToObject(child,_children[curChildNum]))
+										{
+											trace("보스 플레이어 미사일 충돌 충돌");
+											child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
+											_children[curChildNum].objectType = ObjectType.BOSS_COLLISION;
+										}
+									}
+									break;
+								}
+							}
+						
+						}
+					}
+					break;
 				}
 			}
 		}
@@ -273,6 +318,7 @@ package framework.display
 		{
 			// 자기 자신의 자원 해제
 			super.dispose();
+			if(_children == null) return;
 			
 			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
 			for(var i:int = 0; i < _children.length; i++)

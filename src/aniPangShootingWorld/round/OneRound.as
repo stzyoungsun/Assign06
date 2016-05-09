@@ -6,6 +6,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.Player;
+	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.resource.SoundResource;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.UtilFunction;
@@ -31,6 +32,8 @@ package aniPangShootingWorld.round
 		private var _prevGameView : MovieClip;
 		//Note @유영선 플레이어의 객체를 저장 할 변수
 		private var _player : Player;
+		//Note @유영선 플레이어 상태창 저장 할 변수
+		private var _playerState : PlayerState;
 		//Note @유영선 적들의 비트맵데이터를 저장할 변수
 		private var _enemyAtlasVector : Vector.<AtlasBitmapData> = new Vector.<AtlasBitmapData>;
 		//Note @유영선 적들의 라인을 저장 할 변수
@@ -51,7 +54,7 @@ package aniPangShootingWorld.round
 		private var _bossWarningTime : Number = 0;
 		private var _bossWarningView : Image;
 		
-		private const ENEMY_TWO_LEVEL : Number = 3;
+		private const ENEMY_TWO_LEVEL : Number = 2;
 		private const ENEMY_THREE_LEVEL : Number = 6;
 		private const ENEMY_BOSS_LEVEL : Number = 9;
 		
@@ -73,12 +76,13 @@ package aniPangShootingWorld.round
 			prevGameStart();
 			//Note @유영선 플레이어를 화면에 출력
 			playerDraw();
-
+			//플레이어 상태창 화면에 출력
+			playerStateDraw();
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
 			_soundManager.play(SoundResource.BGM_1, true);
 		}
-
+		
 		/**
 		 *Note @유영선 적들을 그립니다 
 		 * 
@@ -364,6 +368,15 @@ package aniPangShootingWorld.round
 			bulletMgr = null;
 		}
 		
+		/** 
+		 * Note @유영선 플레이어 상태 창 구현
+		 */		
+		private function playerStateDraw():void
+		{
+			_playerState = new PlayerState();
+			addChild(_playerState);
+		}
+		
 		private function onTouch(event:TouchEvent):void
 		{
 			switch(event.touch.phase)
@@ -397,6 +410,7 @@ package aniPangShootingWorld.round
 		public override function dispose():void
 		{
 			super.dispose();
+
 			_backGround.dispose();
 			_backGround = null;
 			
@@ -404,6 +418,9 @@ package aniPangShootingWorld.round
 			
 			_player.dispose();
 			_player = null;
+		
+			_playerState.dispose();
+			_playerState = null;
 			
 			_typeArray = null;
 			_randomArray = null;
