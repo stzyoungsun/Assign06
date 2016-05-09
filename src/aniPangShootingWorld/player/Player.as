@@ -20,6 +20,8 @@ package aniPangShootingWorld.player
 	 */
 	public class Player extends MovieClip
 	{
+		private static var _sPlayer:Player;
+		
 		private var _playerAtlas:AtlasBitmapData;
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
@@ -52,6 +54,7 @@ package aniPangShootingWorld.player
 			_prevTime = getTimer();
 			
 			_soundManager = SoundManager.getInstance();
+			_sPlayer = this;
 		}
 		
 		public override function dispose():void
@@ -165,5 +168,7 @@ package aniPangShootingWorld.player
 			
 			bulletFrame();
 		}
+		
+		public static function get currentPlayer():Player { return _sPlayer; }
 	}
 }
