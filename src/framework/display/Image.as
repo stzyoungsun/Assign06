@@ -184,6 +184,15 @@ package framework.display
 			return v;
 		}
 		
+		public override function dispose():void
+		{
+			super.dispose();
+			
+			_bitmapData =null;
+			_texture = null;
+			_uvCoordinate = null;
+		}
+		
 		public function get texture():Texture { return _texture; }
 		public function set bitmapData(value:BitmapData):void { _bitmapData = value; }
 	}

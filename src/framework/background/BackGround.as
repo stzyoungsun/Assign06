@@ -71,6 +71,11 @@ package framework.background
 			}
 		}
 		
+		public override function dispose():void
+		{
+			super.dispose();
+			_backGroundBitmapData = null;
+		}
 		public function set step(value:Number):void {_step = value;}
 	}
 }

@@ -59,11 +59,8 @@ package aniPangShootingWorld.player
 			super.dispose();
 			_stage = null;
 			
-			if(_bulletManager)
-			{
-				_bulletManager.dispose();
-				_bulletManager = null;
-			}
+			_bulletManager.dispose();
+			_bulletManager = null;
 		}
 		
 		/**
@@ -161,7 +158,6 @@ package aniPangShootingWorld.player
 			//@Note 유영선 플레이어 체력이 0이 되었을 경우 메뉴 화면으로 돌아감
 			if(PlayerState.sPlayerHeart == 0)
 			{
-				PlayerState.sGoldCount = 0;
 				_stage.dispose();
 				SceneManager.instance.sceneChange();
 				return;

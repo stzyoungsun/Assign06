@@ -106,7 +106,8 @@ package framework.display
 		public override function render():void
 		{
 			var painter:Painter = Framework.painter;
-			
+			//Scene이 체인지된 경우 더 이상 렌더링하지 않고 return
+			if(_children == null) return;
 			// loop 문을 이용해 Vector를 순회하면서 render 메서드를 호출
 			for(var i:int = 0 ; i <_children.length; ++i)
 			{
@@ -125,7 +126,6 @@ package framework.display
 					child.render();
 					// push했던 Modelview matrix를 pop
 					painter.popMatrix();
-					// Scene이 체인지된 경우 더 이상 렌더링하지 않고 return
 					if(_children == null) return;
 				}
 			}

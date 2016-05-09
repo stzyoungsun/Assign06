@@ -91,6 +91,7 @@ package aniPangShootingWorld.round
 		 */
 		public override function render():void
 		{
+			
 			super.render();
 			if(super.children == null) return;
 			
@@ -429,31 +430,10 @@ package aniPangShootingWorld.round
 		public override function dispose():void
 		{
 			super.dispose();
-
-			_backGround.dispose();
-			_backGround = null;
-			
-			_enemyLine = null;
-			
-			_player.dispose();
-			_player = null;
-		
-			_playerState.dispose();
-			_playerState = null;
 			
 			_typeArray = null;
 			_randomArray = null;
 			
-			for(var i : Number = 0; i < 3; ++i)
-			{
-				if(_bossHPbar.length != 0 && _boss.length != 0)
-				{
-					_bossHPbar[i].dispose();
-					_bossHPbar[i] = null;
-					_boss[i].dispose();
-					_boss[i] = null;
-				}
-			}
 			_bossHPbar = null;
 			_boss = null;
 		}	
