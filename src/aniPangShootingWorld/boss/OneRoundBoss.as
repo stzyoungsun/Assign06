@@ -5,6 +5,7 @@ package aniPangShootingWorld.boss
 	import aniPangShootingWorld.player.Player;
 	
 	import framework.animaiton.AtlasBitmapData;
+	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.Bullet;
@@ -40,7 +41,7 @@ package aniPangShootingWorld.boss
 			_prevTime = getTimer();
 			_bossPhase = PHASE_1;
 			_shotAngle = 0;
-			_shotSpeed = 10;
+			_shotSpeed = Framework.viewport.height / 100;
 			_wait = false;
 			_pattern = 1;
 		}
@@ -147,7 +148,7 @@ package aniPangShootingWorld.boss
 					bulletX = Math.random() * this.width;
 					bulletY = this.y + this.height / 2;
 					_shotAngle += 0.05;
-					shooting(bulletX, bulletY, _shotAngle, _shotSpeed + 3);
+					shooting(bulletX, bulletY, _shotAngle, _shotSpeed * 1.3);
 					break;
 			}
 		}
