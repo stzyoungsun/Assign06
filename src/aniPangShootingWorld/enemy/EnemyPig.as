@@ -1,6 +1,8 @@
 
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.player.PlayerState;
+	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -81,7 +83,10 @@ package aniPangShootingWorld.enemy
 		 */		
 		public function bulletstate(bulletNum : Number) : void
 		{
-			_bulletManager.bulletVector[bulletNum].y += Framework.viewport.height/80;
+			if(PlayerState.sSuperPowerFlag == false)
+				_bulletManager.bulletVector[bulletNum].y += Framework.viewport.height/80*EnemyObject.sSpeed;
+			else
+				_bulletManager.bulletVector[bulletNum].y += Framework.viewport.height/40;
 		}
 		
 		/**

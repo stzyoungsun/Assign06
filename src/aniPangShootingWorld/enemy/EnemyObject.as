@@ -1,6 +1,6 @@
 package aniPangShootingWorld.enemy
 {
-	import aniPangShootingWorld.item.ItemManager;
+	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.round.MenuView;
 	import aniPangShootingWorld.util.UtilFunction;
 	
@@ -16,8 +16,8 @@ package aniPangShootingWorld.enemy
 	public class EnemyObject extends MovieClip
 	{
 		private var _stage : Sprite;
-		public static var _getCoinCount : Number = 0;
 		
+		public static var sSpeed : Number = 1;
 		public function EnemyObject(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
 			super(enemyAtlas,frame,0,0);
@@ -30,7 +30,10 @@ package aniPangShootingWorld.enemy
 		 */		
 		public function autoMoving():void
 		{
-			this.y+=Framework.viewport.height/110;
+			if(PlayerState.sSuperPowerFlag == false)
+				this.y+=Framework.viewport.height/110*sSpeed;
+			else
+				this.y+=Framework.viewport.height/50;
 			
 			if(this.y > Framework.viewport.height)
 			{
@@ -51,14 +54,14 @@ package aniPangShootingWorld.enemy
 			{
 				case ObjectType.ITEM_IDLE:
 				{
-					var randomNumber : Number = UtilFunction.random(0,9.5,0.5);
-					if(randomNumber>=0 && randomNumber < 9)
+					var randomNumber : Number = UtilFunction.random(0,9.5,0.2);
+					if(randomNumber>=0 && randomNumber < 8.5)
 					{
 						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
 						this.objectType = ObjectType.ITEM_COIN;
 					}
 						
-					else if(randomNumber==9)
+					else if(randomNumber==9.2)
 					{
 						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["heartEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["heartEat_Sprite.xml"]);
 						this.objectType = ObjectType.ITEM_HEART;
@@ -78,7 +81,7 @@ package aniPangShootingWorld.enemy
 				{
 		
 					this.objectType = ObjectType.ENEMY_REMOVE;
-					ItemManager.sGoldCount++;
+					PlayerState.sGoldCount++;
 					break;
 				}
 				
@@ -86,14 +89,14 @@ package aniPangShootingWorld.enemy
 				{
 					
 					this.objectType = ObjectType.ENEMY_REMOVE;
-					ItemManager.sGoldCount++;
+					PlayerState.sPlayerHeart++;
 					break;
 				}
 					
 				case ObjectType.ITEM_POWER_COLLISON:
 				{
 					this.objectType = ObjectType.ENEMY_REMOVE;
-					ItemManager.sGoldCount++;
+					PlayerState.sPlayerPower++;
 					break;
 				}
 			}

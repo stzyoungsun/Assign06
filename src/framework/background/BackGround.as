@@ -70,5 +70,7 @@ package framework.background
 				_prevTime = 0;
 			}
 		}
+		
+		public function set step(value:Number):void {_step = value;}
 	}
 }

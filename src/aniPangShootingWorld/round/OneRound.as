@@ -4,6 +4,7 @@ package aniPangShootingWorld.round
 	
 	import aniPangShootingWorld.boss.OneRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
+	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
@@ -56,7 +57,8 @@ package aniPangShootingWorld.round
 		
 		private const ENEMY_TWO_LEVEL : Number = 2;
 		private const ENEMY_THREE_LEVEL : Number = 6;
-		private const ENEMY_BOSS_LEVEL : Number = 9;
+		private const ENEMY_FOUR_LEVEL : Number = 12;
+		private const ENEMY_BOSS_LEVEL : Number = 30;
 		
 		private const ENEMY_MAX_COUNT : Number = 3;
 		//Note @유영선 보스 
@@ -92,6 +94,13 @@ package aniPangShootingWorld.round
 			super.render();
 			if(super.children == null) return;
 			
+			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
+			if(PlayerState.sSuperPowerFlag == true) 
+			{
+				_backGround.step = Framework.viewport.height/30;
+			}
+			else
+				_backGround.step = 1;
 			//Note @유영선 시작 전 화면 구현
 			if(this.objectType == ObjectType.ROUND_PREV)
 			{
@@ -136,6 +145,7 @@ package aniPangShootingWorld.round
 			//Note @유영선 보스전 출력
 			else if(this.objectType == ObjectType.ROUND_BOSS)
 			{
+				PlayerState.sPlayerPower = 0;
 				bossDraw();
 			}
 		}
@@ -287,14 +297,23 @@ package aniPangShootingWorld.round
 				case ENEMY_TWO_LEVEL:
 				{
 					_randomArray[0]++;
+					EnemyObject.sSpeed+=0.15;
 					break;
 				}
 				case ENEMY_THREE_LEVEL:
 				{
 					_randomArray[1]++;
+					EnemyObject.sSpeed+=0.15;
 					break;
 				}
 				
+				case ENEMY_FOUR_LEVEL:
+				{
+					_randomArray[2]++;
+					EnemyObject.sSpeed+=0.15;
+					break;
+				}
+					
 				case ENEMY_BOSS_LEVEL:
 				{
 					_soundManager.stopLoopedPlaying();

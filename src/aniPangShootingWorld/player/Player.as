@@ -2,7 +2,6 @@ package aniPangShootingWorld.player
 {
 	import flash.utils.getTimer;
 	
-	import aniPangShootingWorld.item.ItemManager;
 	import aniPangShootingWorld.resource.SoundResource;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -26,7 +25,6 @@ package aniPangShootingWorld.player
 		private var _stage:Sprite;
 		private var _soundManager:SoundManager;
 			
-		private var _playerHP : Number = 2;
 		/**
 		 * 
 		 * @param playerAtlas 	애니매이션 할 Atals 객체
@@ -132,25 +130,38 @@ package aniPangShootingWorld.player
 			
 			var curTimerBullet:int = getTimer();
 			
-			//@Note 유영선  플레이어가 발사 속도를 조절
+			//Note @유영선  플레이어가 발사 속도를 조절
 			if(curTimerBullet - _prevTime > 100)
 			{
 				shooting();
 				_prevTime = getTimer();
 			}
 			
+			//Note @유영선 슈퍼파워 모드 일 경우 플레이어 케릭이 커짐
+			if(PlayerState.sSuperPowerFlag == false)
+			{
+				this.width = Framework.viewport.width/6;
+				this.height = Framework.viewport.height/6;
+			}
+			else
+			{
+				this.width = Framework.viewport.width/3;
+				this.height = Framework.viewport.height/3;
+			}
+			
 			//@Note 유영선  플레이어가 충돌 되었을 때 체력을 감수
 			if(this.objectType == ObjectType.PLAYER_COLLISION)
 			{
-				_playerHP--;
+				if(PlayerState.sSuperPowerFlag == false)
+					PlayerState.sPlayerHeart--;
+
 				this.objectType = ObjectType.PLAYER_GENERAL;
-				
 			}
-				
+			
 			//@Note 유영선 플레이어 체력이 0이 되었을 경우 메뉴 화면으로 돌아감
-			if(_playerHP == 0)
+			if(PlayerState.sPlayerHeart == 0)
 			{
-				ItemManager.sGoldCount = 0;
+				PlayerState.sGoldCount = 0;
 				_stage.dispose();
 				SceneManager.instance.sceneChange();
 				return;

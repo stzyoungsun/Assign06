@@ -1,8 +1,10 @@
 package aniPangShootingWorld.round
 {
 	
+	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.loader.LoadedImage;
 	import aniPangShootingWorld.loader.LoaderControl;
+	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.util.PrevLoadImage;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -116,6 +118,10 @@ package aniPangShootingWorld.round
 				case TouchPhase.ENDED:
 					SceneManager.instance.addScene(this);
 					var oneRound : OneRound = new OneRound();
+					PlayerState.sPlayerHeart = 5;
+					PlayerState.sPlayerPower = 0;
+					PlayerState.sGoldCount = 0;
+					EnemyObject.sSpeed = 1;
 					SceneManager.instance.addScene(oneRound);
 					SceneManager.instance.sceneChange(); 
 					break;
