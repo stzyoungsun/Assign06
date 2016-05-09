@@ -2,6 +2,7 @@ package aniPangShootingWorld.round
 {
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.boss.BossObject;
 	import aniPangShootingWorld.boss.OneRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObject;
@@ -24,7 +25,7 @@ package aniPangShootingWorld.round
 	import framework.gameobject.BulletManager;
 	import framework.sound.SoundManager;
 	
-
+	
 	public class OneRound extends Sprite
 	{
 		//Note @유영선 배경 그라운드를 저장 할 변수
@@ -62,9 +63,9 @@ package aniPangShootingWorld.round
 		
 		private const ENEMY_MAX_COUNT : Number = 3;
 		//Note @유영선 보스 
-		private var _boss : Vector.<OneRoundBoss> = new Vector.<OneRoundBoss>;
+		private var _boss:BossObject;
 		//Note @유영선 보스의 체력바
-		private var _bossHPbar : Vector.<HPbar> = new Vector.<HPbar>;
+		private var _bossHPbar:HPbar;
 		
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
@@ -91,7 +92,6 @@ package aniPangShootingWorld.round
 		 */
 		public override function render():void
 		{
-			
 			super.render();
 			if(super.children == null) return;
 			
@@ -117,7 +117,7 @@ package aniPangShootingWorld.round
 					removeChild(_prevGameView,true);
 					_prevGameView = null;
 				}
-							
+				
 				if(checkEnemy())
 					CreateEnemyLine();
 			}
@@ -166,11 +166,9 @@ package aniPangShootingWorld.round
 			_prevGameView.height = Framework.viewport.height/3;
 			_prevGameView.x = Framework.viewport.width/2 - _prevGameView.width/2;
 			_prevGameView.y = Framework.viewport.height/2 - _prevGameView.height/2;
-				
+			
 			_prevGameView.start();
 			addChild(_prevGameView);
-			
-			
 		}
 		
 		/**
@@ -178,43 +176,29 @@ package aniPangShootingWorld.round
 		 */		
 		private function bossDraw() : void
 		{
-			if(OneRoundBoss.sBossLevel == 0)
+			if(_boss == null)
 			{
-				if(_boss[0].visible == false)
-					_boss[0].visible = true;
-				if(_boss[0].play == false);
-					_boss[0].start();
-				if(_bossHPbar[0].visible == false)
-					_bossHPbar[0].visible = true;
-							
-			    _bossHPbar[0].calcHP(OneRoundBoss.ONE_BOSS_HP,_boss[0].oneBossHP);
+				_boss = new OneRoundBoss(
+					new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["boss_Sheet.png"],
+						MenuView.sloadedImage.xmlDictionary["boss_Sheet.xml"]),
+					10,
+					new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData),
+					this
+				);
+				
+				_boss.x = Framework.viewport.width / 8;
+				_boss.y = 0;
+				_boss.width = Framework.viewport.width * 4 / 5;
+				_boss.height = Framework.viewport.height / 5;
+				_boss.start();
+				addChild(_boss);
+				
+				_bossHPbar = new HPbar(0, 0, MenuView.sloadedImage.imageDictionary["100per.png"].bitmapData);
+				_bossHPbar.hpBarInit(_boss);
+				addChild(_bossHPbar);
 			}
 			
-			else 
-			{
-				_boss[0].visible = false;
-				_bossHPbar[0].visible = false;
-				for(var i : Number = 1; i < 3; i++)
-				{
-					if(_boss[i].objectType == ObjectType.BOSS_DIE)
-					{
-						_boss[i].visible = false;
-						_bossHPbar[i].visible = false;
-					}
-					
-					else
-					{
-						
-					 if(_boss[i].play == false);
-						_boss[i].start();
-					
-						_boss[i].visible = true;
-						_bossHPbar[i].visible = true;
-						
-						_bossHPbar[i].calcHP(OneRoundBoss.ONE_BOSS_HP,_boss[i].oneBossHP);
-					}
-				}
-			}
+			_bossHPbar.calcHP(OneRoundBoss.MAX_BOSS_HP, (_boss as OneRoundBoss).currentBossHp);
 		}
 		
 		/**
@@ -322,51 +306,8 @@ package aniPangShootingWorld.round
 					_bossWarningTime = getTimer();
 					this.objectType = ObjectType.ROUND_BOSS_WARNING;
 					enenmyRemove();
-					
-					bossInit();
 				}
 			}
-		}
-		// Note @유영선 보스 슬라임의 초기화
-		private function bossInit():void
-		{
-			var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuView.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
-			//Note @유영선 1 -> 2 쪼개지는 보스 까지 포함한 3마리의 초기화
-			for(var i : Number = 0; i < 3; ++i)
-			{
-				_boss.push(new OneRoundBoss(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["boss_Sheet.png"]
-					,MenuView.sloadedImage.xmlDictionary["boss_Sheet.xml"]),10,bulletMgr,this));
-				
-				switch(i)
-				{
-					case 0:
-					{
-						_boss[i].x =Framework.viewport.width/8;
-						_boss[i].y = 0;
-						_boss[i].width = Framework.viewport.width*3/4;
-						_boss[i].height = Framework.viewport.height/3;
-						break;
-					}
-					case 1:
-					case 2:
-					{
-						_boss[i].width = Framework.viewport.width*3/8;
-						_boss[i].height = Framework.viewport.height/6;
-						_boss[i].x = _boss[i].width/3+_boss[i].width*(i-1);
-						_boss[i].y = 0;
-						break;
-					}
-				}
-				_boss[i].visible = false;
-				
-				addChild(_boss[i]);
-				
-				_bossHPbar.push(new HPbar(0,0,MenuView.sloadedImage.imageDictionary["100per.png"].bitmapData));
-				_bossHPbar[i].hpBarInit(_boss[i]);
-				_bossHPbar[i].visible = false;
-				addChild(_bossHPbar[i]);
-			}
-			bulletMgr = null;
 		}
 		
 		/**
