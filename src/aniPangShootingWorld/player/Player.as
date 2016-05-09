@@ -48,8 +48,8 @@ package aniPangShootingWorld.player
 			this.objectType = ObjectType.PLAYER_GENERAL;
 			//@Note 유영선  플레이어의 미사일을 생성
 			_bulletManager.createBullet(this.x,this.y);
-			
 			_stage=stage;
+			
 			_playerAtlas = null;
 			_prevTime = getTimer();
 			

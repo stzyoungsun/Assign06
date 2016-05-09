@@ -37,7 +37,6 @@ package aniPangShootingWorld.enemy
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
 				this.showImageAt(0);
-				autoMoving();
 			}	
 			else if(this.objectType == ObjectType.ENEMY_COLLISION)
 			{

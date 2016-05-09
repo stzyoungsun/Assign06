@@ -2,6 +2,7 @@ package aniPangShootingWorld.enemy
 {
 	import aniPangShootingWorld.item.ItemManager;
 	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
@@ -43,22 +44,61 @@ package aniPangShootingWorld.enemy
 		public override function render():void
 		{
 			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
-			if(this.objectType == ObjectType.ITEM_IDLE)
+			autoMoving();
+			if(this.objectType == ObjectType.ENEMY_REMOVE) return;
+			switch(this.objectType)
 			{
-				this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
-				this.start();
-				autoMoving();
-			}
-			
-			else if(this.objectType == ObjectType.ITEM_COLLISON)
-			{
-				this.visible = false;
+				case ObjectType.ITEM_IDLE:
+				{
+					var randomNumber : Number = UtilFunction.random(0,9.5,0.5);
+					if(randomNumber>=0 && randomNumber < 9)
+					{
+						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
+						this.objectType = ObjectType.ITEM_COIN;
+					}
+						
+					else if(randomNumber==9)
+					{
+						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["heartEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["heartEat_Sprite.xml"]);
+						this.objectType = ObjectType.ITEM_HEART;
+					}
+						
+					else
+					{
+						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["powerEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["powerEat_Sprite.xml"]);
+						this.objectType = ObjectType.ITEM_POWER;
+					}
+					
+					this.start();
+					break;
+				}
 				
-				this.objectType = ObjectType.ENEMY_REMOVE;
-				ItemManager.sGoldCount++;
-				trace(ItemManager.sGoldCount);
+				case ObjectType.ITEM_COIN_COLLISON:
+				{
+		
+					this.objectType = ObjectType.ENEMY_REMOVE;
+					ItemManager.sGoldCount++;
+					break;
+				}
+				
+				case ObjectType.ITEM_HERAT_COLLISON:
+				{
+					
+					this.objectType = ObjectType.ENEMY_REMOVE;
+					ItemManager.sGoldCount++;
+					break;
+				}
+					
+				case ObjectType.ITEM_POWER_COLLISON:
+				{
+		
+					
+					this.objectType = ObjectType.ENEMY_REMOVE;
+					ItemManager.sGoldCount++;
+					break;
+				}
 			}
-			
+	
 			super.render();
 		}
 		
