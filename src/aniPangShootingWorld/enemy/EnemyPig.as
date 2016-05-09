@@ -70,9 +70,11 @@ package aniPangShootingWorld.enemy
 					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 				}
 				else
+				{
 					//Note @유영선 충돌 상태가 아닐 경우 shootingState의 함수에 bulletstate 함수를 설정
 					trace("돼지 미사일 충돌 X");
 					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
+				}
 			}		
 		}
 		
