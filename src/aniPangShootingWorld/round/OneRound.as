@@ -1,19 +1,17 @@
 package aniPangShootingWorld.round
 {
-	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
-	import aniPangShootingWorld.boss.BossObject;
 	import aniPangShootingWorld.boss.OneRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
-	import aniPangShootingWorld.enemy.EnemyPig;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.resource.SoundResource;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
+	import framework.animaiton.MovieClip;
 	import framework.background.BackGround;
 	import framework.core.Framework;
 	import framework.display.Image;
@@ -29,8 +27,8 @@ package aniPangShootingWorld.round
 	{
 		//Note @유영선 배경 그라운드를 저장 할 변수
 		private var _backGround : BackGround;
-		//Note @유영선 배경 스카이를 저장 할 변수
-		private var _backSky : BackGround;
+		//Note @유영선 게임 시작전 화면 
+		private var _prevGameView : MovieClip;
 		//Note @유영선 플레이어의 객체를 저장 할 변수
 		private var _player : Player;
 		//Note @유영선 적들의 비트맵데이터를 저장할 변수
@@ -68,19 +66,19 @@ package aniPangShootingWorld.round
 		 */		
 		public function OneRound()
 		{
-			this.objectType = ObjectType.ROUND_GENERAL;
+			this.objectType = ObjectType.ROUND_PREV;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
+			//Note @유영선 게임 준비 단계를 화면에 출력
+			prevGameStart();
 			//Note @유영선 플레이어를 화면에 출력
 			playerDraw();
-			//Note @유영선 적 라인을 설정 하고 적들을 화면에 출력하고 배경 스카이를 출력
-			CreateEnemyLine();
-			
+
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
 			_soundManager.play(SoundResource.BGM_1, true);
 		}
-		
+
 		/**
 		 *Note @유영선 적들을 그립니다 
 		 * 
@@ -89,14 +87,29 @@ package aniPangShootingWorld.round
 		{
 			super.render();
 			if(super.children == null) return;
-			//Note @유영선 모든 적들이 지워졌는지 체크 (일반 몬스터 모드)
-			if(checkEnemy() && this.objectType == ObjectType.ROUND_GENERAL)
+			
+			//Note @유영선 시작 전 화면 구현
+			if(this.objectType == ObjectType.ROUND_PREV)
 			{
-				CreateEnemyLine();
+				if(_prevGameView.play == false)
+					this.objectType = ObjectType.ROUND_GENERAL;
+			}
+			
+			//Note @유영선 모든 적들이 지워졌는지 체크 (일반 몬스터 모드) 다 지워졌으면 몬스터 다시 그림
+			else if(this.objectType == ObjectType.ROUND_GENERAL)
+			{
+				if(_prevGameView)
+				{
+					removeChild(_prevGameView,true);
+					_prevGameView = null;
+				}
+							
+				if(checkEnemy())
+					CreateEnemyLine();
 			}
 			
 			//Note @유영선 보스 전 시작 경고 화면
-			if(this.objectType == ObjectType.ROUND_BOSS_WARNING)
+			else if(this.objectType == ObjectType.ROUND_BOSS_WARNING)
 			{
 				var curBossWarningTime : int = getTimer();
 				//Note @유영선 보스 워닝 화면 5초간 출력
@@ -117,10 +130,32 @@ package aniPangShootingWorld.round
 			}
 			
 			//Note @유영선 보스전 출력
-			if(this.objectType == ObjectType.ROUND_BOSS)
+			else if(this.objectType == ObjectType.ROUND_BOSS)
 			{
 				bossDraw();
 			}
+		}
+		
+		/**	 
+		 * Note @유영선 게임 시작 전 화면을 구현 합니다.
+		 */		
+		private function prevGameStart():void
+		{
+			//Note @유영선 xml 있는지 검사
+			if(!MenuView.sloadedImage.checkXml(("PrevStart_Sheet.xml"))) throw new Error("not found xml");
+			
+			_prevGameView = new MovieClip(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["PrevStart_Sheet.png"]
+				,MenuView.sloadedImage.xmlDictionary["PrevStart_Sheet.xml"]),1,0,0,true);
+			
+			_prevGameView.width = Framework.viewport.width/2;
+			_prevGameView.height = Framework.viewport.height/3;
+			_prevGameView.x = Framework.viewport.width/2 - _prevGameView.width/2;
+			_prevGameView.y = Framework.viewport.height/2 - _prevGameView.height/2;
+				
+			_prevGameView.start();
+			addChild(_prevGameView);
+			
+			
 		}
 		
 		/**
@@ -173,10 +208,17 @@ package aniPangShootingWorld.round
 		 */		
 		private function checkEnemy():Boolean
 		{
-			for(var i:Number = 0; i < 5; i++)
+			if(_enemyLine.enemyVector)
 			{
-				if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
-					return false;
+				for(var i:Number = 0; i < _enemyLine.enemyVector.length; i++)
+				{
+					if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
+						return false;
+				}
+			}
+			else
+			{
+				CreateEnemyLine();
 			}
 			return true;
 		}
@@ -187,7 +229,6 @@ package aniPangShootingWorld.round
 			if(_enemyAtlasVector.length != 0)
 			{
 				enenmyRemove();
-				removeChild(_backSky);
 			}
 			
 			//Note @유영선 적들의 타입 배열을 랜덤하게 섞음
@@ -203,7 +244,6 @@ package aniPangShootingWorld.round
 			}
 			_enemyLine.setEnemyLine(_enemyAtlasVector,_typeArray, this);
 			enenmyDraw();
-			addChild(_backSky);
 		}
 		
 		/**
@@ -310,20 +350,17 @@ package aniPangShootingWorld.round
 		 */		
 		private function playerDraw():void
 		{
-			_backSky = new BackGround(2, 60, 10.24, MenuView.sloadedImage.imageDictionary["backskycur.png"].bitmapData);
-			
 			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE,30,MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
 			_player = new Player(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Player.png"],MenuView.sloadedImage.xmlDictionary["Player.xml"]),5,
 				bulletMgr,this);
 			
 			_player.width = Framework.viewport.width/6;
 			_player.height = Framework.viewport.height/6;
-			_player.start();
 			
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			addChild(_player);
-			
+			_player.start();
 			bulletMgr = null;
 		}
 		
@@ -362,9 +399,6 @@ package aniPangShootingWorld.round
 			super.dispose();
 			_backGround.dispose();
 			_backGround = null;
-			
-			_backSky.dispose();
-			_backSky = null;
 			
 			_enemyLine = null;
 			

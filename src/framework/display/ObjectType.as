@@ -20,6 +20,7 @@ package framework.display
 		public static const	ITEM_IDLE : String = "item_idle";
 		public static const	ITEM_COLLISON : String = "item_collison";
 		
+		public static const ROUND_PREV : String = "round_prev";
 		public static const ROUND_GENERAL : String = "round_general";
 		public static const ROUND_BOSS_WARNING : String = "round_boss_warning";
 		public static const ROUND_BOSS : String = "round_boss";
