@@ -321,10 +321,9 @@ package framework.display
 			if(_children == null) return;
 			
 			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
-			for(var i:int = 0; i < _children.length; i++)
+			for(var i:int = _children.length - 1; i >= 0; i--)
 			{
-				var child:DisplayObject = _children[i];
-				child.dispose();
+				removeChildAt(i, true);
 			}
 			_children = null;
 		}
