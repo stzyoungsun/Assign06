@@ -7,6 +7,8 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
+	import aniPangShootingWorld.obstacle.Meteo;
+	import aniPangShootingWorld.obstacle.Obstacle;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.resource.SoundResource;
@@ -36,6 +38,8 @@ package aniPangShootingWorld.round
 		private var _player : Player;
 		//Note @유영선 플레이어 상태창 저장 할 변수
 		private var _playerState : PlayerState;
+		//Note @유영선 메테오를 저장 할 변수 입니다.
+		private var _meteoObstacle : Obstacle;
 		//Note @유영선 적들의 비트맵데이터를 저장할 변수
 		private var _enemyAtlasVector : Vector.<AtlasBitmapData> = new Vector.<AtlasBitmapData>;
 		//Note @유영선 적들의 라인을 저장 할 변수
@@ -57,8 +61,8 @@ package aniPangShootingWorld.round
 		private var _bossWarningView : Image;
 		
 		private const ENEMY_TWO_LEVEL : Number = 2;
-		private const ENEMY_THREE_LEVEL : Number = 6;
-		private const ENEMY_FOUR_LEVEL : Number = 12;
+		private const ENEMY_THREE_LEVEL : Number = 10;
+		private const ENEMY_FOUR_LEVEL : Number = 15;
 		private const ENEMY_BOSS_LEVEL : Number = 30;
 		
 		private const ENEMY_MAX_COUNT : Number = 3;
@@ -79,13 +83,15 @@ package aniPangShootingWorld.round
 			prevGameStart();
 			//Note @유영선 플레이어를 화면에 출력
 			playerDraw();
-			//플레이어 상태창 화면에 출력
+			//Note @유영선 플레이어 상태창 화면에 출력
 			playerStateDraw();
+			//Note @유영선 메테오를 등록 합니다.
+			drawMeteo();
+			
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
-			_soundManager.play(SoundResource.BGM_1, true);
 		}
-		
+	
 		/**
 		 *Note @유영선 적들을 그립니다 
 		 * 
@@ -94,6 +100,9 @@ package aniPangShootingWorld.round
 		{
 			super.render();
 			if(super.children == null) return;
+			
+			if(_soundManager.loopedPlayingState == "stop");
+				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
 			if(PlayerState.sSuperPowerFlag == true) 
@@ -169,6 +178,18 @@ package aniPangShootingWorld.round
 			
 			_prevGameView.start();
 			addChild(_prevGameView);
+		}
+		
+		private function drawMeteo():void
+		{
+			// TODO Auto Generated method stub
+			//Note @유영선 xml 있는지 검사
+			if(!MenuView.sloadedImage.checkXml(("meteo_Sheet.xml"))) throw new Error("not found xml");
+			
+			_meteoObstacle = new Meteo(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["meteo_Sheet.png"]
+				,MenuView.sloadedImage.xmlDictionary["meteo_Sheet.xml"]),30,this);
+			
+			addChild(_meteoObstacle);
 		}
 		
 		/**
@@ -283,6 +304,8 @@ package aniPangShootingWorld.round
 				{
 					_randomArray[0]++;
 					EnemyObject.sSpeed+=0.15;
+					(_meteoObstacle as Meteo).meteoShoot();
+					
 					break;
 				}
 				case ENEMY_THREE_LEVEL:
@@ -305,7 +328,6 @@ package aniPangShootingWorld.round
 					_soundManager.play(SoundResource.BOSS_WARNING);
 					_bossWarningTime = getTimer();
 					this.objectType = ObjectType.ROUND_BOSS_WARNING;
-					enenmyRemove();
 				}
 			}
 		}
