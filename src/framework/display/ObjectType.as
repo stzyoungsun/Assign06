@@ -34,6 +34,10 @@ package framework.display
 		public static const BOSS_COLLISION:String = "boss_collision";
 		public static const BOSS_DIE:String = "boss_die";
 		
+		public static const OBSTACLE_IDLE : String = "obstacle_general";
+		public static const OBSTACLE_MOVING : String = "obstacle_moving";
+		public static const OBSTACLE_COLLISON : String = "obstacle_collison";
+		
 		public static const BACKGROUND:String = "background";
 		public static const NONE : String = "none";
 		
