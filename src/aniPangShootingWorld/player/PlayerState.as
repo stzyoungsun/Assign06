@@ -30,15 +30,15 @@ package aniPangShootingWorld.player
 			super(0,0);
 	
 			_mainStateDlg = new Image(0,0, MenuView.sloadedImage.imageDictionary["state.png"].bitmapData);
-			_mainStateDlg.width = Framework.viewport.width/3;
+			_mainStateDlg.width = Framework.viewport.width/2;
 			_mainStateDlg.height = Framework.viewport.height/15;
 			
-			_heartDlg = new Image(_mainStateDlg.width*198/1000,_mainStateDlg.height*8/140,MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData);
-			_heartDlg.width = Framework.viewport.width*2/13;
+			_heartDlg = new Image(_mainStateDlg.width*197/1000,_mainStateDlg.height*8/140,MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData);
+			_heartDlg.width = Framework.viewport.width*3/13;
 			_heartDlg.height = Framework.viewport.height/41;
 			 
 			_powerDlg = new Image(_heartDlg.x + _mainStateDlg.width/40,_heartDlg.height - _mainStateDlg.height/15,MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData);
-			_powerDlg.width = Framework.viewport.width*2/13;
+			_powerDlg.width = Framework.viewport.width*3/13;
 			_powerDlg.height = Framework.viewport.height/41;
 			
 			if(MenuView.sloadedImage.checkXml("Number_Sprite.xml"))
@@ -61,9 +61,9 @@ package aniPangShootingWorld.player
 		 */		
 		public function observedState() : void
 		{
-			observedHeart(sPlayerHeart);
-			observedPower(sPlayerPower);
-			observedCoin(sGoldCount);
+			observedHeart();
+			observedPower();
+			observedCoin();
 		}
 		
 		
@@ -90,7 +90,7 @@ package aniPangShootingWorld.player
 			}
 		}
 		
-		private function observedCoin(sGoldCount:Number):void
+		private function observedCoin():void
 		{
 			// TODO Auto Generated method stub
 			_coinDlg.createTextImage(sGoldCount);
@@ -100,15 +100,15 @@ package aniPangShootingWorld.player
 		 * @param curPower 현재 파워 게이지 상태
 		 * Note @유영선 젤리 먹은 개수 만큼 파워 게이지를 조절 합니다
 		 */		
-		private function observedPower(curPower):void
+		private function observedPower():void
 		{
 			// TODO Auto Generated method stub
-			if(curPower >5)
-				curPower = 5;
-			if(curPower < 0)
-				curPower = 0;
+			if(sPlayerPower >5)
+				sPlayerPower = 5;
+			if(sPlayerPower < 0)
+				sPlayerPower = 0;
 			
-			switch(curPower)
+			switch(sPlayerPower)
 			{
 				case 0:
 				{
@@ -150,15 +150,16 @@ package aniPangShootingWorld.player
 		 * @param curHeart 현재 체력 상태
 		 * Note @유영선 플레이어의 현재 체력 만큼 체력 게이지를 조절 합니다
 		 */		
-		private function observedHeart(curHeart:Number):void
+		private function observedHeart():void
 		{
 			// TODO Auto Generated method stub
-			if(curHeart >5)
-				curHeart = 5;
-			if(curHeart < 0)
-				curHeart = 0;
+			trace(sPlayerHeart);
+			if(sPlayerHeart >5)
+				sPlayerHeart = 5;
+			if(sPlayerHeart < 0)
+				sPlayerHeart = 0;
 			
-			switch(curHeart)
+			switch(sPlayerHeart)
 			{
 				case 0:
 				{

@@ -55,14 +55,14 @@ package aniPangShootingWorld.enemy
 			{
 				case ObjectType.ITEM_IDLE:
 				{
-					var randomNumber : Number = UtilFunction.random(0,9.5,0.2);
-					if(randomNumber>=0 && randomNumber < 8.5)
+					var randomNumber : Number = UtilFunction.random(0,10,1);
+					if(randomNumber>=0 && randomNumber < 9)
 					{
 						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
 						this.objectType = ObjectType.ITEM_COIN;
 					}
 						
-					else if(randomNumber==9.2)
+					else if(randomNumber==9)
 					{
 						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["heartEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["heartEat_Sprite.xml"]);
 						this.objectType = ObjectType.ITEM_HEART;
