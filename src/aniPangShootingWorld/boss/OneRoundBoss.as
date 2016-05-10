@@ -10,7 +10,6 @@ package aniPangShootingWorld.boss
 	import framework.display.Sprite;
 	import framework.gameobject.Bullet;
 	import framework.gameobject.BulletManager;
-	import framework.gameobject.Collision;
 	
 	public class OneRoundBoss extends BossObject
 	{
@@ -18,104 +17,73 @@ package aniPangShootingWorld.boss
 		private static const PHASE_2:Number = 2;
 		private static const PHASE_3:Number = 3;
 		
-		public static const MAX_BOSS_HP:Number = 150;
-		
-		private var _bossAtlas:AtlasBitmapData;
 		private var _bulletManager:BulletManager;
-		private var _bossHp:Number;
 		private var _stage:Sprite;
 		private var _shotAngle:Number;
 		private var _shotSpeed:Number;
 		private var _bossPhase:Number;
-		private var _pattern:Number;
+		private var _waitTime:Number;
 		private var _wait:Boolean;
+		private var _remainBullet:Boolean;
 		
-		public function OneRoundBoss(bossAtlas : AtlasBitmapData, frame : Number, bulletManager : BulletManager, stage : Sprite)
+		public function OneRoundBoss(bossAtlas : AtlasBitmapData, frame:Number, bulletManager:BulletManager, stage:Sprite)
 		{
-			_bossAtlas = bossAtlas;
+			super(bossAtlas, frame, bulletManager, stage);
+			
+			_prevTime = 0;
+			
 			_stage = stage;
-			super(_bossAtlas, frame, _stage);
-			_bossHp = MAX_BOSS_HP;
 			_bulletManager = bulletManager;
 			_bulletManager.createBullet(this.x, this.y);
-			_prevTime = getTimer();
-			_bossPhase = PHASE_1;
+			
 			_shotAngle = 0;
 			_shotSpeed = Framework.viewport.height / 100;
+			_bossPhase = PHASE_1;
 			_wait = false;
-			_pattern = 1;
+			_waitTime = 2000;
+			bossHp = BossObject.BASE_MAX_BOSS_HP;
+			maxBossHp = BossObject.BASE_MAX_BOSS_HP;
 		}
 		
-		public override function render():void
+		/**
+		 * 패턴 변경 후 보스가 공격하지 않고 대기시키도록 하는 메서드 
+		 * @param waitTime - 대기 시간
+		 */
+		private function waitForPatternChange():void
 		{
-			super.render();
+			_remainBullet = false;
 			
-			var currentTime:Number = getTimer();
+			for(var i:int = 0; i < _bulletManager.totalBullet; i++)
+			{
+				var bullet:Bullet = _bulletManager.bulletVector[i];
+				if(bullet.objectType != ObjectType.ENEMY_BULLET_IDLE)
+				{
+					_remainBullet = true;
+				}
+			}
 			
-			// 페이즈 변경 후 발생하는 대기 시간
-			if(currentTime - _prevTime > 2000)
+			if(!_remainBullet)
 			{
 				_wait = false;
-				_prevTime = currentTime;
 			}
-			
-			// 대기시간이면 그냥 넘긴다.
-			if(!_wait)
-			{
-				shotBullet();
-			}
-			
-			if(this.objectType == ObjectType.BOSS_COLLISION)
-			{
-				//체력 감소
-				_bossHp--;
-				
-				// 보스의 체력 비율에 따라 PHASE를 변경 시킴
-				var bossHpRatio:Number = _bossHp / MAX_BOSS_HP;
-				
-				if(_bossPhase == PHASE_1 && bossHpRatio < 0.7)
-				{
-					_shotAngle = 0;
-					_bossPhase = PHASE_2;
-					_wait = true;
-				}
-				else if(_bossPhase == PHASE_2 && bossHpRatio < 0.3)
-				{
-					_shotAngle = 0;
-					_bossPhase = PHASE_3;
-					_wait = true;
-				}
-				
-				//체력이 0일 경우
-				if(_bossHp <= 0)
-				{
-					this.objectType = ObjectType.BOSS_DIE;
-					
-					for(var i:int = 0; i < _bulletManager.totalBullet; i++)
-					{
-						if(_bulletManager.bulletVector[i].objectType != ObjectType.ENEMY_BULLET_IDLE)
-						{
-							_stage.removeChild(_bulletManager.bulletVector[i]);
-						}
-					}
-					_stage.removeChild(this);
-					return;
-				}
-				else
-				{
-					this.objectType = ObjectType.BOSS_GENERAL;
-				}
-			}
-			
-			bulletFrame();
 		}
 		
 		/**
 		 * 보스가 특정 패턴에 따라 미사일을 발사하도록 하는 메서드 
-		 * 
 		 */
-		private function shotBullet():void
+		public override function shotBullet():void
 		{
+			if(bossHp <= 0)
+			{
+				return;
+			}
+			
+			if(_wait)
+			{
+				waitForPatternChange();
+				return;
+			}
+			
 			var bulletX:Number = 0;
 			var bulletY:Number = 0;
 			var bulletSpeed:Number = 0;
@@ -154,40 +122,39 @@ package aniPangShootingWorld.boss
 		}
 		
 		/**
-		 * 미사일과 벽에 출동 미사일과 플레이어의 충돌을 검사하는 함수 입니다.
-		 */		
-		public function bulletFrame() : void
+		 * 체력 비율에 따라 보스의 Phase를 변경시키는 메서드
+		 */
+		public override function changePhase():void
 		{
-			for(var i:int = 0; i < _bulletManager.totalBullet; i++)
+			// 보스의 체력 비율에 따라 PHASE를 변경 시킴
+			var bossHpRatio:Number = bossHp / maxBossHp;
+			
+			if(_bossPhase == PHASE_1 && bossHpRatio < 0.7)
 			{
-				//Note @유영선 충돌 체크 매니져를 이용하여 벽과의 충돌과 미사일의 상태가 ENEMY_BULLET_COLLISION이면 stage에서 제거
-				if((Collision.bulletToWall(_bulletManager.bulletVector[i])
-					&& _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_MOVING) 
-					|| _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
-				{
-					_stage.removeChild(_bulletManager.bulletVector[i]);
-					_bulletManager.bulletVector[i].objectType = ObjectType.ENEMY_BULLET_IDLE;
-					_bulletManager.bulletNumVector.push(i);
-				}
-				else
-				{
-					//Note @유영선 충돌 상태가 아닐 경우 shootingState의 함수에 bulletstate 함수를 설정
-					_bulletManager.bulletVector[i].shootingState(bulletState, i);
-				}
+				_shotAngle = 0;
+				_bossPhase = PHASE_2;
+				_wait = true;
+			}
+			else if(_bossPhase == PHASE_2 && bossHpRatio < 0.3)
+			{
+				_shotAngle = 0;
+				_bossPhase = PHASE_3;
+				_wait = true;
 			}
 		}
 		
 		/**
-		 * @param bulletNum 미사일 번호
-		 * 번호에 맞는 미사일에 상태를 설정 합니다.
+		 * 보스의 HP가 0이 되면 호출되는 메서드
 		 */
-		public function bulletState(bulletNum : Number) : void
+		public override function dieBoss():void
 		{
-			var bullet:Bullet = _bulletManager.bulletVector[bulletNum];
-			var radian:Number = bullet.angle * Math.PI * 2;
-			
-			bullet.x += bullet.speed * Math.cos(radian);
-			bullet.y += bullet.speed * Math.sin(radian);
+			var currentTime:Number = getTimer();
+			// 3초후 제거
+			if(currentTime - _prevTime > 3000)
+			{
+				// 보스 자신을 제거
+				_stage.removeChild(this);
+			}
 		}
 		
 		/**
@@ -204,7 +171,5 @@ package aniPangShootingWorld.boss
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 		}
-		
-		public function get currentBossHp():Number{return _bossHp;}
 	}
 }
