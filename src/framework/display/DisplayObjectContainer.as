@@ -215,6 +215,17 @@ package framework.display
 								}
 								break;
 							}
+							
+						   case ObjectType.OBSTACLE_MOVING:
+						   {
+							   if(Collision.ObjectToObject(child,_children[curChildNum]))
+							   {
+								   trace("아이템과 충돌");
+								   child.objectType = ObjectType.OBSTACLE_COLLISON;
+								   _children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
+							   }
+							   break;
+						   }
 						}
 					}
 					break;

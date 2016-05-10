@@ -26,7 +26,7 @@ package aniPangShootingWorld.obstacle
 		 */		
 		public function Meteo(meteoAtlas : AtlasBitmapData, frame : Number, stage:Sprite)
 		{
-			super(meteoAtlas, frame);
+			super(meteoAtlas, frame, stage);
 			_stage = stage;
 			_meteoLine = new Image(0,0,MenuView.sloadedImage.imageDictionary["meteoLine.png"].bitmapData);
 			_meteoWarrning = new Image(0,0,MenuView.sloadedImage.imageDictionary["meteowarning.png"].bitmapData);
@@ -43,10 +43,13 @@ package aniPangShootingWorld.obstacle
 		 */		
 		public function meteoShoot() : void
 		{
+			_meteoLine.x = Player.currentPlayer.x;
+			this.x = -999;
+			
 			_shootFlag = true;
 			_prevTime = getTimer();
-			_meteoLine.x = Player.currentPlayer.x;
-
+			
+			_stage.addChild(this);
 		}
 		
 		public override function render():void
@@ -56,12 +59,12 @@ package aniPangShootingWorld.obstacle
 				var curTimer:int = getTimer();
 				
 				//Note @유영선  3초간 메테오를 조준 합니다.
-				if(curTimer - _prevTime < 5000)
+				if(curTimer - _prevTime < 3000)
 				{
 					aimMeteo();
 				}
 				//Note @유영선 1초간 메테오의 경고창을 출력 합니다
-				else if(curTimer - _prevTime > 5000 && curTimer - _prevTime < 7000)
+				else if(curTimer - _prevTime > 3000 && curTimer - _prevTime < 5000)
 				{
 					drawWarrning();
 				}
@@ -72,7 +75,7 @@ package aniPangShootingWorld.obstacle
 				}
 			}
 			
-			if(this.objectType == ObjectType.OBSTACLE_MOVING)
+			if(this.objectType != ObjectType.OBSTACLE_IDLE)
 			{
 				super.render();
 				autoMoving();
@@ -82,7 +85,12 @@ package aniPangShootingWorld.obstacle
 		private function autoMoving():void
 		{
 			// TODO Auto Generated method stub
-			this.y+=10;
+			this.y+=Framework.viewport.height/60;
+			
+			if(this.y > Framework.viewport.height)
+			{
+				_stage.removeChild(this);
+			}
 		}
 		
 		private function shootMeteo():void

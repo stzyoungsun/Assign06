@@ -38,8 +38,6 @@ package aniPangShootingWorld.round
 		private var _player : Player;
 		//Note @유영선 플레이어 상태창 저장 할 변수
 		private var _playerState : PlayerState;
-		//Note @유영선 메테오를 저장 할 변수 입니다.
-		private var _meteoObstacle : Obstacle;
 		//Note @유영선 적들의 비트맵데이터를 저장할 변수
 		private var _enemyAtlasVector : Vector.<AtlasBitmapData> = new Vector.<AtlasBitmapData>;
 		//Note @유영선 적들의 라인을 저장 할 변수
@@ -61,7 +59,7 @@ package aniPangShootingWorld.round
 		private var _bossWarningView : Image;
 		
 		private const ENEMY_TWO_LEVEL : Number = 2;
-		private const ENEMY_THREE_LEVEL : Number = 10;
+		private const ENEMY_THREE_LEVEL : Number = 3;
 		private const ENEMY_FOUR_LEVEL : Number = 15;
 		private const ENEMY_BOSS_LEVEL : Number = 30;
 		
@@ -71,6 +69,7 @@ package aniPangShootingWorld.round
 		//Note @유영선 보스의 체력바
 		private var _bossHPbar:HPbar;
 		
+		private var _moteoTime : Number =0;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */		
@@ -85,8 +84,8 @@ package aniPangShootingWorld.round
 			playerDraw();
 			//Note @유영선 플레이어 상태창 화면에 출력
 			playerStateDraw();
-			//Note @유영선 메테오를 등록 합니다.
-			drawMeteo();
+			//Note @유영선 메테오를  시간을 설정 합니다.
+			_moteoTime = getTimer();
 			
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
@@ -103,6 +102,17 @@ package aniPangShootingWorld.round
 			
 			if(_soundManager.loopedPlayingState == "stop");
 				_soundManager.play(SoundResource.BGM_1, true);
+			
+			//8초당 메테오를 발사 합니다.
+			if(this.objectType != ObjectType.ROUND_PREV)
+			{
+				var curMeteoTime: int = getTimer();
+				if(curMeteoTime - _moteoTime > 8000)
+				{
+					ShootMeteo();
+					_moteoTime = getTimer();
+				}
+			}
 			
 			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
 			if(PlayerState.sSuperPowerFlag == true) 
@@ -180,16 +190,19 @@ package aniPangShootingWorld.round
 			addChild(_prevGameView);
 		}
 		
-		private function drawMeteo():void
+		private function ShootMeteo():void
 		{
 			// TODO Auto Generated method stub
 			//Note @유영선 xml 있는지 검사
+			//Note @유영선 메테오를 저장 할 변수 입니다.
+			var meteoObstacle : Obstacle;
+			
 			if(!MenuView.sloadedImage.checkXml(("meteo_Sheet.xml"))) throw new Error("not found xml");
 			
-			_meteoObstacle = new Meteo(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["meteo_Sheet.png"]
+			meteoObstacle = new Meteo(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["meteo_Sheet.png"]
 				,MenuView.sloadedImage.xmlDictionary["meteo_Sheet.xml"]),30,this);
-			
-			addChild(_meteoObstacle);
+			(meteoObstacle as Meteo).meteoShoot();
+			//addChild(_meteoObstacle);
 		}
 		
 		/**
@@ -210,7 +223,7 @@ package aniPangShootingWorld.round
 				_boss.x = Framework.viewport.width / 8;
 				_boss.y = 0;
 				_boss.width = Framework.viewport.width * 4 / 5;
-				_boss.height = Framework.viewport.height / 5;
+				_boss.height = Framework.viewport.height / 4;
 				_boss.start();
 				addChild(_boss);
 				
@@ -304,8 +317,6 @@ package aniPangShootingWorld.round
 				{
 					_randomArray[0]++;
 					EnemyObject.sSpeed+=0.15;
-					(_meteoObstacle as Meteo).meteoShoot();
-					
 					break;
 				}
 				case ENEMY_THREE_LEVEL:
@@ -327,7 +338,7 @@ package aniPangShootingWorld.round
 					_soundManager.stopLoopedPlaying();
 					_soundManager.play(SoundResource.BOSS_WARNING);
 					_bossWarningTime = getTimer();
-					this.objectType = ObjectType.ROUND_BOSS_WARNING;
+					this.objectType = ObjectType.ROUND_BOSS_WARNING;;
 				}
 			}
 		}
