@@ -51,20 +51,25 @@ package aniPangShootingWorld.boss
 		 */
 		private function waitForPatternChange():void
 		{
-			_remainBullet = false;
-			
-			for(var i:int = 0; i < _bulletManager.totalBullet; i++)
+			if(_remainBullet)
 			{
-				var bullet:Bullet = _bulletManager.bulletVector[i];
-				if(bullet.objectType != ObjectType.ENEMY_BULLET_IDLE)
+				for(var i:int = 0; i < _bulletManager.totalBullet; i++)
 				{
-					_remainBullet = true;
+					var bullet:Bullet = _bulletManager.bulletVector[i];
+					if(bullet.objectType != ObjectType.ENEMY_BULLET_IDLE)
+					{
+						return;
+					}
 				}
+				_remainBullet = false;
+				_prevTime = getTimer();
 			}
 			
-			if(!_remainBullet)
+			var currentTime:Number = getTimer();
+			if(currentTime - _prevTime > 500)
 			{
 				_wait = false;
+				_prevTime = currentTime;
 			}
 		}
 		
@@ -129,17 +134,19 @@ package aniPangShootingWorld.boss
 			// 보스의 체력 비율에 따라 PHASE를 변경 시킴
 			var bossHpRatio:Number = bossHp / maxBossHp;
 			
-			if(_bossPhase == PHASE_1 && bossHpRatio < 0.7)
+			if(_bossPhase == PHASE_1 && bossHpRatio < 0.8)
 			{
 				_shotAngle = 0;
 				_bossPhase = PHASE_2;
 				_wait = true;
+				_remainBullet = true;
 			}
-			else if(_bossPhase == PHASE_2 && bossHpRatio < 0.3)
+			else if(_bossPhase == PHASE_2 && bossHpRatio < 0.4)
 			{
 				_shotAngle = 0;
 				_bossPhase = PHASE_3;
 				_wait = true;
+				_remainBullet = true;
 			}
 		}
 		
