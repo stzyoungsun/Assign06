@@ -69,6 +69,7 @@ package aniPangShootingWorld.round
 		//Note @유영선 보스의 체력바
 		private var _bossHPbar:HPbar;
 		
+		private const METEO_INTERVAL_TIME : int = 8000; 
 		private var _moteoTime : Number =0;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
@@ -107,7 +108,7 @@ package aniPangShootingWorld.round
 			if(this.objectType != ObjectType.ROUND_PREV)
 			{
 				var curMeteoTime: int = getTimer();
-				if(curMeteoTime - _moteoTime > 8000)
+				if(curMeteoTime - _moteoTime > METEO_INTERVAL_TIME)
 				{
 					ShootMeteo();
 					_moteoTime = getTimer();
