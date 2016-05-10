@@ -1,5 +1,6 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.round.MenuView;
 	import aniPangShootingWorld.util.UtilFunction;
@@ -49,59 +50,18 @@ package aniPangShootingWorld.enemy
 			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
 			autoMoving();
 			
-			if(this.objectType == ObjectType.ENEMY_REMOVE) return;
-			
 			switch(this.objectType)
 			{
 				case ObjectType.ITEM_IDLE:
 				{
-					var randomNumber : Number = UtilFunction.random(0,10,1);
-					if(randomNumber>=0 && randomNumber < 9)
-					{
-						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]);
-						this.objectType = ObjectType.ITEM_COIN;
-					}
-						
-					else if(randomNumber==9)
-					{
-						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["heartEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["heartEat_Sprite.xml"]);
-						this.objectType = ObjectType.ITEM_HEART;
-					}
-						
-					else
-					{
-						this.spriteSheet = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["powerEat_Sprite.png"],MenuView.sloadedImage.xmlDictionary["powerEat_Sprite.xml"]);
-						this.objectType = ObjectType.ITEM_POWER;
-					}
-					
-					this.start();
-					break;
-				}
-				
-				case ObjectType.ITEM_COIN_COLLISON:
-				{
-		
+					var randomNumber : Number = UtilFunction.random(0,3,1);
+					var item : ItemGroup = new ItemGroup(randomNumber,this.x, this.y,_stage);
+					item.drawItem();
+					this.x = -999;
 					this.objectType = ObjectType.ENEMY_REMOVE;
-					PlayerState.sGoldCount+=1;
-					break;
-				}
-				
-				case ObjectType.ITEM_HERAT_COLLISON:
-				{
-					
-					this.objectType = ObjectType.ENEMY_REMOVE;
-					PlayerState.sPlayerHeart++;
-					break;
-				}
-					
-				case ObjectType.ITEM_POWER_COLLISON:
-				{
-					this.objectType = ObjectType.ENEMY_REMOVE;
-					PlayerState.sPlayerPower++;
 					break;
 				}
 			}
-	
 			super.render();
 		}
 		

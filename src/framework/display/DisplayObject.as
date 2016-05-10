@@ -8,7 +8,6 @@ package framework.display
 	
 	import avmplus.getQualifiedClassName;
 	
-	import framework.core.Framework;
 	import framework.util.Align;
 
 	public class DisplayObject extends EventDispatcher

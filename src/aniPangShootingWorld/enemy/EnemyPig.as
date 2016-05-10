@@ -50,7 +50,7 @@ package aniPangShootingWorld.enemy
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.ENEMY_BULLET_MOVING;
 			
 			//Note @유영선 선택 된 미사일을 적들의 위치에 따라 재설정 그리고 크거 조절
-			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/5, this.height/5);
+			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/3, this.height/3);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 		}

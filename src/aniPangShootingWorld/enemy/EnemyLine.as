@@ -40,7 +40,7 @@ package aniPangShootingWorld.enemy
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
 				//Note @유영선 적들의 미사이를 설정하는 bulletManager 
-				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuView.sloadedImage.imageDictionary["Bulletfour.png"].bitmapData);
+				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData);
 				
 				//Note @유영선 타입배열에 따라 설정 한 값으로 분기하여 객체를 생성 
 				switch(enemyTypeArray[i])
