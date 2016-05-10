@@ -174,7 +174,7 @@ package aniPangShootingWorld.boss
 			//Note @유영선 선택 된 미사일을 ENEMY_BULLET_MOVING 상태로 설정
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.ENEMY_BULLET_MOVING;
 			//Note @유영선 선택 된 미사일을 적들의 위치에 따라 재설정 그리고 크거 조절
-			_bulletManager.bulletVector[bulletNum].initBullet(x, y, this.width / 10, this.height / 10, shotAngle, shotSpeed);
+			_bulletManager.bulletVector[bulletNum].initBullet(x, y, this.width / 15, this.height / 15, shotAngle, shotSpeed);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 		}
