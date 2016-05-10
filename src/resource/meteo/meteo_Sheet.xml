@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas ImagePath="meteo_Sheet.png">
+<SubTexture name="meteo1.png" x="0" y="0" width="167" height="241 "/>
+<SubTexture name="meteo2.png" x="0" y="241" width="167" height="241 "/>
+<SubTexture name="meteo3.png" x="167" y="0" width="167" height="241 "/>
+<SubTexture name="meteo4.png" x="334" y="0" width="167" height="241 "/>
+</TextureAtlas>
