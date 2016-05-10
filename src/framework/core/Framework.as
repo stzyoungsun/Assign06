@@ -13,12 +13,15 @@ package framework.core
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import aniPangShootingWorld.resource.SoundResource;
+	
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.DisplayObjectContainer;
 	import framework.display.Stage;
 	import framework.event.Touch;
 	import framework.event.TouchPhase;
+	import framework.sound.SoundManager;
 	
 	public class Framework  extends EventDispatcher
 	{
@@ -247,6 +250,7 @@ package framework.core
 		public function stop() : void
 		{
 			_started = false;
+			SoundManager.getInstance().stopLoopedPlaying();
 		}
 		
 		private function updateNativeOverlay():void

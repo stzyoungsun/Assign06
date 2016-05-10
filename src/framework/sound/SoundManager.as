@@ -134,5 +134,7 @@ package framework.sound
 			// play 호출
 			play(_currentResourceName, true);
 		}
+		
+		public function get loopedPlayingState():String{return _loopedPlayingState;}
 	}
 }
