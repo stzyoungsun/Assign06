@@ -219,7 +219,7 @@ package aniPangShootingWorld.round
 				addChild(_bossHPbar);
 			}
 			
-			_bossHPbar.calcHP(OneRoundBoss.MAX_BOSS_HP, (_boss as OneRoundBoss).currentBossHp);
+			_bossHPbar.calcHP(_boss.maxBossHp, _boss.bossHp);
 		}
 		
 		/**
