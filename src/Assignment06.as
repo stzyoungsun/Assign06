@@ -23,6 +23,7 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			addEventListener(Event.ACTIVATE, activateListener);
 			addEventListener(Event.DEACTIVATE, deactivateListener);
+			fw.showStats(true);
 		}
 		
 		private function deactivateListener(event:Event):void

@@ -46,7 +46,7 @@ package aniPangShootingWorld.player
 				var numberAtlas : AtlasBitmapData = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Number_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Number_Sprite.xml"])
 			}
 		
-			_coinDlg = new TextImageField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width*2/13,Framework.viewport.height/41,numberAtlas);
+			_coinDlg = new TextImageField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
 			
 			addChild(_mainStateDlg);
 			addChild(_heartDlg);
