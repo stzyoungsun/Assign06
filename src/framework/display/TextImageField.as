@@ -8,14 +8,27 @@ package framework.display
 		private var _NumberImageVector : Vector.<MovieClip> = new Vector.<MovieClip>;
 		private var _NumberImages:AtlasBitmapData;
 		
+		private var _NumWidth : int;
+		private var _NumHeight : int;
+		/**
+		 * 
+		 * @param x 첫 글자의 x
+		 * @param y 첫 글자의 y
+		 * @param width 한 글자당 크기
+		 * @param height 한 글자 당 크기
+		 * @param NumberImages 글자들을 담고 있는 아틀라스 비트맵
+		 * 
+		 */		
 		public function TextImageField(x : int, y : int, width:int, height:int, NumberImages : AtlasBitmapData)
 		{
 			_NumberImages = NumberImages;
 		
-			super(width, height);
+			super(x, y);
 			
 			this.x = x;
 			this.y = y;
+			_NumWidth = width;
+			_NumHeight = height;
 		}
 		
 		public function createTextImage(drawNumber : int):void
@@ -29,9 +42,9 @@ package framework.display
 			for(var i : int =0; i < numberArray.length; ++i)
 			{
 				_NumberImageVector.push(new MovieClip(_NumberImages,1,0,0));
-				
-				_NumberImageVector[i].width = this.stageWidth/numberArray.length;
-				_NumberImageVector[i].height = this.stageHeight;
+				trace(Math.ceil(_NumWidth));
+				_NumberImageVector[i].width = _NumWidth;
+				_NumberImageVector[i].height = _NumHeight;
 				_NumberImageVector[i].x = this.x + _NumberImageVector[i].width/2*i;
 				_NumberImageVector[i].y = this.y;
 				

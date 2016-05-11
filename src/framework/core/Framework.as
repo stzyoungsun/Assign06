@@ -13,8 +13,6 @@ package framework.core
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import aniPangShootingWorld.resource.SoundResource;
-	
 	import framework.Rendering.Painter;
 	import framework.display.DisplayObject;
 	import framework.display.DisplayObjectContainer;
@@ -44,6 +42,7 @@ package framework.core
 		private static var _sCurrent:Framework;
 		private static var _sPoint:Point = new Point(0, 0);
 		
+		private var _statsDisplay:FrameWorkDrawCall;
 		/**
 		 * 생성자 - native stage 설정, 이벤트 리스너 등록, Stage3D context 생성 요청 등을 수행
 		 * @param rootClass - start() 메서드 이후로 실행할 클래스
@@ -60,7 +59,7 @@ package framework.core
 			// viewport 설정, Framework.display.stage 객체 생성
 			_viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			_stage = new Stage(_viewPort.width, _viewPort.height, stage.color);
-			
+			_statsDisplay = new FrameWorkDrawCall(_viewPort.width*4/9,0,_viewPort.width/25,_viewPort.width/25);
 			// 시작 클래스 설정
 			_rootClass = rootClass;
 			
@@ -84,6 +83,16 @@ package framework.core
 			_stage3D.requestContext3D();
 		}
 		
+		public function  showStats(value:Boolean):void
+		{
+			if (value == false) return;
+			
+			if (value)
+			{
+				trace("들어옴");
+				if (_statsDisplay) _stage.addChild(_statsDisplay);
+			}
+		}
 		/**
 		 * Stage3D의 context가 생성되면 호출되는 메서드 
 		 * @param event - 발생한 이벤트 정보를 갖고있는 Event 객체
@@ -229,9 +238,11 @@ package framework.core
 			// 렌더링 버퍼 클리어
 			_context3D.clear(1.0, 1.0, 1.0, 1.0);
 			// 스테이지에 등록된 모든 객체의 render 메서드 호출
+			
 			_stage.render();
 			// @FIXME jihwan.ryu 드로우콜 횟수 출력 - 화면 출력으로 변경
-			trace("DRAWCALL: " + _painter.drawCount);
+			_statsDisplay.createTextImage(_painter.drawCount);
+
 			// 버퍼에 그려진 데이터를 화면에 출력
 			_context3D.present();
 			// 행렬 초기화
