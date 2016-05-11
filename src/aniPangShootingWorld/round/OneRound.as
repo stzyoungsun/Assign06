@@ -58,8 +58,8 @@ package aniPangShootingWorld.round
 		private var _bossWarningTime : Number = 0;
 		private var _bossWarningView : Image;
 		
-		private const ENEMY_TWO_LEVEL : Number = 2;
-		private const ENEMY_THREE_LEVEL : Number = 3;
+		private const ENEMY_TWO_LEVEL : Number = 6;
+		private const ENEMY_THREE_LEVEL : Number = 9;
 		private const ENEMY_FOUR_LEVEL : Number = 15;
 		private const ENEMY_BOSS_LEVEL : Number = 30;
 		
@@ -76,7 +76,7 @@ package aniPangShootingWorld.round
 		 */		
 		public function OneRound()
 		{
-			this.objectType = ObjectType.ROUND_PREV;
+			this.objectType = ObjectType.ROUND_GENERAL;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
@@ -122,6 +122,7 @@ package aniPangShootingWorld.round
 			}
 			else
 				_backGround.step = 1;
+			
 			//Note @유영선 시작 전 화면 구현
 			if(this.objectType == ObjectType.ROUND_PREV)
 			{
@@ -169,6 +170,8 @@ package aniPangShootingWorld.round
 				PlayerState.sPlayerPower = 0;
 				bossDraw();
 			}
+			
+			//Note @유영선 결과 창 구현
 		}
 		
 		/**	 
@@ -250,10 +253,7 @@ package aniPangShootingWorld.round
 						return false;
 				}
 			}
-			else
-			{
-				CreateEnemyLine();
-			}
+
 			return true;
 		}
 		
@@ -265,19 +265,22 @@ package aniPangShootingWorld.round
 				enenmyRemove();
 			}
 			
-			//Note @유영선 적들의 타입 배열을 랜덤하게 섞음
-			for(var cnt : int =0 ; cnt < EnemyObjectUtil.MAX_LINE_COUNT; cnt++)
-				_typeArray[cnt] = _randomArray[cnt]
-					
-				_typeArray = UtilFunction.shuffle(_typeArray,5);
-			
-			for(var i : Number =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
+			if(this.objectType == ObjectType.ROUND_GENERAL)
 			{
-				_enemyAtlasVector[i] = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
-					,MenuView.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
+				//Note @유영선 적들의 타입 배열을 랜덤하게 섞음
+				for(var cnt : int =0 ; cnt < EnemyObjectUtil.MAX_LINE_COUNT; cnt++)
+					_typeArray[cnt] = _randomArray[cnt]
+				
+				_typeArray = UtilFunction.shuffle(_typeArray,5);
+				
+				for(var i : Number =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
+				{
+					_enemyAtlasVector[i] = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
+						,MenuView.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
+				}
+				_enemyLine.setEnemyLine(_enemyAtlasVector,_typeArray, this);
+				enenmyDraw();
 			}
-			_enemyLine.setEnemyLine(_enemyAtlasVector,_typeArray, this);
-			enenmyDraw();
 		}
 		
 		/**
@@ -300,6 +303,7 @@ package aniPangShootingWorld.round
 			{
 				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
 				{
+					_enemyLine.enemyVector[i].deleteHPBar();
 					removeChild(_enemyLine.enemyVector[i],true);
 				}	
 			}
@@ -339,7 +343,7 @@ package aniPangShootingWorld.round
 					_soundManager.stopLoopedPlaying();
 					_soundManager.play(SoundResource.BOSS_WARNING);
 					_bossWarningTime = getTimer();
-					this.objectType = ObjectType.ROUND_BOSS_WARNING;;
+					this.objectType = ObjectType.ROUND_BOSS_WARNING;
 				}
 			}
 		}

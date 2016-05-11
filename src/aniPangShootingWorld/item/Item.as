@@ -50,6 +50,7 @@ package aniPangShootingWorld.item
 			
 			if(_endx <= _startx)
 				_stepx = -_stepx;
+			
 			_stepy = (Math.abs(_endy - _starty))/20;
 		}
 		
@@ -111,9 +112,15 @@ package aniPangShootingWorld.item
 			
 			else
 			{
-				this.x -= _stepx/3;
-				this.y += _stepy/2;
+				this.x -= _stepx/2;
+				this.y += _stepy/1.5;
 			}
+			if(this.y >= Framework.viewport.height)
+			{
+				_stage.removeChild(this);
+				this.dispose();
+			}
+				
 		}
 		
 		public override function dispose():void

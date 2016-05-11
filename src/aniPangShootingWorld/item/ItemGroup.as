@@ -25,18 +25,18 @@ package aniPangShootingWorld.item
 			_stage = stage
 			for(var i : Number =0; i < _itemCount; ++i)
 			{
-				var randomNumber : Number = UtilFunction.random(0,10,1);
+				var randomNumber : Number = UtilFunction.random(0,30,1);
 				
 				var randEndx : Number = UtilFunction.random(startx-Framework.viewport.width/4,startx+Framework.viewport.width/4,1);
 				var randEndy : Number = UtilFunction.random(starty-Framework.viewport.height/4,starty - Framework.viewport.height/2,1);
 				
-				if(randomNumber>=0 && randomNumber < 9)
+				if(randomNumber>=0 && randomNumber < 27)
 				{
 					_itemVector.push(new Item(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Coin_Sprite.png"]
 						,MenuView.sloadedImage.xmlDictionary["Coin_Sprite.xml"]),30,startx,starty,randEndx,randEndy, ObjectType.ITEM_COIN,_stage));
 				}
 					
-				else if(randomNumber==9)
+				else if(randomNumber==27)
 				{
 					_itemVector.push(new Item(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["heartEat_Sprite.png"]
 						,MenuView.sloadedImage.xmlDictionary["heartEat_Sprite.xml"]),30,startx,starty,randEndx,randEndy, ObjectType.ITEM_HEART,_stage));
