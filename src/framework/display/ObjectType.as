@@ -4,6 +4,7 @@ package framework.display
 	{
 		public static const PLAYER_GENERAL:String = "player";
 		public static const PLAYER_COLLISION : String = "player_collision";
+		public static const PLAYER_SHIELD_MODE : String = "player_shield_mode";
 		
 		public static const ENEMY_GENERAL : String = "enemy_general";
 		public static const ENEMY_COLLISION : String = "enemy_conllision";

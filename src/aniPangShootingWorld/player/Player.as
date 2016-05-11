@@ -26,7 +26,7 @@ package aniPangShootingWorld.player
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
 		private var _soundManager:SoundManager;
-			
+		private var _shieldTime : Number;
 		/**
 		 * 
 		 * @param playerAtlas 	애니매이션 할 Atals 객체
@@ -153,10 +153,33 @@ package aniPangShootingWorld.player
 			if(this.objectType == ObjectType.PLAYER_COLLISION)
 			{
 				if(PlayerState.sSuperPowerFlag == false)
+				{
+					_shieldTime = getTimer();
+					this.objectType = ObjectType.PLAYER_SHIELD_MODE;
 					PlayerState.sPlayerHeart--;
-
-				this.objectType = ObjectType.PLAYER_GENERAL;
+				}
 			}
+			
+			//Note @유영선  플레이어 쉴드 시간
+			if(this.objectType == ObjectType.PLAYER_SHIELD_MODE)
+			{
+				var curShieldTimer:int = getTimer();
+				
+				if(curShieldTimer - _shieldTime < 2000)
+				{
+					this.showImageAt(0);
+					this.width = Framework.viewport.width/9;
+					this.height = Framework.viewport.height/9;
+				}
+				else
+				{
+					this.start();
+					this.objectType = ObjectType.PLAYER_GENERAL;
+					this.width = Framework.viewport.width/6;
+					this.height = Framework.viewport.height/6;
+				}
+			}
+			
 			
 			//@Note 유영선 플레이어 체력이 0이 되었을 경우 메뉴 화면으로 돌아감
 			if(PlayerState.sPlayerHeart == 0)
