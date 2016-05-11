@@ -72,6 +72,7 @@ package aniPangShootingWorld.item
 					_stage.removeChild(this);
 					this.dispose();
 					PlayerState.sPlayerHeart++;
+					PlayerState.sTotalHeart++;
 					break;
 				}
 					
@@ -80,6 +81,7 @@ package aniPangShootingWorld.item
 					_stage.removeChild(this);
 					this.dispose();
 					PlayerState.sPlayerPower++;
+					PlayerState.sTotalPower++;
 					break;
 				}
 			}
@@ -113,7 +115,7 @@ package aniPangShootingWorld.item
 			else
 			{
 				this.x -= _stepx/2;
-				this.y += _stepy/1.5;
+				this.y += _stepy;
 			}
 			if(this.y >= Framework.viewport.height)
 			{

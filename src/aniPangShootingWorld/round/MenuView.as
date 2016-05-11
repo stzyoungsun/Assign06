@@ -121,6 +121,8 @@ package aniPangShootingWorld.round
 					PlayerState.sPlayerHeart = 5;
 					PlayerState.sPlayerPower = 0;
 					PlayerState.sGoldCount = 0;
+					PlayerState.sTotalHeart = 0;
+					PlayerState.sTotalPower = 0;
 					EnemyObject.sSpeed = 1;
 					SceneManager.instance.addScene(oneRound);
 					SceneManager.instance.sceneChange(); 

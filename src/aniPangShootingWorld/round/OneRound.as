@@ -13,6 +13,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.resource.SoundResource;
 	import aniPangShootingWorld.util.HPbar;
+	import aniPangShootingWorld.util.ResultDlg;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -59,9 +60,9 @@ package aniPangShootingWorld.round
 		private var _bossWarningView : Image;
 		
 		private const ENEMY_TWO_LEVEL : Number = 6;
-		private const ENEMY_THREE_LEVEL : Number = 9;
-		private const ENEMY_FOUR_LEVEL : Number = 15;
-		private const ENEMY_BOSS_LEVEL : Number = 30;
+		private const ENEMY_THREE_LEVEL : Number = 12;
+		private const ENEMY_FOUR_LEVEL : Number = 18;
+		private const ENEMY_BOSS_LEVEL : Number = 24;
 		
 		private const ENEMY_MAX_COUNT : Number = 3;
 		//Note @유영선 보스 
@@ -71,12 +72,16 @@ package aniPangShootingWorld.round
 		
 		private const METEO_INTERVAL_TIME : int = 8000; 
 		private var _moteoTime : Number =0;
+		
+		//Note @유영선 결과창
+		private var _resultView : ResultDlg;
+		private var _resultTimer : Number;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */		
 		public function OneRound()
 		{
-			this.objectType = ObjectType.ROUND_GENERAL;
+			this.objectType = ObjectType.ROUND_PREV;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
@@ -85,13 +90,16 @@ package aniPangShootingWorld.round
 			playerDraw();
 			//Note @유영선 플레이어 상태창 화면에 출력
 			playerStateDraw();
+			//Note @유영선 결과창을 등록 합니다
+			resultViewDraw();
+			
 			//Note @유영선 메테오를  시간을 설정 합니다.
 			_moteoTime = getTimer();
 			
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
 		}
-	
+		
 		/**
 		 *Note @유영선 적들을 그립니다 
 		 * 
@@ -105,7 +113,7 @@ package aniPangShootingWorld.round
 				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//8초당 메테오를 발사 합니다.
-			if(this.objectType != ObjectType.ROUND_PREV)
+			if(this.objectType != ObjectType.ROUND_PREV && this.objectType != ObjectType.ROUND_CLEAR)
 			{
 				var curMeteoTime: int = getTimer();
 				if(curMeteoTime - _moteoTime > METEO_INTERVAL_TIME)
@@ -172,8 +180,32 @@ package aniPangShootingWorld.round
 			}
 			
 			//Note @유영선 결과 창 구현
+			else if(this.objectType == ObjectType.ROUND_CLEAR)
+			{
+				var curResultTimer : int = getTimer();
+				//Note @유영선 보스 워닝 화면 5초간 출력
+				if(curResultTimer - _resultTimer > 4000)
+				{
+					_resultView.visible = true;
+						
+					if(_resultView.calcPoint())
+					{
+						//Note @유영선 점수 결과 합산이 끝낱을 경우
+						_resultView.totalDraw();
+						_resultView.nextButtonDraw();
+					}
+				}
+			}
+			
 		}
 		
+		private function resultViewDraw():void
+		{
+			_resultView = new ResultDlg();
+			_resultView.visible = false;
+			_resultTimer = getTimer();
+			addChild(_resultView);
+		}
 		/**	 
 		 * Note @유영선 게임 시작 전 화면을 구현 합니다.
 		 */		
@@ -416,5 +448,6 @@ package aniPangShootingWorld.round
 			_bossHPbar = null;
 			_boss = null;
 		}	
+		public function set resultTimer(value:Number):void{_resultTimer = value;}
 	}
 }

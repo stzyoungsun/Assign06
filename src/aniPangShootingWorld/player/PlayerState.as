@@ -7,10 +7,10 @@ package aniPangShootingWorld.player
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.Image;
-	import framework.display.Stage;
+	import framework.display.Sprite;
 	import framework.display.TextImageField;
 
-	public class PlayerState extends Stage
+	public class PlayerState extends Sprite
 	{
 		private var _mainStateDlg : Image;
 		private var _heartDlg : Image;
@@ -21,14 +21,16 @@ package aniPangShootingWorld.player
 		public static const MAX_POWER : Number = 5;
 		
 		public static var sGoldCount : Number = 0;
+		
 		public static var sPlayerHeart : Number = PlayerState.MAX_HERAT;
+		public static var sTotalHeart : Number = 0;
+		
 		public static var sPlayerPower : Number = 0;
+		public static var sTotalPower : Number = 0;
 		
 		public static var sSuperPowerFlag : Boolean = false;
 		public function PlayerState()
 		{
-			super(0,0);
-	
 			_mainStateDlg = new Image(0,0, MenuView.sloadedImage.imageDictionary["state.png"].bitmapData);
 			_mainStateDlg.width = Framework.viewport.width/2;
 			_mainStateDlg.height = Framework.viewport.height/15;
