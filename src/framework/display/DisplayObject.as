@@ -40,6 +40,8 @@ package framework.display
 			_scaleX = _scaleY = 1.0;
 			_visible = true;
 			_eventDictionary = new Dictionary();
+			_width = 0;
+			_height = 0;
 		}
 
 		/**

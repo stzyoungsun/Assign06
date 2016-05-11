@@ -3,7 +3,7 @@ package framework.display
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 
-	public class TextImageField extends Stage
+	public class TextImageField extends Sprite
 	{
 		private var _NumberImageVector : Vector.<MovieClip> = new Vector.<MovieClip>;
 		private var _NumberImages:AtlasBitmapData;
@@ -23,10 +23,11 @@ package framework.display
 		{
 			_NumberImages = NumberImages;
 		
-			super(x, y);
+			super();
 			
 			this.x = x;
 			this.y = y;
+			
 			_NumWidth = width;
 			_NumHeight = height;
 		}
@@ -99,6 +100,12 @@ package framework.display
 				}
 				_NumberImageVector = null;
 			}
+		}
+		
+		public override function render():void
+		{
+			super.render();
+				
 		}
 	}
 }

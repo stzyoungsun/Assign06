@@ -4,6 +4,7 @@ package aniPangShootingWorld.boss
 	
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
+	import aniPangShootingWorld.round.OneRound;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
@@ -161,8 +162,10 @@ package aniPangShootingWorld.boss
 			if(currentTime - _prevTime > 3000)
 			{
 				// 보스 자신을 제거
+				_stage.objectType = ObjectType.ROUND_CLEAR;
 				_stage.removeChild(this);
-				var item : ItemGroup = new ItemGroup(30,this.x, this.y,_stage);
+				(_stage as OneRound).resultTimer = getTimer();
+				var item : ItemGroup = new ItemGroup(15,this.x, this.y,_stage);
 				item.drawItem();
 			}
 		}

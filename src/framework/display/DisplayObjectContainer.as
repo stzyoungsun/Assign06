@@ -16,6 +16,8 @@ package framework.display
 		 */
 		public function DisplayObjectContainer()
 		{
+			super();
+			
 			_children = new <DisplayObject>[];
 		}
 
@@ -305,7 +307,7 @@ package framework.display
 		public override function hitTest(localPoint:Point):DisplayObject
 		{
 			if (!visible) return null;
-			
+			if(_children == null) return null;
 			var target:DisplayObject = null;
 			// localPoint의 좌표값
 			var localX:Number = localPoint.x;

@@ -15,7 +15,7 @@ package aniPangShootingWorld.boss
 	 */
 	public class BossObject extends MovieClip
 	{
-		public static const BASE_MAX_BOSS_HP:Number = 150;
+		public static const BASE_MAX_BOSS_HP:Number = 100;
 		
 		private var _bulletManager:BulletManager;
 		private var _bossHp:Number;
