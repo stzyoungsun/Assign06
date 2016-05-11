@@ -230,10 +230,14 @@ package framework.core
 			_context3D.clear(1.0, 1.0, 1.0, 1.0);
 			// 스테이지에 등록된 모든 객체의 render 메서드 호출
 			_stage.render();
+			// @FIXME jihwan.ryu 드로우콜 횟수 출력 - 화면 출력으로 변경
+			trace("DRAWCALL: " + _painter.drawCount);
 			// 버퍼에 그려진 데이터를 화면에 출력
 			_context3D.present();
 			// 행렬 초기화
 			_painter.resetMatrix();
+			// 드로우콜 초기화
+			_painter.drawCount = 0;
 		}
 		
 		/**

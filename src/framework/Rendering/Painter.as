@@ -23,9 +23,11 @@ package framework.Rendering
 		private var _projectionMatrix:Matrix3D;
 		private var _modelViewMatrix:Matrix3D;
 		private var _matrixStack:Vector.<Matrix3D>;
+		private var _drawCount:int;
 		
 		public function Painter(stage3D:Stage3D)
 		{
+			_drawCount = 0;
 			_context = stage3D.context3D;
 			_assembler = new AGALMiniAssembler();
 			
@@ -151,5 +153,8 @@ package framework.Rendering
 		public function get imageProgram():Program3D { return _imageProgram; }
 		public function get projectionMatrix():Matrix3D { return _projectionMatrix; }
 		public function get modelViewMatrix():Matrix3D { return _modelViewMatrix; }
+
+		public function get drawCount():int { return _drawCount; }
+		public function set drawCount(value:int):void { _drawCount = value; }
 	}
 }

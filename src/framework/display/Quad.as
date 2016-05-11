@@ -98,6 +98,9 @@ package framework.display
 			// Index Buffer의 설정에 따라서 삼각형을 그리기
 			context.drawTriangles(_indexBuffer, 0, 2);
 			
+			// 드로우콜 횟수 증가
+			painter.drawCount++;
+			
 			// 버퍼 비우기
 			context.setVertexBufferAt(0, null);
 			context.setVertexBufferAt(1, null);
