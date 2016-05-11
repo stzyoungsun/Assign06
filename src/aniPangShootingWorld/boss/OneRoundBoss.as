@@ -2,6 +2,7 @@ package aniPangShootingWorld.boss
 {
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -161,6 +162,8 @@ package aniPangShootingWorld.boss
 			{
 				// 보스 자신을 제거
 				_stage.removeChild(this);
+				var item : ItemGroup = new ItemGroup(30,this.x, this.y,_stage);
+				item.drawItem();
 			}
 		}
 		
