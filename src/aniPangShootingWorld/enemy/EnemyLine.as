@@ -58,6 +58,7 @@ package aniPangShootingWorld.enemy
 					}
 				}
 				//Note @유영선 각각의 적 객체의 크기 위치를 조절 
+				_enemyVector[i].addHPBar();
 				_enemyVector[i].width = Framework.viewport.width*4/25;
 				_enemyVector[i].height = _enemyVector[i].width ;
 				_enemyVector[i].x = Framework.viewport.width/30*(i+1) + _enemyVector[i].width*i;

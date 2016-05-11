@@ -10,15 +10,16 @@ package aniPangShootingWorld.util
 	{
 		public function HPbar(x:int, y:int,bitmapData:BitmapData)
 		{
-			super(0,0,bitmapData)
+			super(x,y,bitmapData)
 		}
 		
 		public function hpBarInit(object : DisplayObject) : void
 		{
+
 			this.width = object.width;
 			this.height = object.height/8;
 			this.x = object.x;
-			this.y = object.height + this.height;
+			this.y = object.y + object.height;
 		}
 		/**
 		 * 

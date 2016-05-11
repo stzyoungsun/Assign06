@@ -1,9 +1,9 @@
 package aniPangShootingWorld.enemy
 {
-	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.util.HPbar;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.display.ObjectType;
@@ -20,16 +20,18 @@ package aniPangShootingWorld.enemy
 		private var _enemyAtlas : AtlasBitmapData;
 		private var _bulletManager : BulletManager;
 		
-		private var _stage:Sprite;
 		private var _temp : int = 1;
-		private var _enemyHP : Number = 2;
+		private var _stage : Sprite;
 		
 		public function EnemyRat(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
 			_enemyAtlas = enemyAtlas;
+			_stage = stage;
 			super(_enemyAtlas,frame,stage);
 			
 			_prevTime = getTimer();
+			
+			maxHP = 2;
 		}
 		
 		public override function render():void
@@ -41,10 +43,10 @@ package aniPangShootingWorld.enemy
 			else if(this.objectType == ObjectType.ENEMY_COLLISION)
 			{
 				this.objectType = ObjectType.ENEMY_GENERAL;
-				_enemyHP--;
+				enemyHP--;
 				this.showImageAt(1);
 				
-				if(_enemyHP == 0)
+				if(enemyHP == 0)
 				{
 					this.objectType = ObjectType.ITEM_IDLE;
 				}

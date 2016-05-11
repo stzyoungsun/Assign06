@@ -2,6 +2,8 @@
 package aniPangShootingWorld.enemy
 {
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.util.HPbar;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
@@ -21,7 +23,6 @@ package aniPangShootingWorld.enemy
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
-		private var _enemyHP : Number = 1;
 		
 		public function EnemyPig(enemyAtlas : AtlasBitmapData, frame : Number, bulletManager : BulletManager, stage : Sprite)
 		{
@@ -36,6 +37,7 @@ package aniPangShootingWorld.enemy
 			_stage = stage;
 			//Note @유영선 시간 조절을 위한 변수 (Displayobject 변수)
 			_prevTime = 0;
+			maxHP = 1;
 		}
 		
 		/**
@@ -96,6 +98,8 @@ package aniPangShootingWorld.enemy
 		 */		
 		public override function render():void
 		{
+			super.render();
+			
 			//Note @유영선 적이 일반 상태 일 경우 일반 상태에 맞는 비트맵으로 설정
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
@@ -105,21 +109,18 @@ package aniPangShootingWorld.enemy
 			else if(this.objectType == ObjectType.ENEMY_COLLISION)
 			{
 				this.objectType = ObjectType.ENEMY_GENERAL;
-				_enemyHP--;
+				enemyHP--;
 				this.showImageAt(1);
 				//Note @유영선 적의 체력이 0 일 경우 상태를 ObjectType.COIN으로 변경
-				if(_enemyHP == 0)
+				if(enemyHP == 0)
 				{				
 					shooting();
 					this.objectType = ObjectType.ITEM_IDLE;
 				}
-				
-				//Note @유영선 적 라인의 모든 적을이 죽었을 경우 _sRedraw의 상태를 true로 변경
 			}
 			
 			if(_bulletManager.bulletVector[0].objectType != ObjectType.ENEMY_BULLET_IDLE) 
 				bulletFrame();
-			super.render();
 		}
 		
 		public override function dispose():void
