@@ -7,11 +7,14 @@ package framework.Rendering
 	import flash.display3D.Context3DBlendFactor;
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Program3D;
+	import flash.geom.Matrix;
 	import flash.geom.Matrix3D;
-	import flash.geom.Vector3D;
 	import flash.utils.ByteArray;
 	
 	import framework.display.DisplayObject;
+	import framework.display.Quad;
+	import framework.display.QuadBatch;
+	import framework.texture.FwTexture;
 	
 	public class Painter
 	{
@@ -20,86 +23,44 @@ package framework.Rendering
 		private var _imageProgram:Program3D;
 		private var _assembler:AGALMiniAssembler;
 		
-		private var _projectionMatrix:Matrix3D;
-		private var _modelViewMatrix:Matrix3D;
-		private var _matrixStack:Vector.<Matrix3D>;
+		private var _quadBatchVector:Vector.<QuadBatch>;
+		private var _currentQuadBatchID:int;
 		private var _drawCount:int;
+		
+		private var _modelViewMatrix:Matrix;
+		private var _matrixStack:Vector.<Matrix>;
+		private var _matrixStackSize:int;
+		
+		private var _projectionMatrix3D:Matrix3D;
+		private var _modelViewMatrix3D:Matrix3D;
+		private var _mvpMatrix3D:Matrix3D;
+		
+		private static var _sRawData:Vector.<Number> = new <Number>[1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1];
+		private static var _sMatrix3D:Matrix3D = new Matrix3D();
 		
 		public function Painter(stage3D:Stage3D)
 		{
-			_drawCount = 0;
 			_context = stage3D.context3D;
 			_assembler = new AGALMiniAssembler();
 			
-			_matrixStack = new <Matrix3D>[];
-			_projectionMatrix = new Matrix3D();
-			_modelViewMatrix = new Matrix3D();
+			_modelViewMatrix = new Matrix();
+			_matrixStack = new <Matrix>[];
+			_matrixStackSize = 0;
+			
+			_projectionMatrix3D = new Matrix3D();
+			_modelViewMatrix3D = new Matrix3D();
+			_mvpMatrix3D = new Matrix3D();
 			
 			createQuadProgram();
 			createImageProgram();
 			
-			loadIdentity();
-		}
-		
-		public function setOrthographicProjection(width:Number, height:Number, near:Number=-1.0, far:Number=1.0):void
-		{
-			var coords:Vector.<Number> = new <Number>[
-				2.0/width, 0.0, 0.0, 0.0,
-				0.0, -2.0/height, 0.0, 0.0,
-				0.0, 0.0, -2.0/(far-near), 0.0,
-				-1.0, 1.0, -(far+near)/(far-near), 1.0
-			];
-			
-			_projectionMatrix.copyRawDataFrom(coords);
-		}
-		
-		public function loadIdentity():void
-		{
-			_modelViewMatrix.identity();
-		}
-		
-		public function transformMatrix(object:DisplayObject):void
-		{
-			_modelViewMatrix.prependTranslation(object.x, object.y, 0.0);
-			_modelViewMatrix.prependRotation(object.rotation / Math.PI * 180.0, Vector3D.Z_AXIS);
-			_modelViewMatrix.prependScale(object.scaleX, object.scaleY, 1.0);
-			_modelViewMatrix.prependTranslation(-object.pivotX, -object.pivotY, 0.0);
-		}
-		
-		public function pushMatrix():void
-		{
-			_matrixStack.push(_modelViewMatrix.clone());
-		}
-		
-		public function popMatrix():void
-		{
-			_modelViewMatrix = _matrixStack.pop();
-		}
-		
-		public function resetMatrix():void
-		{
-			if (_matrixStack.length != 0)
-				_matrixStack = new <Matrix3D>[];
+			_quadBatchVector = new <QuadBatch>[new QuadBatch()];
+			_currentQuadBatchID = 0;
 			
 			loadIdentity();
 		}
 		
-		public function setDefaultBlendFactors(premultipliedAlpha:Boolean):void
-		{
-			var destFactor:String = Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-			var sourceFactor:String = premultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA;
-			_context.setBlendFactors(sourceFactor, destFactor);
-		}
-		
-		public function get mvpMatrix():Matrix3D
-		{
-			var mvpMatrix:Matrix3D = new Matrix3D();
-			mvpMatrix.append(_modelViewMatrix);
-			mvpMatrix.append(_projectionMatrix);
-			return mvpMatrix;
-		}
-		
-		public function createQuadProgram():void
+		private function createQuadProgram():void
 		{
 			var vertexProgram:ByteArray;
 			var fragmentProgram:ByteArray;
@@ -122,7 +83,7 @@ package framework.Rendering
 			_quadProgram.upload(vertexProgram, fragmentProgram);
 		}
 		
-		public function createImageProgram():void
+		private function createImageProgram():void
 		{
 			var vertexProgram:ByteArray;
 			var fragmentProgram:ByteArray;
@@ -130,9 +91,7 @@ package framework.Rendering
 			_assembler.assemble(
 				Context3DProgramType.VERTEX,
 				"m44 op, va0, vc0			\n" +
-				"mov vt0, va1		 		\n" +
-				"div vt0.xy, vt0.xy, vc4.xy	\n" +
-				"mov v1	vt0					\n"
+				"mov v1, va1		 		\n"
 			);
 			vertexProgram = _assembler.agalcode;
 			
@@ -148,12 +107,125 @@ package framework.Rendering
 			_imageProgram.upload(vertexProgram, fragmentProgram);
 		}
 		
+		public function setOrthographicProjection(width:Number, height:Number, near:Number=-1.0, far:Number=1.0):void 
+		{ 
+			var coords:Vector.<Number> = new <Number>[ 
+				2.0/width, 0.0, 0.0, 0.0, 
+				0.0, -2.0/height, 0.0, 0.0, 
+				0.0, 0.0, -2.0/(far-near), 0.0, 
+				-1.0, 1.0, -(far+near)/(far-near), 1.0 
+			]; 
+			_projectionMatrix3D.copyRawDataFrom(coords);
+		}
+		
+		public function loadIdentity():void
+		{
+			_modelViewMatrix.identity();
+			_modelViewMatrix3D.identity();
+		}
+		
+		public function transformMatrix(object:DisplayObject):void
+		{
+			prependMatrix(_modelViewMatrix, object.transformationMatrix);
+		}
+		
+		public function pushMatrix():void
+		{
+			if (_matrixStack.length < _matrixStackSize + 1)
+				_matrixStack.push(new Matrix());
+			
+			_matrixStack[int(_matrixStackSize++)].copyFrom(_modelViewMatrix);
+		}
+		
+		public function popMatrix():void
+		{
+			_modelViewMatrix.copyFrom(_matrixStack[int(--_matrixStackSize)]);
+		}
+		
+		public function resetMatrix():void
+		{
+			_matrixStackSize = 0;
+			loadIdentity();
+		}
+		
+		public function setDefaultBlendFactors(premultipliedAlpha:Boolean):void
+		{
+			var destFactor:String = Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
+			var sourceFactor:String = premultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA;
+			_context.setBlendFactors(sourceFactor, destFactor);
+		}
+		
+		public function batch(quad:Quad, texture:FwTexture=null):void
+		{
+			if(_quadBatchVector[_currentQuadBatchID].isStateChange(texture))
+			{
+				finishQuadBatch();
+			}
+			
+			_quadBatchVector[_currentQuadBatchID].addBatch(quad, texture, _modelViewMatrix);
+		}
+		
+		public function finishQuadBatch():void
+		{
+			var currentBatch:QuadBatch = _quadBatchVector[_currentQuadBatchID];
+			
+			if(currentBatch.numQuads != 0)
+			{
+				currentBatch.render(_projectionMatrix3D);
+				currentBatch.reset();
+				_currentQuadBatchID++;
+				
+				if(_quadBatchVector.length <= _currentQuadBatchID)
+				{
+					_quadBatchVector.push(new QuadBatch());
+				}
+			}
+		}
+		
+		public function nextFrame():void
+		{
+			_drawCount = 0;
+			_currentQuadBatchID = 0;
+		}
+		
+		public function convertTo3D(matrix:Matrix, resultMatrix:Matrix3D=null):Matrix3D
+		{
+			if (resultMatrix == null) resultMatrix = new Matrix3D();
+			
+			_sRawData[ 0] = matrix.a;
+			_sRawData[ 1] = matrix.b;
+			_sRawData[ 4] = matrix.c;
+			_sRawData[ 5] = matrix.d;
+			_sRawData[12] = matrix.tx;
+			_sRawData[13] = matrix.ty;
+			
+			resultMatrix.copyRawDataFrom(_sRawData);
+			return resultMatrix;
+		}
+		
+		public function prependMatrix(base:Matrix, prep:Matrix):void
+		{
+			base.setTo(base.a * prep.a + base.c * prep.b,
+				base.b * prep.a + base.d * prep.b,
+				base.a * prep.c + base.c * prep.d,
+				base.b * prep.c + base.d * prep.d,
+				base.tx + base.a * prep.tx + base.c * prep.ty,
+				base.ty + base.b * prep.tx + base.d * prep.ty);
+		}
+		
+		public function get mvpMatrix3D():Matrix3D
+		{
+			_mvpMatrix3D.copyFrom(_projectionMatrix3D);
+			_mvpMatrix3D.prepend(_modelViewMatrix3D);
+			_mvpMatrix3D.prepend(convertTo3D(_modelViewMatrix, _sMatrix3D));
+			
+			return _mvpMatrix3D;
+		}
+		
 		public function get context():Context3D { return _context; }
 		public function get quadProgram():Program3D { return _quadProgram; }
 		public function get imageProgram():Program3D { return _imageProgram; }
-		public function get projectionMatrix():Matrix3D { return _projectionMatrix; }
-		public function get modelViewMatrix():Matrix3D { return _modelViewMatrix; }
-
+		
 		public function get drawCount():int { return _drawCount; }
 		public function set drawCount(value:int):void { _drawCount = value; }
 	}
