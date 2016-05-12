@@ -22,7 +22,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			addEventListener(Event.ACTIVATE, activateListener);
-//			addEventListener(Event.DEACTIVATE, deactivateListener);
+			addEventListener(Event.DEACTIVATE, deactivateListener);
 			fw.showStats(true);
 		}
 		

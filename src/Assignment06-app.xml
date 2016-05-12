@@ -93,7 +93,7 @@
 
         <!-- The aspect ratio of the app ("portrait" or "landscape" or "any"). Optional. Mobile only. Default is the natural orientation of the device -->
 
-        <!-- <aspectRatio></aspectRatio> -->
+        <aspectRatio>portrait</aspectRatio> 
 
         <!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false -->
 
@@ -285,6 +285,7 @@
 			    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 			    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 			    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
+			    <!-- <uses-permission android:name="android.permission.VIBRATE"/>-->
 			    <!--The DISABLE_KEYGUARD and WAKE_LOCK permissions should be toggled together
 		in order to access AIR's SystemIdleMode APIs-->
 			    <!--<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>-->
@@ -311,5 +312,6 @@
     </iPhone>
 <extensions>
         <extensionID>com.lpesign.Extension</extensionID>
+    
     </extensions>
 </application>
