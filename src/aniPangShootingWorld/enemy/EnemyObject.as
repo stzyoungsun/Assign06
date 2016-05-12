@@ -79,7 +79,7 @@ package aniPangShootingWorld.enemy
 					var item : ItemGroup = new ItemGroup(randomNumber,this.x, this.y,_stage);
 					item.drawItem();
 					this.x = -999;
-					this.objectType = ObjectType.ENEMY_REMOVE;
+					this.objectType = ObjectType.NONE;
 					break;
 				}
 					
