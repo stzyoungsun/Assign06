@@ -15,6 +15,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.resource.SoundResource;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
+	import aniPangShootingWorld.util.RoundSetting;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.AtlasBitmapData;
@@ -27,11 +28,12 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
+	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
 	import framework.texture.FwTexture;
 	
 	
-	public class OneRound extends Sprite
+	public class Round extends Sprite
 	{
 		//Note @유영선 배경 그라운드를 저장 할 변수
 		private var _backGround : BackGround;
@@ -61,11 +63,12 @@ package aniPangShootingWorld.round
 		private var _bossWarningTime : Number = 0;
 		private var _bossWarningView : Image;
 		
-		private const ENEMY_TWO_LEVEL : Number = 6;
-		private const ENEMY_THREE_LEVEL : Number = 12;
-		private const ENEMY_FOUR_LEVEL : Number = 18;
-		private const ENEMY_BOSS_LEVEL : Number = 24;
-		
+		private var _enemy1LV : Number = 0;
+		private var _enemy2LV : Number = 0;
+		private var _enemy3LV : Number = 0;
+		private var _enemy4LV : Number = 0;
+		private var _enemyBossLV : Number = 0;
+	
 		private const ENEMY_MAX_COUNT : Number = 3;
 		//Note @유영선 보스 
 		private var _boss:BossObject;
@@ -81,15 +84,17 @@ package aniPangShootingWorld.round
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
-		
 		private var playerBulletTexture:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
 		private var bossBulletTexture:FwTexture;
 		
-		public function OneRound()
+		private var _roundNum : Number;
+		
+		public function Round(roundNum : Number)
 		{
 			var parent:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData);
 			bossBulletTexture = FwTexture.fromTexture(parent, new Rectangle(10, 10, parent.bitmapWidth, parent.bitmapHeight));
 			this.objectType = ObjectType.ROUND_PREV;
+			_roundNum = roundNum;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
@@ -106,6 +111,11 @@ package aniPangShootingWorld.round
 			
 			_soundManager = SoundManager.getInstance();
 			// Note @jihwan.ryu BGM 반복 재생
+			_enemy1LV = RoundSetting.instance.roundObject[roundNum].LV1Count;
+			_enemy2LV = RoundSetting.instance.roundObject[roundNum].LV2Count;
+			_enemy3LV = RoundSetting.instance.roundObject[roundNum].LV3Count;
+			_enemy4LV = RoundSetting.instance.roundObject[roundNum].LV4Count;
+			_enemyBossLV = RoundSetting.instance.roundObject[roundNum].LVBossCount ;
 		}
 		
 		/**
@@ -121,7 +131,7 @@ package aniPangShootingWorld.round
 				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//8초당 메테오를 발사 합니다.
-			if(this.objectType != ObjectType.ROUND_PREV && this.objectType != ObjectType.ROUND_CLEAR)
+			if(this.objectType != ObjectType.ROUND_PREV && this.objectType != ObjectType.ROUND_CLEAR && this.objectType != ObjectType.ROUND_IDLE)
 			{
 				var curMeteoTime: int = getTimer();
 				if(curMeteoTime - _moteoTime > METEO_INTERVAL_TIME)
@@ -195,16 +205,30 @@ package aniPangShootingWorld.round
 				if(curResultTimer - _resultTimer > 4000)
 				{
 					_resultView.visible = true;
-						
+					
 					if(_resultView.calcPoint())
 					{
 						//Note @유영선 점수 결과 합산이 끝낱을 경우
+						removeEventListener(TouchEvent.TOUCH, onTouch);
 						_resultView.totalDraw();
 						_resultView.nextButtonDraw();
+						_resultView.nextButton.addEventListener(TouchEvent.TOUCH, onNextClick);
+						this.objectType = ObjectType.ROUND_IDLE;
 					}
 				}
 			}
-			
+		}
+		
+		protected function onNextClick(event:TouchEvent):void
+		{
+	
+			if(event.touch.phase == TouchPhase.ENDED)
+			{
+				this.dispose();
+				var RoundObject : Round = new Round(1);
+				SceneManager.instance.addScene(RoundObject);
+				SceneManager.instance.sceneChange(); 
+			}
 		}
 		
 		private function resultViewDraw():void
@@ -358,27 +382,29 @@ package aniPangShootingWorld.round
 		{
 			switch(_EnemyCnt)
 			{
-				case ENEMY_TWO_LEVEL:
+				case _enemy1LV:
+					break;
+				case _enemy2LV:
 				{
 					_randomArray[0]++;
 					EnemyObject.sSpeed+=0.15;
 					break;
 				}
-				case ENEMY_THREE_LEVEL:
+				case _enemy3LV:
 				{
 					_randomArray[1]++;
 					EnemyObject.sSpeed+=0.15;
 					break;
 				}
 				
-				case ENEMY_FOUR_LEVEL:
+				case _enemy4LV:
 				{
 					_randomArray[2]++;
 					EnemyObject.sSpeed+=0.15;
 					break;
 				}
 					
-				case ENEMY_BOSS_LEVEL:
+				case _enemyBossLV:
 				{
 					_soundManager.stopLoopedPlaying();
 					_soundManager.play(SoundResource.BOSS_WARNING);
@@ -437,7 +463,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function backGroundDraw():void
 		{
-			_backGround = new BackGround(2, 60, 1, MenuView.sloadedImage.imageDictionary["backtree.jpg"].bitmapData);
+			_backGround = new BackGround(2, 60, 1, MenuView.sloadedImage.imageDictionary[RoundSetting.instance.roundObject[_roundNum].background].bitmapData);
 			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
