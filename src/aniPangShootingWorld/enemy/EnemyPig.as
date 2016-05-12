@@ -2,9 +2,7 @@
 package aniPangShootingWorld.enemy
 {
 	import aniPangShootingWorld.player.PlayerState;
-	import aniPangShootingWorld.round.MenuView;
-	import aniPangShootingWorld.util.HPbar;
-	
+
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;

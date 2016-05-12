@@ -4,7 +4,7 @@ package aniPangShootingWorld.boss
 	
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.OneRound;
+	import aniPangShootingWorld.round.Round;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
@@ -28,7 +28,7 @@ package aniPangShootingWorld.boss
 		private var _wait:Boolean;
 		private var _remainBullet:Boolean;
 		
-		public function OneRoundBoss(bossAtlas : AtlasBitmapData, frame:Number, bulletManager:BulletManager, stage:Sprite)
+		public function OneRoundBoss(bossAtlas : AtlasBitmapData, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(bossAtlas, frame, bulletManager, stage);
 			
@@ -43,8 +43,9 @@ package aniPangShootingWorld.boss
 			_bossPhase = PHASE_1;
 			_wait = false;
 			_waitTime = 2000;
-			bossHp = BossObject.BASE_MAX_BOSS_HP;
-			maxBossHp = BossObject.BASE_MAX_BOSS_HP;
+			
+			bossHp = bossMaxHP;
+			maxBossHp = bossMaxHP;
 		}
 		
 		/**
@@ -164,7 +165,7 @@ package aniPangShootingWorld.boss
 				// 보스 자신을 제거
 				_stage.objectType = ObjectType.ROUND_CLEAR;
 				_stage.removeChild(this);
-				(_stage as OneRound).resultTimer = getTimer();
+				(_stage as Round).resultTimer = getTimer();
 				var item : ItemGroup = new ItemGroup(15,this.x, this.y,_stage);
 				item.drawItem();
 			}

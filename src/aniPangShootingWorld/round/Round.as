@@ -75,7 +75,7 @@ package aniPangShootingWorld.round
 		//Note @유영선 보스의 체력바
 		private var _bossHPbar:HPbar;
 		
-		private const METEO_INTERVAL_TIME : int = 8000; 
+		private var _meteoInterval : int; 
 		private var _moteoTime : Number =0;
 		
 		//Note @유영선 결과창
@@ -116,6 +116,10 @@ package aniPangShootingWorld.round
 			_enemy3LV = RoundSetting.instance.roundObject[roundNum].LV3Count;
 			_enemy4LV = RoundSetting.instance.roundObject[roundNum].LV4Count;
 			_enemyBossLV = RoundSetting.instance.roundObject[roundNum].LVBossCount ;
+			
+			_meteoInterval =  RoundSetting.instance.roundObject[roundNum].MeteoInterval;
+			
+			roundSetting(RoundSetting.instance.roundObject[roundNum].LV1, RoundSetting.instance.roundObject[_roundNum].LV1Speed);
 		}
 		
 		/**
@@ -134,7 +138,7 @@ package aniPangShootingWorld.round
 			if(this.objectType != ObjectType.ROUND_PREV && this.objectType != ObjectType.ROUND_CLEAR && this.objectType != ObjectType.ROUND_IDLE)
 			{
 				var curMeteoTime: int = getTimer();
-				if(curMeteoTime - _moteoTime > METEO_INTERVAL_TIME)
+				if(curMeteoTime - _moteoTime > _meteoInterval)
 				{
 					ShootMeteo();
 					_moteoTime = getTimer();
@@ -219,6 +223,9 @@ package aniPangShootingWorld.round
 			}
 		}
 		
+		/**
+		 * Note @유영선 Next 버튼 클릭 시 다음 라운드 진행
+		 */		
 		protected function onNextClick(event:TouchEvent):void
 		{
 	
@@ -229,6 +236,18 @@ package aniPangShootingWorld.round
 				SceneManager.instance.addScene(RoundObject);
 				SceneManager.instance.sceneChange(); 
 			}
+		}
+		
+		private function roundSetting(roundString : String, speedString : String):void
+		{
+			var tempArray : Array;
+			tempArray = roundString.split(",");
+			
+			for(var i : int = 0; i < 5; i++)
+				_randomArray[i] = Number(tempArray[i]);
+			
+			EnemyObject.sSpeed = Number(speedString);
+			tempArray = null;
 		}
 		
 		private function resultViewDraw():void
@@ -244,10 +263,13 @@ package aniPangShootingWorld.round
 		private function prevGameStart():void
 		{
 			//Note @유영선 xml 있는지 검사
-			if(!MenuView.sloadedImage.checkXml(("PrevStart_Sheet.xml"))) throw new Error("not found xml");
+			var preXml : String = RoundSetting.instance.roundObject[_roundNum].prevstart + ".xml";
+			var preSheet : String = RoundSetting.instance.roundObject[_roundNum].prevstart + ".png";
 			
-			_prevGameView = new MovieClip(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["PrevStart_Sheet.png"]
-				,MenuView.sloadedImage.xmlDictionary["PrevStart_Sheet.xml"]),1,0,0,true);
+			if(!MenuView.sloadedImage.checkXml((preXml))) throw new Error("not found xml");
+			
+			_prevGameView = new MovieClip(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[preSheet]
+				,MenuView.sloadedImage.xmlDictionary[preXml]),1,0,0,true);
 			
 			_prevGameView.width = Framework.viewport.width/2;
 			_prevGameView.height = Framework.viewport.height/3;
@@ -255,6 +277,7 @@ package aniPangShootingWorld.round
 			_prevGameView.y = Framework.viewport.height/2 - _prevGameView.height/2;
 			
 			_prevGameView.start();
+			
 			addChild(_prevGameView);
 		}
 		
@@ -280,14 +303,7 @@ package aniPangShootingWorld.round
 		{
 			if(_boss == null)
 			{
-				_boss = new OneRoundBoss(
-					new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["boss_Sheet.png"],
-						MenuView.sloadedImage.xmlDictionary["boss_Sheet.xml"]),
-					10,
-					new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
-					this
-				);
-				
+				bossSetting();
 				_boss.x = Framework.viewport.width / 8;
 				_boss.y = 0;
 				_boss.width = Framework.viewport.width * 4 / 5;
@@ -301,6 +317,47 @@ package aniPangShootingWorld.round
 			}
 			
 			_bossHPbar.calcHP(_boss.maxBossHp, _boss.bossHp);
+		}
+		
+		/** 
+		 *  Note @유영선 라운드에 따라 보스를 설정 합니다.
+		 */		
+		private function bossSetting():void
+		{
+			var bossXml : String = RoundSetting.instance.roundObject[_roundNum].BossName + ".xml";
+			var bossSheet : String = RoundSetting.instance.roundObject[_roundNum].BossName + ".png";
+			
+			if(!MenuView.sloadedImage.checkXml((bossXml))) throw new Error("not found xml");
+			
+			switch(_roundNum)
+			{
+				case 0:
+				{
+					_boss = new OneRoundBoss(
+						new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[bossSheet],
+							MenuView.sloadedImage.xmlDictionary[bossXml]),
+						10, 
+						RoundSetting.instance.roundObject[_roundNum].BossHP,
+						new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
+						this
+					);
+					break;
+				}
+					
+				case 1:
+				{
+					_boss = new OneRoundBoss(
+						new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[bossSheet],
+							MenuView.sloadedImage.xmlDictionary[bossXml]),
+						10,
+						RoundSetting.instance.roundObject[_roundNum].BossHP,
+						new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
+						this
+					);
+					break;
+				}
+
+			}
 		}
 		
 		/**
@@ -386,21 +443,18 @@ package aniPangShootingWorld.round
 					break;
 				case _enemy2LV:
 				{
-					_randomArray[0]++;
-					EnemyObject.sSpeed+=0.15;
+					roundSetting(RoundSetting.instance.roundObject[_roundNum].LV2, RoundSetting.instance.roundObject[_roundNum].LV2Speed);
 					break;
 				}
 				case _enemy3LV:
 				{
-					_randomArray[1]++;
-					EnemyObject.sSpeed+=0.15;
+					roundSetting(RoundSetting.instance.roundObject[_roundNum].LV3, RoundSetting.instance.roundObject[_roundNum].LV3Speed);
 					break;
 				}
 				
 				case _enemy4LV:
 				{
-					_randomArray[2]++;
-					EnemyObject.sSpeed+=0.15;
+					roundSetting(RoundSetting.instance.roundObject[_roundNum].LV4, RoundSetting.instance.roundObject[_roundNum].LV4Speed);
 					break;
 				}
 					

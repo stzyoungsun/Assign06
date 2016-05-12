@@ -13,7 +13,7 @@ package aniPangShootingWorld.player
 	import framework.gameobject.Collision;
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
-	import com.adobe.nativeExtensions.Vibration;
+	//import com.adobe.nativeExtensions.Vibration;
 
 	/**
 	 * Note @유영선 사용자가 직접 조종하는 객체입니다

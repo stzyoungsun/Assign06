@@ -119,8 +119,8 @@ package aniPangShootingWorld.item
 			}
 			if(this.y >= Framework.viewport.height)
 			{
-				_stage.removeChild(this);
-				this.dispose();
+				if(_stage.getChildIndex(this) != -1)
+					_stage.removeChild(this,true);
 			}
 				
 		}
