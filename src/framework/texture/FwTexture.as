@@ -24,22 +24,19 @@ package framework.texture
 			}
 		}
 		
+		
 		public static function fromBitmapData(data:BitmapData):FwTexture
 		{
-			var bitmapData:BitmapData = data;
+			var texture:FwTexture = FwTexture.empty(data.width, data.height);
 			
-			var bitmapDataWidth:Number = bitmapData.width;
-			var bitmapDataHeight:Number = bitmapData.height;
+			if(data.width != texture.width || data.height != texture.height)
+			{
+				var powerOfTwoBimtapData:BitmapData = new BitmapData(texture.width, texture.height, true, 0x0);
+				powerOfTwoBimtapData.copyPixels(data, data.rect, S_POINT);
+				data = powerOfTwoBimtapData;
+			}
 			
-			var texture:FwTexture = FwTexture.empty(bitmapDataWidth, bitmapDataHeight);
-			var powerOfTwoBimtapData:BitmapData = new BitmapData(texture.width, texture.height, bitmapData.transparent);
-			
-			S_RECT.width = bitmapDataWidth;
-			S_RECT.height = bitmapDataHeight;
-			
-			powerOfTwoBimtapData.copyPixels(bitmapData, S_RECT, S_POINT);
-			
-			texture.baseTexture.uploadFromBitmapData(powerOfTwoBimtapData);
+			texture.baseTexture.uploadFromBitmapData(data);
 			return texture;
 		}
 		
