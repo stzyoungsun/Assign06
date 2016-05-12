@@ -5,6 +5,7 @@ package framework.display
 	import flash.display3D.Context3DVertexBufferFormat;
 	import flash.display3D.IndexBuffer3D;
 	import flash.display3D.VertexBuffer3D;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import framework.Rendering.Painter;
@@ -23,6 +24,8 @@ package framework.display
 		
 		private var _color:uint;
 		
+		private static const S_POINT:Point = new Point();
+		
 		/**
 		 * 생성자 - x, y, width, height를 설정 후 Buffer 데이터를 생성하는 메서드 호출
 		 * @param x - x좌표 값
@@ -35,10 +38,21 @@ package framework.display
 		{
 			_color = color;
 			
-			createBufferData();
-			
 			this.x = x;
 			this.y = y;
+			
+			_vertexData = new <Number>
+				[
+				//	X,		Y,		Z,	U,	V
+					0,		0,		0,	0,	0,
+					width,	0,		0,	1,	0,
+					0,		height,	0,	0,	1,
+					width,	height,	0,	1,	1,
+				]
+			
+			// 버텍스 당 데이터 갯수
+			_numDataPerVertex = 5;
+			
 			this.width = width;
 			this.height = height;
 		}
@@ -92,46 +106,30 @@ package framework.display
 			context.setVertexBufferAt(0, _vertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);	// va0
 			context.setVertexBufferAt(1, _vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_4);	// va1
 			// Vertex, Fragment 프로그램에서 사용될 상수 설정
-			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, painter.mvpMatrix, true);	// vc0
+			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, painter.mvpMatrix3D, true);	// vc0
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, new <Number>[1.0, 1.0, 1.0, 1.0], 1);	// fc0
 
 			// Index Buffer의 설정에 따라서 삼각형을 그리기
 			context.drawTriangles(_indexBuffer, 0, 2);
-			
-			// 드로우콜 횟수 증가
-			painter.drawCount++;
 			
 			// 버퍼 비우기
 			context.setVertexBufferAt(0, null);
 			context.setVertexBufferAt(1, null);
 		}
 		
-		/**
-		 * 객체의 너비를 설정하는 메서드. _vertexData의 값도 갱신한다.  
-		 * @param value - 설정하려는 너비 값
-		 */
-		public override function set width(value:Number):void
-		{
-			super.width = value;
-			_vertexData[_numDataPerVertex * 1] = value;
-			_vertexData[_numDataPerVertex * 3] = value;
-		}
+		public function get vertexData():Vector.<Number> { return _vertexData; }
 		
-		/**
-		 * 객체의 높이를 설정하는 메서드. _vertexData의 값도 갱신한다. 
-		 * @param value - 설정하려는 높이 값
-		 */
-		public override function set height(value:Number):void
+		public override function get bounds():Rectangle
 		{
-			super.height = value;
-			_vertexData[_numDataPerVertex * 2 + 1] = value;
-			_vertexData[_numDataPerVertex * 3 + 1] = value;
+			var rectangle:Rectangle = new Rectangle();
+			S_POINT.x = _vertexData[_numDataPerVertex * 3];
+			S_POINT.y = _vertexData[_numDataPerVertex * 3 + 1];
+			rectangle.setTo(x - pivotX * scaleX, y - pivotY * scaleY, S_POINT.x * scaleX, S_POINT.y * scaleY);
+			
+			if(scaleX < 0) { rectangle.width *= -1; rectangle.x -= rectangle.width; }
+			if(scaleY < 0) { rectangle.height *= -1; rectangle.y -= rectangle.height; }
+			
+			return rectangle;
 		}
-		
-		/**
-		 * 화면에 출력된 객체의 범위(크기)를 Rectangle 객체로 나타낸 후 반환하는 메서드
-		 * @return 크기 정보를 가진 Rectangle 객체
-		 */
-		public override function get bounds():Rectangle { return new Rectangle(x - pivotX, y - pivotY, width, height); }
 	}
 }
