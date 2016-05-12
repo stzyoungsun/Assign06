@@ -31,6 +31,7 @@ package framework.display
 		public static const ROUND_BOSS_WARNING : String = "round_boss_warning";
 		public static const ROUND_BOSS : String = "round_boss";
 		public static const ROUND_CLEAR : String = "round_clear";
+		public static const ROUND_IDLE : String = "round_idle";
 		
 		public static const BOSS_GENERAL:String = "boss_general";
 		public static const BOSS_COLLISION:String = "boss_collision";

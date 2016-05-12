@@ -12,14 +12,14 @@ package framework.animaiton
 		private var _subSpriteSheet:Dictionary;
 		private var _subBitmapCount:int;
 		
-		public function AtlasBitmapData(sprtieSheet:Bitmap, spriteXml:XML = null)
+		public function AtlasBitmapData(sprtieSheet:Bitmap, spriteXml:String = null)
 		{
 			_subSpriteSheet = new  Dictionary();
 			_sprtieSheet = sprtieSheet;
 			_subBitmapCount = 0;
 			if (spriteXml)
 			{
-				parseAtlasXml(spriteXml);
+				parseAtlasXml(XML(spriteXml));
 			}
 		}
 		

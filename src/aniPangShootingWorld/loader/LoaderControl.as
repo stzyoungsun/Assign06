@@ -175,7 +175,7 @@ package aniPangShootingWorld.loader
 			_loaderXML = null;
 		
 			var extension:Array = _urlXmlVector[0].split('/');
-			_loadedImage.xmlDictionary[extension[extension.length-1]] = XML(e.currentTarget.data);
+			_loadedImage.xmlDictionary[extension[extension.length-1]] = e.currentTarget.data;
 			_urlXmlVector.removeAt(0);
 			
 			chedckedImage();

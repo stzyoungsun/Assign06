@@ -6,6 +6,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.loader.LoaderControl;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.util.PrevLoadImage;
+	import aniPangShootingWorld.util.RoundSetting;
 	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
@@ -102,7 +103,7 @@ package aniPangShootingWorld.round
 			_menuText.start();
 			
 			addEventListener(TouchEvent.TOUCH, onTouch);
-			
+			RoundSetting.instance.settingRound();
 			_loaderControl = null;
 		}
 		
@@ -118,7 +119,7 @@ package aniPangShootingWorld.round
 			{
 				case TouchPhase.ENDED:
 					SceneManager.instance.addScene(this);
-					var oneRound : OneRound = new OneRound();
+					var oneRound : Round = new Round(0);
 					PlayerState.sPlayerHeart = 5;
 					PlayerState.sPlayerPower = 0;
 					PlayerState.sGoldCount = 0;

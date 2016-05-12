@@ -97,5 +97,7 @@ package aniPangShootingWorld.util
 		{
 			_nextButton.visible = true;
 		}
+		
+		public function get nextButton():Image{return _nextButton;}
 	}
 }
