@@ -15,6 +15,7 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.scene.SceneManager;
+	import framework.texture.FwTexture;
 	
 	/**
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
@@ -39,12 +40,12 @@ package aniPangShootingWorld.round
 		 */		
 		public function MenuView()
 		{
-			_menuImage = new Image(0,0,(new PrevLoadImage.MENUVIEW()).bitmapData);
+			_menuImage = new Image(0, 0, FwTexture.fromBitmapData(new PrevLoadImage.MENUVIEW().bitmapData));
 			addChild(_menuImage);
 			_menuImage.width = Framework.viewport.width;
 			_menuImage.height = Framework.viewport.height;
 			
-			_loadingImage = new Image(Framework.viewport.width/4,Framework.viewport.height*3/4,(new PrevLoadImage.LOADING30()).bitmapData);
+			_loadingImage = new Image(Framework.viewport.width/4, Framework.viewport.height*3/4, FwTexture.fromBitmapData((new PrevLoadImage.LOADING30()).bitmapData));
 			addChild(_loadingImage);
 			_loadingImage.width = Framework.viewport.width/2;
 			_loadingImage.height = Framework.viewport.height/20;
@@ -61,14 +62,14 @@ package aniPangShootingWorld.round
 			//Note @유영선 각각 상태 카운터에 따라 로딩 이미지를 설정
 			if(progressCount == 60)
 			{
-				_loadingImage.bitmapData = (new PrevLoadImage.LOADING60()).bitmapData;
+				_loadingImage.texture = FwTexture.fromBitmapData((new PrevLoadImage.LOADING60()).bitmapData);
 				_loadingImage.width = Framework.viewport.width/2;
 				_loadingImage.height = Framework.viewport.height/20;
 				Framework.current.render();
 			}
 			else
 			{
-				_loadingImage.bitmapData = (new PrevLoadImage.LOADING90()).bitmapData;
+				_loadingImage.texture = FwTexture.fromBitmapData((new PrevLoadImage.LOADING90()).bitmapData);
 				_loadingImage.width = Framework.viewport.width/2;
 				_loadingImage.height = Framework.viewport.height/20;
 				Framework.current.render();

@@ -1,19 +1,19 @@
 package framework.gameobject
 {
-	import flash.display.BitmapData;
+	import framework.texture.FwTexture;
 
 	public class BulletManager
 	{
 		private var _bulletVector:Vector.<Bullet> = new Vector.<Bullet>;
 		private var _bulletNumVector:Vector.<Number> = new Vector.<Number>;
-		private var _bulletBitmapData:BitmapData;
+		private var _texture:FwTexture;
 		private var _totalBullet:int;
 		private var _objectType:String;
 		
-		public function BulletManager(objectType:String,totalBullet:int, bulletBitmap:BitmapData)
+		public function BulletManager(objectType:String, totalBullet:int, texture:FwTexture)
 		{
 			_totalBullet = totalBullet;
-			_bulletBitmapData = bulletBitmap;
+			_texture = texture;
 			_objectType = objectType;
 		}
 
@@ -21,14 +21,14 @@ package framework.gameobject
 		{
 			for(var i:int =0; i < _totalBullet; i++)
 			{
-				_bulletVector.push(new Bullet(_objectType,x,y,_bulletBitmapData));
+				_bulletVector.push(new Bullet(_objectType, x, y, _texture));
 				_bulletNumVector.push(i);
 			}
 		}
 		
 		public function dispose():void
 		{
-			_bulletBitmapData = null;
+			_texture = null;
 		}
 		
 		public function get totalBullet():int{ return _totalBullet; }

@@ -43,7 +43,7 @@ package framework.display
 			for(var i : int =0; i < numberArray.length; ++i)
 			{
 				_NumberImageVector.push(new MovieClip(_NumberImages,1,0,0));
-				trace(Math.ceil(_NumWidth));
+//				trace(Math.ceil(_NumWidth));
 				_NumberImageVector[i].width = _NumWidth;
 				_NumberImageVector[i].height = _NumHeight;
 				_NumberImageVector[i].x = this.x + _NumberImageVector[i].width/2*i;

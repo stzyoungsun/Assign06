@@ -7,6 +7,7 @@ package framework.background
 	
 	import framework.core.Framework;
 	import framework.display.Image;
+	import framework.texture.FwTexture;
 
 	public class BackGround extends Image
 	{
@@ -19,7 +20,7 @@ package framework.background
 		
 		public function BackGround(sliceNum:Number, frame:Number,step:Number, backGroudBitmapData:BitmapData)
 		{
-			super(0,0,backGroudBitmapData);
+			super(0, 0, FwTexture.fromBitmapData(backGroudBitmapData));
 			
 			_backGroundBitmapData = backGroudBitmapData;
 			_sliceNum = sliceNum;
@@ -37,7 +38,7 @@ package framework.background
 			var tempRegion : Rectangle = new Rectangle(0,_backGroundBitmapData.height/_sliceNum,_backGroundBitmapData.width,_backGroundBitmapData.height/_sliceNum)
 			tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
 			
-			bitmapData = tempbitmapdata;
+			texture = FwTexture.fromBitmapData(tempbitmapdata);
 			width = Framework.viewport.width;
 			height = Framework.viewport.height;
 		}
@@ -64,7 +65,7 @@ package framework.background
 				
 				tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
 				
-				bitmapData = tempbitmapdata;
+				texture = FwTexture.fromBitmapData(tempbitmapdata);
 				width = Framework.viewport.width;
 				height = Framework.viewport.height;
 				_prevTime = 0;

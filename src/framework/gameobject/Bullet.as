@@ -1,8 +1,7 @@
 package framework.gameobject
 {
-	import flash.display.BitmapData;
-	
 	import framework.display.Image;
+	import framework.texture.FwTexture;
 
 	public class Bullet extends Image
 	{
@@ -11,9 +10,9 @@ package framework.gameobject
 		private var _angle:Number;
 		private var _speed:Number;
 		
-		public function Bullet(objectType:String, x:int, y:int, bulletBitmap:BitmapData)
+		public function Bullet(objectType:String, x:int, y:int, texture:FwTexture)
 		{
-			super(x, y, bulletBitmap);
+			super(x, y, texture);
 			this._objectType = objectType;
 		}
 		

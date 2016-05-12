@@ -2,6 +2,8 @@ package framework.display
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.geom.Matrix;
+	import flash.geom.Matrix3D;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
@@ -24,6 +26,7 @@ package framework.display
 		private var _visible:Boolean;
 		private var _parent:DisplayObjectContainer;
 		private var _eventDictionary:Dictionary;
+		private var _transformationMatrix3D:Matrix3D;
 		
 		protected var _prevTime:Number;
 		protected var _objectType : String = ObjectType.NONE;
@@ -40,8 +43,6 @@ package framework.display
 			_scaleX = _scaleY = 1.0;
 			_visible = true;
 			_eventDictionary = new Dictionary();
-			_width = 0;
-			_height = 0;
 		}
 
 		/**
@@ -244,6 +245,23 @@ package framework.display
 			_parent = parent;
 		}
 		
+		public function get transformationMatrix():Matrix
+		{
+			var transformationMatrix:Matrix = new Matrix();
+			transformationMatrix.identity();
+			
+			if (_scaleX != 1.0 || _scaleY != 1.0) transformationMatrix.scale(_scaleX, _scaleY);
+			if (_rotation != 0.0)                 transformationMatrix.rotate(_rotation);
+			if (_x != 0.0 || _y != 0.0)           transformationMatrix.translate(_x, _y);
+			
+			if (_pivotX != 0.0 || _pivotY != 0.0)
+			{
+				transformationMatrix.tx = _x - transformationMatrix.a * _pivotX - transformationMatrix.c * _pivotY;
+				transformationMatrix.ty = _y - transformationMatrix.b * _pivotX - transformationMatrix.d * _pivotY;
+			}
+			return transformationMatrix; 
+		}
+		
 		public function get x():Number { return _x; }
 		public function set x(value:Number):void { _x = value; }
 		
@@ -292,16 +310,26 @@ package framework.display
 			_rotation = value;
 		}
 		
-		public function get width():Number { return _width; }
-		public function set width(value:Number):void { _width = value; }
+		public function get width():Number { return bounds.width; }
+		public function set width(value:Number):void
+		{
+			scaleX = 1.0;
+			var actualWidth:Number = width;
+			if(actualWidth != 0.0) scaleX = value / actualWidth;
+		}
 		
-		public function get height():Number { return _height; }
-		public function set height(value:Number):void { _height = value; }
+		public function get height():Number { return bounds.height; }
+		public function set height(value:Number):void
+		{
+			scaleY = 1.0;
+			var actualHeight:Number = height;
+			if(actualHeight != 0.0) scaleY = value / actualHeight;
+		}
 		
 		public function get visible():Boolean { return _visible; }
 		public function set visible(value:Boolean):void { _visible = value; }
 		
-		public function get bounds():Rectangle { return null; }
+		public function get bounds():Rectangle { return null}
 		
 		public function get objectType():String { return _objectType; }
 		public function set objectType(value:String):void{_objectType = value;}

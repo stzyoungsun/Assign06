@@ -9,6 +9,7 @@ package aniPangShootingWorld.player
 	import framework.display.Image;
 	import framework.display.Sprite;
 	import framework.display.TextImageField;
+	import framework.texture.FwTexture;
 
 	public class PlayerState extends Sprite
 	{
@@ -31,15 +32,15 @@ package aniPangShootingWorld.player
 		public static var sSuperPowerFlag : Boolean = false;
 		public function PlayerState()
 		{
-			_mainStateDlg = new Image(0,0, MenuView.sloadedImage.imageDictionary["state.png"].bitmapData);
+			_mainStateDlg = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["state.png"].bitmapData));
 			_mainStateDlg.width = Framework.viewport.width/2;
 			_mainStateDlg.height = Framework.viewport.height/15;
 			
-			_heartDlg = new Image(_mainStateDlg.width*197/1000,_mainStateDlg.height*8/140,MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData);
+			_heartDlg = new Image(_mainStateDlg.width*197/1000,_mainStateDlg.height*8/140,FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData));
 			_heartDlg.width = Framework.viewport.width*3/13;
 			_heartDlg.height = Framework.viewport.height/41;
 			 
-			_powerDlg = new Image(_heartDlg.x + _mainStateDlg.width/40,_heartDlg.height - _mainStateDlg.height/15,MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData);
+			_powerDlg = new Image(_heartDlg.x + _mainStateDlg.width/40,_heartDlg.height - _mainStateDlg.height/15,FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData));
 			_powerDlg.width = Framework.viewport.width*3/13;
 			_powerDlg.height = Framework.viewport.height/41;
 			
@@ -114,32 +115,32 @@ package aniPangShootingWorld.player
 			{
 				case 0:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData);
 					break;
 				}
 				case 1:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power2.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power2.png"].bitmapData);
 					break;
 				}
 				case 2:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power4.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power4.png"].bitmapData);
 					break;
 				}
 				case 3:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power6.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power6.png"].bitmapData);
 					break;
 				}
 				case 4:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power8.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power8.png"].bitmapData);
 					break;
 				}
 				case 5:
 				{
-					_powerDlg.bitmapData = MenuView.sloadedImage.imageDictionary["power10.png"].bitmapData;
+					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power10.png"].bitmapData);
 					sSuperPowerFlag = true;
 					sPlayerPower = 0;
 					this._prevTime = getTimer();
@@ -155,7 +156,7 @@ package aniPangShootingWorld.player
 		private function observedHeart():void
 		{
 			// TODO Auto Generated method stub
-			trace(sPlayerHeart);
+//			trace(sPlayerHeart);
 			if(sPlayerHeart >5)
 				sPlayerHeart = 5;
 			if(sPlayerHeart < 0)
@@ -165,32 +166,32 @@ package aniPangShootingWorld.player
 			{
 				case 0:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart1.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart1.png"].bitmapData);
 					break;
 				}
 				case 1:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart2.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart2.png"].bitmapData);
 					break;
 				}
 				case 2:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart4.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart4.png"].bitmapData);
 					break;
 				}
 				case 3:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart6.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart6.png"].bitmapData);
 					break;
 				}
 				case 4:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart8.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart8.png"].bitmapData);
 					break;
 				}
 				case 5:
 				{
-					_heartDlg.bitmapData = MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData
+					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData);
 					break;
 				}
 			}

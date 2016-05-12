@@ -10,6 +10,7 @@ package aniPangShootingWorld.util
 	import framework.display.Image;
 	import framework.display.Sprite;
 	import framework.display.TextImageField;
+	import framework.texture.FwTexture;
 
 	public class ResultDlg extends Sprite
 	{
@@ -31,8 +32,8 @@ package aniPangShootingWorld.util
 
 			trace(this.x + "," + this.width);
 			
-			_resultMain = new Image(0,0, MenuView.sloadedImage.imageDictionary["resultMain.png"].bitmapData);
-			_nextButton = new Image(0,0, MenuView.sloadedImage.imageDictionary["nextButton.png"].bitmapData);
+			_resultMain = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["resultMain.png"].bitmapData));
+			_nextButton = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["nextButton.png"].bitmapData));
 			
 			_resultMain.width = Framework.viewport.width;
 			_resultMain.height = Framework.viewport.height;

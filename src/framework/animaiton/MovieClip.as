@@ -4,6 +4,7 @@ package framework.animaiton
 	import flash.utils.getTimer;
 	
 	import framework.display.Image;
+	import framework.texture.FwTexture;
 	
 	public class MovieClip extends Image
 	{
@@ -25,7 +26,7 @@ package framework.animaiton
 		public function MovieClip(spriteSheet:AtlasBitmapData, frame:Number, x:Number = 0, y:Number = 0, playOnce:Boolean = false)
 		{
 			_spriteSheet = spriteSheet;
-			super(x, y, _spriteSheet.getsubSpriteSheet[0] as BitmapData);
+			super(x, y, FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[0] as BitmapData));
 			
 			if((_curFrame = frame) == 0)
 			{
@@ -79,7 +80,7 @@ package framework.animaiton
 		 */
 		public function nextFrame() : void
 		{
-			bitmapData = _spriteSheet.getsubSpriteSheet[_imageCount++];
+			texture = FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[_imageCount++]);
 			
 			if(_imageCount == _spriteSheet.getsubCount)
 			{
@@ -104,7 +105,7 @@ package framework.animaiton
 			}
 			
 			_imageCount = index;
-			bitmapData = _spriteSheet.getsubSpriteSheet[_imageCount];
+			texture = FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[_imageCount]);
 		}
 		
 		public function get playOnce():Boolean { return _playOnce; }

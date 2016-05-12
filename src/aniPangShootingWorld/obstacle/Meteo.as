@@ -10,6 +10,7 @@ package aniPangShootingWorld.obstacle
 	import framework.display.Image;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.texture.FwTexture;
 
 	public class Meteo extends Obstacle
 	{
@@ -28,8 +29,8 @@ package aniPangShootingWorld.obstacle
 		{
 			super(meteoAtlas, frame, stage);
 			_stage = stage;
-			_meteoLine = new Image(0,0,MenuView.sloadedImage.imageDictionary["meteoLine.png"].bitmapData);
-			_meteoWarrning = new Image(0,0,MenuView.sloadedImage.imageDictionary["meteowarning.png"].bitmapData);
+			_meteoLine = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["meteoLine.png"].bitmapData));
+			_meteoWarrning = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["meteowarning.png"].bitmapData));
 			
 			_stage.addChild(_meteoLine);
 			_stage.addChild(_meteoWarrning);

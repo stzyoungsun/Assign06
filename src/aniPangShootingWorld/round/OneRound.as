@@ -1,5 +1,6 @@
 package aniPangShootingWorld.round
 {
+	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
@@ -27,6 +28,7 @@ package aniPangShootingWorld.round
 	import framework.event.TouchPhase;
 	import framework.gameobject.BulletManager;
 	import framework.sound.SoundManager;
+	import framework.texture.FwTexture;
 	
 	
 	public class OneRound extends Sprite
@@ -78,9 +80,15 @@ package aniPangShootingWorld.round
 		private var _resultTimer : Number;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
-		 */		
+		 */
+		
+		private var playerBulletTexture:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
+		private var bossBulletTexture:FwTexture;
+		
 		public function OneRound()
 		{
+			var parent:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData);
+			bossBulletTexture = FwTexture.fromTexture(parent, new Rectangle(10, 10, parent.bitmapWidth, parent.bitmapHeight));
 			this.objectType = ObjectType.ROUND_PREV;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
@@ -252,7 +260,7 @@ package aniPangShootingWorld.round
 					new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["boss_Sheet.png"],
 						MenuView.sloadedImage.xmlDictionary["boss_Sheet.xml"]),
 					10,
-					new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData),
+					new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
 					this
 				);
 				
@@ -385,7 +393,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function playerDraw():void
 		{
-			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE,30,MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
+			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, playerBulletTexture);
 			_player = new Player(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Player.png"],MenuView.sloadedImage.xmlDictionary["Player.xml"]),5,
 				bulletMgr,this);
 			
@@ -433,7 +441,7 @@ package aniPangShootingWorld.round
 			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
-			_bossWarningView = new Image(0,0,MenuView.sloadedImage.imageDictionary["warning.png"].bitmapData);
+			_bossWarningView = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["warning.png"].bitmapData));
 			_bossWarningView.visible = false;
 			addChild(_bossWarningView);
 		}

@@ -231,6 +231,7 @@ package framework.core
 		 */
 		public function render():void
 		{
+			_painter.nextFrame();
 			// 스테이지의 크기에 맞춰 직교투영 행렬을 설정
 			_painter.setOrthographicProjection(_stage.stageWidth, _stage.stageHeight);
 			// blendFactor 설정
@@ -242,7 +243,8 @@ package framework.core
 			_stage.render();
 			// @FIXME jihwan.ryu 드로우콜 횟수 출력 - 화면 출력으로 변경
 			_statsDisplay.createTextImage(_painter.drawCount);
-
+			_painter.finishQuadBatch();
+			
 			// 버퍼에 그려진 데이터를 화면에 출력
 			_context3D.present();
 			// 행렬 초기화
