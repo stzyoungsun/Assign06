@@ -1,0 +1,12 @@
+[ {"roundnum":"1", "background":"back1.jpg"
+,"LV1Count" : "0"   //1
+,"LV1" : "0,0,0,0,0"
+,"LV2Count" : "5"
+,"LV2" : "0,0,0,0,0"
+,"LV3Count" : "15"
+,"LV3" : "0,0,0,0,0"
+,"LV4Count" : "20"
+,"LV4" : "0,0,0,0,0"
+,"LVBossCount" : "25"
+}, 
+{"roundnum":"2", "background":"back2.jpg"}]
