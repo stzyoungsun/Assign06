@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas ImagePath="boss_Sheet.png">
+<TextureAtlas ImagePath="boss1_Sheet.png">
 <SubTexture name="boss1.png" x="0" y="0" width="400" height="400 "/>
 <SubTexture name="boss2.png" x="400" y="0" width="400" height="400 "/>
 <SubTexture name="boss3.png" x="0" y="400" width="400" height="400 "/>
