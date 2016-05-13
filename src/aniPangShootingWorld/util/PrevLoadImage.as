@@ -20,6 +20,9 @@ package aniPangShootingWorld.util
 		[Embed(source="../../loading4.png")]
 		public static const LOADING100:Class;
 	
+		[Embed(source="../../panda.png")]
+		public static const icon:Class;
+		
 		public function PrevLoadImage()
 		{
 		}

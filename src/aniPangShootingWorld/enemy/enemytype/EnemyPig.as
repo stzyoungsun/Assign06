@@ -1,8 +1,10 @@
 
-package aniPangShootingWorld.enemy
+package aniPangShootingWorld.enemy.enemytype
 {
+	import aniPangShootingWorld.enemy.EnemyObject;
+	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.PlayerState;
-
+	
 	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -35,6 +37,8 @@ package aniPangShootingWorld.enemy
 			_stage = stage;
 			//Note @유영선 시간 조절을 위한 변수 (Displayobject 변수)
 			_prevTime = 0;
+			
+			_pEnemyType = EnemyObjectUtil.ENEMY_PIG;
 			maxHP = 1;
 		}
 		
@@ -97,25 +101,6 @@ package aniPangShootingWorld.enemy
 		public override function render():void
 		{
 			super.render();
-			
-			//Note @유영선 적이 일반 상태 일 경우 일반 상태에 맞는 비트맵으로 설정
-			if(this.objectType == ObjectType.ENEMY_GENERAL)
-			{
-				this.showImageAt(0);
-			}
-			//Note @유영선 적이 충돌 상태일 경우 hp를 감소시키고 충돌 상태에 맞는 비트맵으로 설정
-			else if(this.objectType == ObjectType.ENEMY_COLLISION)
-			{
-				this.objectType = ObjectType.ENEMY_GENERAL;
-				enemyHP--;
-				this.showImageAt(1);
-				//Note @유영선 적의 체력이 0 일 경우 상태를 ObjectType.COIN으로 변경
-				if(enemyHP == 0)
-				{				
-					shooting();
-					this.objectType = ObjectType.ITEM_IDLE;
-				}
-			}
 			
 			if(_bulletManager.bulletVector[0].objectType != ObjectType.ENEMY_BULLET_IDLE) 
 				bulletFrame();

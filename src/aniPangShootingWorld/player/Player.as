@@ -13,6 +13,8 @@ package aniPangShootingWorld.player
 	import framework.gameobject.Collision;
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
+	import com.adobe.nativeExtensions.Vibration;
+
 	//import com.adobe.nativeExtensions.Vibration;
 
 	/**
@@ -157,13 +159,13 @@ package aniPangShootingWorld.player
 				{
 					_shieldTime = getTimer();
 					
-//					var vibe:Vibration;
-//					
-//					if (Vibration.isSupported)
-//					{
-//						vibe = new Vibration();
-//						vibe.vibrate(1000);
-//					}
+					var vibe:Vibration;
+					
+					if (Vibration.isSupported)
+					{
+						vibe = new Vibration();
+						vibe.vibrate(1000);
+					}
 					
 					this.objectType = ObjectType.PLAYER_SHIELD_MODE;
 					PlayerState.sPlayerHeart--;

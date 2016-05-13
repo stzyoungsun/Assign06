@@ -1,5 +1,6 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.round.MenuView;
@@ -25,6 +26,7 @@ package aniPangShootingWorld.enemy
 		private var _maxHP: Number;
 		private var _enemyHP : Number;
 		
+		protected var _pEnemyType : Number;
 		public function EnemyObject(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
 		{
 			super(enemyAtlas,frame,0,0);
@@ -69,8 +71,24 @@ package aniPangShootingWorld.enemy
 		 */		
 		public override function render():void
 		{
-			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
+			if(this.objectType == ObjectType.ENEMY_GENERAL)
+			{
+				this.showImageAt(0);
+			}	
+			else if(this.objectType == ObjectType.ENEMY_COLLISION)
+			{
+				this.objectType = ObjectType.ENEMY_GENERAL;
+				enemyHP--;
+				this.showImageAt(1);
+				
+				if(enemyHP == 0)
+				{
+					if(this._pEnemyType == EnemyObjectUtil.ENEMY_PIG) (this as EnemyPig).shooting()
+					this.objectType = ObjectType.ITEM_IDLE;
+				}
+			}
 			
+			//Note @유영선 적의 상태가 coin일 경우 적이 사망하여 재화를 뿌림
 			switch(this.objectType)
 			{
 				case ObjectType.ITEM_IDLE:

@@ -10,6 +10,8 @@ package aniPangShootingWorld.enemy
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.texture.FwTexture;
+	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
+	import aniPangShootingWorld.enemy.enemytype.EnemyRat;
 
 	public class EnemyLine
 	{
@@ -58,6 +60,7 @@ package aniPangShootingWorld.enemy
 						break;
 					}
 				}
+				
 				//Note @유영선 각각의 적 객체의 크기 위치를 조절 
 				_enemyVector[i].addHPBar();
 				_enemyVector[i].width = Framework.viewport.width*4/25;
