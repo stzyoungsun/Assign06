@@ -92,7 +92,8 @@ package aniPangShootingWorld.round
 		public function Round(roundNum : Number)
 		{
 			var parent:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData);
-			bossBulletTexture = FwTexture.fromTexture(parent, new Rectangle(10, 10, parent.bitmapWidth, parent.bitmapHeight));
+			bossBulletTexture = FwTexture.fromTexture(parent, new Rectangle(10, 10, parent.width, parent.height));
+
 			this.objectType = ObjectType.ROUND_PREV;
 			_roundNum = roundNum;
 			//Note @유영선 배경 그라운드를 화면에 출력

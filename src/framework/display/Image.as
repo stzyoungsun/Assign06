@@ -24,7 +24,7 @@ package framework.display
 		public function Image(x:int, y:int, texture:FwTexture)
 		{
 			// width와 height는 BitmapData의 크기를 넣어준다
-			super(x, y, texture.bitmapWidth, texture.bitmapHeight);
+			super(x, y, texture.width, texture.height);
 			_texture = texture;
 		}
 		
