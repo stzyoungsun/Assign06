@@ -35,7 +35,7 @@ package framework.Rendering
 		private var _modelViewMatrix3D:Matrix3D;
 		private var _mvpMatrix3D:Matrix3D;
 		
-		private static var _sRawData:Vector.<Number> = new <Number>[1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1];
+		private static var _sRawData:Vector.<Number> = new <Number>[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 		private static var _sMatrix3D:Matrix3D = new Matrix3D();
 		
 		public function Painter(stage3D:Stage3D)

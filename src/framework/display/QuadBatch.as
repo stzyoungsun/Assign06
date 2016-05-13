@@ -132,7 +132,7 @@ package framework.display
 			
 			var x:Number = _vertexData[vertexOffset];
 			var y:Number = _vertexData[vertexOffset + 1];
-			var uvRegion:Rectangle = _texture.uvRegion;
+			var uvRegion:Rectangle = texture.uvRegion;
 			
 			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
 			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
@@ -183,7 +183,6 @@ package framework.display
 			context.setVertexBufferAt(1, _vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2);	// va1
 			// Vertex, Fragment 프로그램에서 사용될 상수 설정
 			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, mvpMatrix, true);	// vc0
-			//			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, new <Number>[1, 1, 1, 1]);	// vc4
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, new <Number>[1.0, 1.0, 1.0, 1.0], 1);	// fc0
 			// 텍스쳐 설정
 			context.setTextureAt(1, _texture.baseTexture);	// ft1
