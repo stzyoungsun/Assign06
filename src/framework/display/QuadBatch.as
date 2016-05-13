@@ -7,11 +7,12 @@ package framework.display
 	import flash.display3D.VertexBuffer3D;
 	import flash.geom.Matrix;
 	import flash.geom.Matrix3D;
+	import flash.geom.Rectangle;
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
 	import framework.texture.FwTexture;
-
+	
 	public class QuadBatch
 	{
 		public static const MAX_NUM_QUADS:int = 1024;
@@ -68,7 +69,7 @@ package framework.display
 			{
 				createBufferData();
 			}
-			// 이미 존재한다면 벡터 데이터만 업로드해서 갱신
+				// 이미 존재한다면 벡터 데이터만 업로드해서 갱신
 			else
 			{
 				_vertexBuffer.uploadFromVector(_vertexData, 0, this.capacity * 4);
@@ -131,36 +132,37 @@ package framework.display
 			
 			var x:Number = _vertexData[vertexOffset];
 			var y:Number = _vertexData[vertexOffset + 1];
+			var uvRegion:Rectangle = _texture.uvRegion;
 			
 			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
 			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
 			vertexOffset++;
-			_vertexData[vertexOffset++] = 0;
-			_vertexData[vertexOffset++] = 0;
-			
-			x = _vertexData[vertexOffset];
-			y = _vertexData[vertexOffset + 1];
-			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
-			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
-			vertexOffset++;
-			_vertexData[vertexOffset++] = _texture.u;
-			_vertexData[vertexOffset++] = 0;
+			_vertexData[vertexOffset++] = uvRegion.left;
+			_vertexData[vertexOffset++] = uvRegion.top;
 			
 			x = _vertexData[vertexOffset];
 			y = _vertexData[vertexOffset + 1];
 			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
 			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
 			vertexOffset++;
-			_vertexData[vertexOffset++] = 0;
-			_vertexData[vertexOffset++] = _texture.v;
+			_vertexData[vertexOffset++] = uvRegion.right;
+			_vertexData[vertexOffset++] = uvRegion.top;
 			
 			x = _vertexData[vertexOffset];
 			y = _vertexData[vertexOffset + 1];
 			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
 			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
 			vertexOffset++;
-			_vertexData[vertexOffset++] = _texture.u;
-			_vertexData[vertexOffset++] = _texture.v;
+			_vertexData[vertexOffset++] = uvRegion.left;
+			_vertexData[vertexOffset++] = uvRegion.bottom;
+			
+			x = _vertexData[vertexOffset];
+			y = _vertexData[vertexOffset + 1];
+			_vertexData[vertexOffset++] =  x * modelViewMatrix.a + modelViewMatrix.c * y + modelViewMatrix.tx;
+			_vertexData[vertexOffset++] =  modelViewMatrix.d * y + modelViewMatrix.b * x + modelViewMatrix.ty;
+			vertexOffset++;
+			_vertexData[vertexOffset++] = uvRegion.right;
+			_vertexData[vertexOffset++] = uvRegion.bottom;
 			
 			_numQuads++;
 		}
@@ -181,7 +183,7 @@ package framework.display
 			context.setVertexBufferAt(1, _vertexBuffer, 3, Context3DVertexBufferFormat.FLOAT_2);	// va1
 			// Vertex, Fragment 프로그램에서 사용될 상수 설정
 			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, mvpMatrix, true);	// vc0
-//			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, new <Number>[1, 1, 1, 1]);	// vc4
+			//			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, new <Number>[1, 1, 1, 1]);	// vc4
 			context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, new <Number>[1.0, 1.0, 1.0, 1.0], 1);	// fc0
 			// 텍스쳐 설정
 			context.setTextureAt(1, _texture.baseTexture);	// ft1
@@ -196,7 +198,7 @@ package framework.display
 			context.setVertexBufferAt(1, null);
 			context.setTextureAt(1, null);
 		}
-
+		
 		public function reset():void
 		{
 			_numQuads = 0;

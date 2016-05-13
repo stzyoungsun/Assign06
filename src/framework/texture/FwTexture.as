@@ -10,7 +10,7 @@ package framework.texture
 	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
-
+	
 	public class FwTexture
 	{
 		private static const S_RECT:Rectangle = new Rectangle();
@@ -23,7 +23,6 @@ package framework.texture
 				throw new Error("This class is abstract");
 			}
 		}
-		
 		
 		public static function fromBitmapData(data:BitmapData):FwTexture
 		{
@@ -58,7 +57,7 @@ package framework.texture
 			
 			return new SubTexture(nativeTexture, null, new Rectangle(0, 0, originWidth, originHeight), new Rectangle(0, 0, textureWidth, textureHeight));
 		}
-				
+		
 		/**
 		 * v의 값보다 크거나 같은 2의 제곱 수를 찾아 반환하는 메서드 
 		 * @param v - 검색하려는 데이터
@@ -78,16 +77,11 @@ package framework.texture
 		
 		public function get bitmapData():BitmapData{ return null; }
 		public function set bitmapData(bitmapData:BitmapData):void {}
-		public function set u(width:Number):void{}
-		public function set v(height:Number):void{}
 		public function get baseTexture():Texture { return null; }		
 		public function get parent():FwTexture { return null; }
 		public function get region():Rectangle { return null; }
-		public function get u():Number { return null; }
-		public function get v():Number { return null; }
+		public function get uvRegion():Rectangle { return null; }
 		public function get width():Number { return 0; }
 		public function get height():Number { return 0; }
-		public function get bitmapWidth():Number { return 0; }
-		public function get bitmapHeight():Number { return 0; }
 	}
 }
