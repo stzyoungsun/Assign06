@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding ="utf-8"?>
+<swc xmlns="http://www.adobe.com/flash/swccatalog/9">
+  <versions>
+    <swc version="1.2" />
+    <flex version="4.6.0" build="23201" minimumSupportedVersion="3.0.0" />
+  </versions>
+  <features>
+    <feature-script-deps />
+    <feature-files />
+  </features>
+  <libraries>
+    <library path="library.swf">
+      <script name="_3914cd662a76ef0dce8392e9a7cb5b7aa7d07bbf8384c5528bffe029f79c1cc3_flash_display_Sprite" mod="1463128516584" signatureChecksum="2877914169" >
+        <def id="_3914cd662a76ef0dce8392e9a7cb5b7aa7d07bbf8384c5528bffe029f79c1cc3_flash_display_Sprite" /> 
+        <dep id="flash.system:Security" type="e" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="flash.display:Sprite" type="i" /> 
+      </script>
+      <script name="com/lpesign/Extension" mod="1463128493746" signatureChecksum="2317191743" >
+        <def id="com.lpesign:Extension" /> 
+        <dep id="trace" type="e" /> 
+        <dep id="flash.events:StatusEvent" type="e" /> 
+        <dep id="flash.external:ExtensionContext" type="e" /> 
+        <dep id="Error" type="e" /> 
+        <dep id="flash.display:BitmapData" type="s" /> 
+        <dep id="flash.events:StatusEvent" type="s" /> 
+        <dep id="flash.external:ExtensionContext" type="s" /> 
+        <dep id="Error" type="s" /> 
+        <dep id="AS3" type="n" /> 
+        <dep id="Object" type="i" /> 
+      </script>
+      <digests>
+        <digest type="SHA-256" signed="false" value="52e95a296cbf52d71c827504fed06d2fc5fa7d7a2c4b08f434e93a83b4fbbe8c"   />
+      </digests>
+    </library>
+  </libraries>
+  <files>
+  </files>
+</swc>
