@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="player_state.png">
+   <SubTexture name="heart1.png" x="0" y="160" width="326" height="47" />
+   <SubTexture name="heart2.png" x="0" y="256" width="326" height="47" />
+   <SubTexture name="heart4.png" x="0" y="304" width="326" height="47" />
+   <SubTexture name="heart6.png" x="0" y="352" width="326" height="47" />
+   <SubTexture name="heart8.png" x="0" y="400" width="326" height="47" />
+   <SubTexture name="heart10.png" x="0" y="208" width="326" height="47" />
+   <SubTexture name="power1.png" x="327" y="160" width="326" height="47" />
+   <SubTexture name="power2.png" x="327" y="256" width="326" height="47" />
+   <SubTexture name="power4.png" x="327" y="304" width="326" height="47" />
+   <SubTexture name="power6.png" x="327" y="352" width="326" height="47" />
+   <SubTexture name="power8.png" x="327" y="400" width="326" height="47" />
+   <SubTexture name="power10.png" x="327" y="208" width="326" height="47" />
+   <SubTexture name="state.png" x="0" y="0" width="690" height="159" />
+</TextureAtlas>

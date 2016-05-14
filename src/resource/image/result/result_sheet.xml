@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="result_sheet.png">
+   <SubTexture name="next_button.png" x="476" y="0" width="387" height="70" />
+   <SubTexture name="round_result.png" x="0" y="0" width="475" height="847" />
+</TextureAtlas>

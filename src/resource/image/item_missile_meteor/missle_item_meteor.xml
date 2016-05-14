@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="missle_item_meteor.png">
+   <SubTexture name="bullet_1.png" x="470" y="0" width="100" height="170" />
+   <SubTexture name="bullet_2.png" x="349" y="0" width="120" height="150" />
+   <SubTexture name="bullet_3.png" x="0" y="0" width="180" height="150" />
+   <SubTexture name="bullet_4.png" x="400" y="151" width="30" height="50" />
+   <SubTexture name="bullet_5.png" x="431" y="151" width="30" height="50" />
+   <SubTexture name="bullet_6.png" x="0" y="494" width="50" height="100" />
+   <SubTexture name="bullet_7.png" x="101" y="393" width="50" height="100" />
+   <SubTexture name="bullet_8.png" x="51" y="494" width="50" height="50" />
+   <SubTexture name="bullet_boss.png" x="349" y="151" width="50" height="50" />
+   <SubTexture name="coin_1.png" x="0" y="393" width="100" height="100" />
+   <SubTexture name="coin_2.png" x="571" y="0" width="100" height="100" />
+   <SubTexture name="heart_1.png" x="571" y="101" width="100" height="100" />
+   <SubTexture name="heart_2.png" x="672" y="0" width="100" height="100" />
+   <SubTexture name="jelly_1.png" x="504" y="202" width="100" height="100" />
+   <SubTexture name="jelly_2.png" x="773" y="0" width="100" height="100" />
+   <SubTexture name="jelly_3.png" x="672" y="101" width="100" height="100" />
+   <SubTexture name="jelly_4.png" x="504" y="303" width="100" height="100" />
+   <SubTexture name="meteor_1.png" x="181" y="0" width="167" height="241" />
+   <SubTexture name="meteor_2.png" x="0" y="151" width="167" height="241" />
+   <SubTexture name="meteor_3.png" x="168" y="242" width="167" height="241" />
+   <SubTexture name="meteor_4.png" x="336" y="242" width="167" height="241" />
+   <SubTexture name="meteor_line.png" x="773" y="101" width="52" height="856" />
+   <SubTexture name="meteor_warning.png" x="605" y="202" width="99" height="113" />
+</TextureAtlas>

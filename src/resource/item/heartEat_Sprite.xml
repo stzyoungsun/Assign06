@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas ImagePath="heartEat_Sprite.png">
-<SubTexture name="eatheart1.png" x="0" y="0" width="200" height="200 "/>
-<SubTexture name="eatheart2.png" x="200" y="0" width="200" height="200 "/>
-</TextureAtlas>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="ready_sheet.png">
+   <SubTexture name="ready_1.png" x="0" y="131" width="150" height="250" />
+   <SubTexture name="ready_2.png" x="151" y="131" width="150" height="250" />
+   <SubTexture name="ready_3.png" x="302" y="131" width="150" height="250" />
+   <SubTexture name="start.png" x="0" y="0" width="400" height="130" />
+</TextureAtlas>

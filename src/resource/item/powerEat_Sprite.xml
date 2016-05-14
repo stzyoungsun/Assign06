@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas ImagePath="powerEat_Sprite.png">
-<SubTexture name="eat1.png" x="0" y="0" width="200" height="200 "/>
-<SubTexture name="eat2.png" x="200" y="0" width="200" height="200 "/>
-<SubTexture name="eat3.png" x="0" y="200" width="200" height="200 "/>
-<SubTexture name="eat4.png" x="200" y="200" width="200" height="200 "/>
-</TextureAtlas>

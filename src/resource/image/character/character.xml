@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="character.png">
+   <SubTexture name="mao_1.png" x="0" y="0" width="200" height="270" />
+   <SubTexture name="mao_2.png" x="201" y="0" width="200" height="270" />
+   <SubTexture name="mao_3.png" x="402" y="0" width="200" height="270" />
+   <SubTexture name="mao_4.png" x="603" y="0" width="200" height="270" />
+   <SubTexture name="chick_1.png" x="0" y="271" width="200" height="200" />
+   <SubTexture name="chick_2.png" x="201" y="271" width="200" height="200" />
+   <SubTexture name="dog_1.png" x="402" y="271" width="200" height="200" />
+   <SubTexture name="dog_2.png" x="804" y="0" width="200" height="200" />
+   <SubTexture name="monkey_1.png" x="603" y="271" width="200" height="200" />
+   <SubTexture name="monkey_2.png" x="804" y="201" width="200" height="200" />
+   <SubTexture name="pig_1.png" x="0" y="472" width="200" height="200" />
+   <SubTexture name="pig_2.png" x="201" y="472" width="200" height="200" />
+   <SubTexture name="rat_1.png" x="402" y="472" width="200" height="200" />
+   <SubTexture name="rat_2.png" x="603" y="472" width="200" height="200" />
+</TextureAtlas>
