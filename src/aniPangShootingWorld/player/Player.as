@@ -131,7 +131,10 @@ package aniPangShootingWorld.player
 			//Note @유영선  플레이어가 발사 속도를 조절
 			if(curTimerBullet - _prevTime > 100)
 			{
-				shooting();
+				if(_stage.objectType != ObjectType.ROUND_IDLE)
+				{
+					shooting();
+				}
 				_prevTime = getTimer();
 			}
 			
