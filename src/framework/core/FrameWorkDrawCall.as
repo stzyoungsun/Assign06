@@ -1,9 +1,10 @@
 package framework.core
 {
-	import framework.animaiton.AtlasBitmapData;
-	import framework.display.TextImageField;
+	import framework.display.ImageTextField;
+	import framework.texture.AtlasTexture;
+	import framework.texture.FwTexture;
 
-	public class FrameWorkDrawCall extends TextImageField
+	public class FrameWorkDrawCall extends ImageTextField
 	{
 		private static var _sCurrent:FrameWorkDrawCall;
 		
@@ -12,10 +13,9 @@ package framework.core
 		
 		[Embed(source="../../Number_Sprite.xml", mimeType="application/octet-stream")]
 		public var NUMBERXML:Class;
-		public function FrameWorkDrawCall(x : int, y : int, width:int, height:int)
+		public function FrameWorkDrawCall(x:int, y:int, width:int, height:int)
 		{
-			var numberAtlas : AtlasBitmapData = new AtlasBitmapData((new NUMBERIMAGE()), XML(new NUMBERXML()));
-			super(x,y,width, height,numberAtlas);
+			super(x, y, width, height, new AtlasTexture(FwTexture.fromBitmapData((new NUMBERIMAGE()).bitmapData), XML(new NUMBERXML())));
 			_sCurrent = this;
 		}
 
