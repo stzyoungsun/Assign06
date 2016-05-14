@@ -14,7 +14,7 @@
 ,"LV4" : "1,1,1,0,0"
 ,"LVBossCount" : "4"
 ,"BossHP" : "10"
-,"BossName" : "boss1_Sheet" 
+,"BossName" : "boss" 
 }, 
 
 {"roundnum":"2", "background":"back2.jpg", "prevstart" : "PrevStart2_Sheet"
@@ -33,5 +33,5 @@
 ,"LV4" : "1,1,1,1,1"
 ,"LVBossCount" : "4"
 ,"BossHP" : "150"
-,"BossName" : "boss1_Sheet"
+,"BossName" : "boss"
 }] 
