@@ -58,10 +58,7 @@ package aniPangShootingWorld.util
 		private static var _sNextButton:FwTexture;
 		private static var _sRoundResult:FwTexture;
 		
-		public function GameTexture()
-		{
-			throw new Error("Abstract Class");
-		}
+		public function GameTexture() { throw new Error("Abstract Class"); }
 
 		public static function createGameTexture():void
 		{

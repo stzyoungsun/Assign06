@@ -5,10 +5,7 @@ package framework.gameobject
 
 	public class Collision
 	{
-		public function Collision()
-		{
-			
-		}
+		public function Collision() { throw new Error("Abstract Class"); }
 		
 		public static function bulletToWall(bullet:Bullet):Boolean
 		{

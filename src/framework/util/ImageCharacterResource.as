@@ -2,6 +2,8 @@ package framework.util
 {
 	public class ImageCharacterResource
 	{
+		public function ImageCharacterResource() { throw new Error("Abstract Class"); }
+		
 		[Embed(source="../../Number_Sprite.png")]
 		public static const NUMBER_IMAGE:Class;
 		

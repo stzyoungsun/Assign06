@@ -2,9 +2,7 @@ package aniPangShootingWorld.util
 {
 	public class UtilFunction
 	{
-		public function UtilFunction()
-		{
-		}
+		public function UtilFunction() { throw new Error("Abstract Class"); }
 		
 		private static var _minimum : Number;
 		private static var _maximum : Number;

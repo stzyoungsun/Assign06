@@ -17,8 +17,6 @@ package aniPangShootingWorld.enemy
 		public static const MAX_LINE_COUNT : int = 5;
 		public static const MAX_ENEMY_TYPE : int = 4;
 		
-		public function EnemyObjectUtil()
-		{
-		}
+		public function EnemyObjectUtil() { throw new Error("Abstract Class"); }
 	}
 }
