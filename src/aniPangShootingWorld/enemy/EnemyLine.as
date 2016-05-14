@@ -1,21 +1,19 @@
 package aniPangShootingWorld.enemy
 {
-	import flash.display.BitmapData;
+	import aniPangShootingWorld.enemy.enemytype.EnemyMonkey;
+	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
+	import aniPangShootingWorld.enemy.enemytype.EnemyRat;
+	import aniPangShootingWorld.resourceName.AtlasResource;
+	import aniPangShootingWorld.util.GameTexture;
 	
-	import aniPangShootingWorld.round.MenuView;
-	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
-	import framework.texture.FwTexture;
-	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
-	import aniPangShootingWorld.enemy.enemytype.EnemyRat;
+	import framework.texture.TextureManager;
 
 	public class EnemyLine
 	{
-		private var _enemyAtlasVector : Vector.<AtlasBitmapData>;
 		private var _enemyVector : Vector.<EnemyObject>;
 		
 		/**
@@ -32,10 +30,8 @@ package aniPangShootingWorld.enemy
 		 * @param enemyTypeArray 5명의 적의 Type 순서를 담은 배열
 		 * Note @유영선 5명의 적을 Type 배열의 순서에 따라 일렬로 출력합니다.
 		 */		
-		public function setEnemyLine(enemyAtlasVector : Vector.<AtlasBitmapData> , enemyTypeArray : Array, stage : Sprite) : void
+		public function setEnemyLine(enemyTypeArray:Array, stage:Sprite) : void
 		{
-			//Note @유영선 저장되어있는 비트맵 데이터
-			_enemyAtlasVector = enemyAtlasVector;
 			//적들의 객체를 저장 할 벡터
 			_enemyVector = new Vector.<EnemyObject>;
 			
@@ -43,24 +39,25 @@ package aniPangShootingWorld.enemy
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 			{
 				//Note @유영선 적들의 미사이를 설정하는 bulletManager 
-				var bulletMgr : BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE,1,FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData));
+				var bulletMgr:BulletManager = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1,
+					TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
 				
 				//Note @유영선 타입배열에 따라 설정 한 값으로 분기하여 객체를 생성 
 				switch(enemyTypeArray[i])
 				{
 					case EnemyObjectUtil.ENEMY_RAT:
-					{
-						_enemyVector.push(new EnemyRat(_enemyAtlasVector[i],10,stage));
+						_enemyVector.push(new EnemyRat(GameTexture.monsterRat, 10, stage));
 						break;
-					}
+					
+					case EnemyObjectUtil.ENEMY_PIG:
+						_enemyVector.push(new EnemyPig(GameTexture.monsterPig, 10, bulletMgr, stage));
+						break;
+					
+					case EnemyObjectUtil.ENEMY_MONKEY:
+						_enemyVector.push(new EnemyMonkey(GameTexture.monsterMoneky, 10, stage));
+						break;
 						
-					case EnemyObjectUtil.ENEMY_PIG :
-					{
-						_enemyVector.push(new EnemyPig(_enemyAtlasVector[i],10,bulletMgr,stage));
-						break;
-					}
 				}
-				
 				//Note @유영선 각각의 적 객체의 크기 위치를 조절 
 				_enemyVector[i].addHPBar();
 				_enemyVector[i].width = Framework.viewport.width*4/25;
