@@ -1,16 +1,14 @@
 package aniPangShootingWorld.util
 {
-	import flash.display.BitmapData;
-	
 	import aniPangShootingWorld.player.PlayerState;
-	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.resourceName.AtlasResource;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.Image;
+	import framework.display.ImageTextField;
 	import framework.display.Sprite;
-	import framework.display.TextImageField;
-	import framework.texture.FwTexture;
+	import framework.texture.AtlasTexture;
+	import framework.texture.TextureManager;
 
 	public class ResultDlg extends Sprite
 	{
@@ -21,19 +19,17 @@ package aniPangShootingWorld.util
 		private var _curHeart : int = 0;
 		private var _curCoin : int = 0;
 		
-		private var _textHeartField : TextImageField;
-		private var _textPowerField : TextImageField;
-		private var _textCoinField : TextImageField;
+		private var _textHeartField : ImageTextField;
+		private var _textPowerField : ImageTextField;
+		private var _textCoinField : ImageTextField;
 		
-		private var _textTotalField : TextImageField;
+		private var _textTotalField : ImageTextField;
 		public function ResultDlg()
 		{
 			super();
-
-			trace(this.x + "," + this.width);
 			
-			_resultMain = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["resultMain.png"].bitmapData));
-			_nextButton = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["nextButton.png"].bitmapData));
+			_resultMain = new Image(0, 0, GameTexture.roundResult);
+			_nextButton = new Image(0, 0, GameTexture.nextButton);
 			
 			_resultMain.width = Framework.viewport.width;
 			_resultMain.height = Framework.viewport.height;
@@ -45,15 +41,12 @@ package aniPangShootingWorld.util
 			
 			_nextButton.visible =false;
 			
-			if(MenuView.sloadedImage.checkXml("Number_Sprite.xml"))
-			{
-				var numberAtlas : AtlasBitmapData = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Number_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Number_Sprite.xml"])
-			}
-			
-			_textHeartField = new TextImageField(Framework.viewport.width*5/16,Framework.viewport.height*238/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textPowerField = new TextImageField(Framework.viewport.width*5/16,Framework.viewport.height*260/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textCoinField = new TextImageField(Framework.viewport.width*5/16,Framework.viewport.height*285/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textTotalField = new TextImageField(Framework.viewport.width*7/32,Framework.viewport.height*11/30, Framework.viewport.width/15,Framework.viewport.width/15,numberAtlas);
+			var numberAtlas:AtlasTexture = TextureManager.getInstance().atlasTextureDictionary[AtlasResource.NUMBER];
+
+			_textHeartField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*238/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
+			_textPowerField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*260/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
+			_textCoinField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*285/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
+			_textTotalField = new ImageTextField(Framework.viewport.width*7/32,Framework.viewport.height*11/30, Framework.viewport.width/15,Framework.viewport.width/15,numberAtlas);
 			
 			addChild(_resultMain);
 			addChild(_nextButton);
@@ -67,19 +60,19 @@ package aniPangShootingWorld.util
 		{
 			if(_curHeart <= PlayerState.sTotalHeart)
 			{
-				_textHeartField.createTextImage(_curHeart++);
+				_textHeartField.text = String(_curHeart++);
 				return false;
 			}
 			
 			else if(_curPower <= PlayerState.sTotalPower)
 			{
-				_textPowerField.createTextImage(_curPower++);
+				_textPowerField.text = String(_curPower++);
 				return false;
 			}
 			
 			else if(_curCoin <= PlayerState.sGoldCount)
 			{
-				_textCoinField.createTextImage(_curCoin++);
+				_textCoinField.text = String(_curCoin++);
 				return false;
 			}
 			else
@@ -90,7 +83,7 @@ package aniPangShootingWorld.util
 		
 		public function totalDraw() : void
 		{
-			_textTotalField.createTextImage(PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount);
+			_textTotalField.text = String(PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount);
 		}
 		
 		public function nextButtonDraw() : void
