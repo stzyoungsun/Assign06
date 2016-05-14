@@ -1,6 +1,5 @@
 package framework.animaiton
 {
-	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
 	import framework.display.Image;
@@ -9,7 +8,7 @@ package framework.animaiton
 	public class MovieClip extends Image
 	{
 		private var _play:Boolean;
-		private var _spriteSheet:AtlasBitmapData;
+		private var _textureVector:Vector.<FwTexture>;
 		private var _imageCount:int;
 		private var _curFrame:Number;
 		private var _prevTime:Number;
@@ -23,18 +22,17 @@ package framework.animaiton
 		 * @param y - Clip의 y 좌표
 		 * @param playOnce - 애니메이션을 한번만 재생시키려면 이 값을 true로 설정
 		 */
-		public function MovieClip(spriteSheet:AtlasBitmapData, frame:Number, x:Number = 0, y:Number = 0, playOnce:Boolean = false)
+		public function MovieClip(textureVector:Vector.<FwTexture>, frame:Number, x:Number = 0, y:Number = 0, playOnce:Boolean = false)
 		{
-			_spriteSheet = spriteSheet;
-			super(x, y, FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[0] as BitmapData));
+			super(x, y, textureVector[0]);
 			
 			if((_curFrame = frame) == 0)
 			{
 				throw new Error("Frame value should not set to 0");
 			}
 			
+			_textureVector = textureVector;
 			_playOnce = playOnce;
-			
 			_play = false;
 			_prevTime = 0;
 			_imageCount = 0;
@@ -80,9 +78,9 @@ package framework.animaiton
 		 */
 		public function nextFrame() : void
 		{
-			texture = FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[_imageCount++]);
+			texture = _textureVector[_imageCount++];
 			
-			if(_imageCount == _spriteSheet.getsubCount)
+			if(_imageCount == _textureVector.length)
 			{
 				_imageCount = 0;
 				// 한번만 재생시킴
@@ -99,22 +97,23 @@ package framework.animaiton
 			stop();
 			
 			// 인덱스가 시트의 범위를 벗어나면 Error throw
-			if(index < 0 && index >= _spriteSheet.getsubCount)
+			if(index < 0 && index >= _textureVector.length)
 			{
 				throw new Error("Invalid index value");
 			}
 			
 			_imageCount = index;
-			texture = FwTexture.fromBitmapData(_spriteSheet.getsubSpriteSheet[_imageCount]);
+			texture = _textureVector[_imageCount];
 		}
+		
+		public function get play():Boolean{return _play;}
 		
 		public function get playOnce():Boolean { return _playOnce; }
 		public function set playOnce(value:Boolean):void { _playOnce = value; }
 		
 		public function get currentIndex():int { return _imageCount; }
-		
-		public function set spriteSheet(value:AtlasBitmapData):void{_spriteSheet = value; _imageCount = 0;}
-		
-		public function get play():Boolean{return _play;}
+
+		public function get textureVector():Vector.<FwTexture> { return _textureVector; }
+		public function set textureVector(value:Vector.<FwTexture>):void { _textureVector = value; _imageCount = 0; }
 	}
 }
