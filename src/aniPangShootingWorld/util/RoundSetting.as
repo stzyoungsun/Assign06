@@ -1,7 +1,6 @@
-
 package aniPangShootingWorld.util
 {
-	import aniPangShootingWorld.round.MenuView;
+	import framework.texture.TextureManager;
 	
 	import json.JSON;
 	
@@ -33,7 +32,7 @@ package aniPangShootingWorld.util
 		
 		public function settingRound() : void
 		{
-			_roundObjectArray = json.JSON.decode(MenuView.sloadedImage.xmlDictionary["Round.xml"]);
+			_roundObjectArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Round.xml"]);
 			
 			for (var key:Object in _roundObjectArray) {
 				trace(_roundObjectArray[key].roundnum) ;
