@@ -44,7 +44,7 @@ package aniPangShootingWorld.round
 			_menuImage.height = Framework.viewport.height;
 			addChild(_menuImage);
 			
-			_loadingGaugeTexture = new AtlasTexture(FwTexture.fromBitmapData((new PrevLoadImage.LOADING_GAUGE()).bitmapData), PrevLoadImage.LOADING_XML);
+			_loadingGaugeTexture = new AtlasTexture(FwTexture.fromBitmapData((new PrevLoadImage.LOADING_GAUGE()).bitmapData), new PrevLoadImage.LOADING_XML);
 			_loadingImage = new Image(Framework.viewport.width / 4, Framework.viewport.height * 3 / 4, _loadingGaugeTexture.subTextures[30]);
 			_loadingImage.width = Framework.viewport.width / 2;
 			_loadingImage.height = Framework.viewport.height / 20;

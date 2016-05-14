@@ -12,16 +12,10 @@ package aniPangShootingWorld.util
 		public static const LOADING_GAUGE:Class;
 		
 		[Embed(source="../../panda.png")]
-		public static const icon:Class;
+		public static const ICON:Class;
 		
-		public static const LOADING_XML:XML = new XML(
-			<TextureAtlas imagePath="resource_loading_gauge.png">
-				<SubTexture height="31" width="438" y="0" x="0" name="100"/>
-				<SubTexture height="31" width="438" y="32" x="0" name="30"/>
-				<SubTexture height="31" width="438" y="64" x="0" name="60"/>
-				<SubTexture height="31" width="438" y="96" x="0" name="90"/>
-			</TextureAtlas>
-		);
+		[Embed(source="../../resource_loading_gauge.xml", mimeType="application/octet-stream")]
+		public static const LOADING_XML:Class;
 	
 		public function PrevLoadImage()	{ throw new Error("Abstract Class"); }
 	}
