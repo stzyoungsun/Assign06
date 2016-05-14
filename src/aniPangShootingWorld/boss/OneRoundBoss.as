@@ -105,8 +105,8 @@ package aniPangShootingWorld.boss
 						bulletX = this.x + this.width / 2;
 						bulletY = this.y;
 						// 각도를 플레이어 객체가 있는 위치를 조준하도록 설정
-						_shotAngle = Math.atan2(Player.currentPlayer.y - bulletY, Player.currentPlayer.x - bulletX) / Math.PI / 2;
-						shooting(bulletX, bulletY, _shotAngle, _shotSpeed + 5);
+						_shotAngle = Math.atan2(Player.currentPlayer.y - bulletY, Player.currentPlayer.x + Player.currentPlayer.width / 2 - bulletX) / Math.PI / 2;
+						shooting(bulletX, bulletY, _shotAngle, _shotSpeed * 1.2);
 						_prevTime = currentTime;
 					}
 					break;
