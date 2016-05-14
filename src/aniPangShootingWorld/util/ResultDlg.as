@@ -40,13 +40,11 @@ package aniPangShootingWorld.util
 			_nextButton.y = Framework.viewport.height - _nextButton.height*2;
 			
 			_nextButton.visible =false;
-			
-			var numberAtlas:AtlasTexture = TextureManager.getInstance().atlasTextureDictionary[AtlasResource.NUMBER];
 
-			_textHeartField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*238/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textPowerField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*260/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textCoinField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*285/1000, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
-			_textTotalField = new ImageTextField(Framework.viewport.width*7/32,Framework.viewport.height*11/30, Framework.viewport.width/15,Framework.viewport.width/15,numberAtlas);
+			_textHeartField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*238/1000, Framework.viewport.width/30,Framework.viewport.width/30);
+			_textPowerField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*260/1000, Framework.viewport.width/30,Framework.viewport.width/30);
+			_textCoinField = new ImageTextField(Framework.viewport.width*5/16,Framework.viewport.height*285/1000, Framework.viewport.width/30,Framework.viewport.width/30);
+			_textTotalField = new ImageTextField(Framework.viewport.width*7/32,Framework.viewport.height*11/30, Framework.viewport.width/15,Framework.viewport.width/15);
 			
 			addChild(_resultMain);
 			addChild(_nextButton);

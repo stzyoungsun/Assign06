@@ -45,7 +45,7 @@ package aniPangShootingWorld.player
 			_powerDlg.height = Framework.viewport.height/41;
 
 			var numberAtlas:AtlasTexture = TextureManager.getInstance().atlasTextureDictionary[AtlasResource.NUMBER];
-			_coinDlg = new ImageTextField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width/30, Framework.viewport.width/30, numberAtlas);
+			_coinDlg = new ImageTextField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width/30, Framework.viewport.width/30);
 			
 			addChild(_mainStateDlg);
 			addChild(_heartDlg);
