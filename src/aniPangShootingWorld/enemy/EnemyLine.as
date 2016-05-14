@@ -12,25 +12,21 @@ package aniPangShootingWorld.enemy
 	import framework.gameobject.BulletManager;
 	import framework.texture.TextureManager;
 
+	/**
+	 * Note @유영선 적 5명을 일렬로 세우기 위한 클래스 
+	 */
 	public class EnemyLine
 	{
-		private var _enemyVector : Vector.<EnemyObject>;
-		
-		/**
-		 *Note @유영선 적 5명을 일렬로 세우기 위한 클래스 
-		 * 
-		 */		
-		public function EnemyLine()
-		{
-			
-		}
+		private static var _enemyVector : Vector.<EnemyObject>;
+
+		public function EnemyLine() { throw new Error("Abstract Class"); }
 		
 		/**
 		 * @param enemyBitmapDataVector 5명의 적의 비트맵을 담은 벡터
 		 * @param enemyTypeArray 5명의 적의 Type 순서를 담은 배열
 		 * Note @유영선 5명의 적을 Type 배열의 순서에 따라 일렬로 출력합니다.
 		 */		
-		public function setEnemyLine(enemyTypeArray:Array, stage:Sprite) : void
+		public static function setEnemyLine(enemyTypeArray:Array, stage:Sprite) : void
 		{
 			//적들의 객체를 저장 할 벡터
 			_enemyVector = new Vector.<EnemyObject>;
@@ -70,6 +66,6 @@ package aniPangShootingWorld.enemy
 		/**
 		 * @return 저장된 enemy의 벡터를 반환합니다.
 		 */		
-		public function get enemyVector():Vector.<EnemyObject>{return _enemyVector;}
+		public static function get enemyVector():Vector.<EnemyObject> { return _enemyVector; }
 	}
 }

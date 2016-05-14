@@ -42,8 +42,6 @@ package aniPangShootingWorld.round
 		private var _player : Player;
 		//Note @유영선 플레이어 상태창 저장 할 변수
 		private var _playerState : PlayerState;
-		//Note @유영선 적들의 라인을 저장 할 변수
-		private var _enemyLine : EnemyLine = new EnemyLine();
 		
 		//Note @유영선 적들의 Type을  랜덤으로 저장 할 임시 변수
 		private var _randomArray : Array = new Array(EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT,EnemyObjectUtil.ENEMY_RAT);
@@ -320,11 +318,11 @@ package aniPangShootingWorld.round
 		 */		
 		private function checkEnemy():Boolean
 		{
-			if(_enemyLine.enemyVector)
+			if(EnemyLine.enemyVector)
 			{
-				for(var i:Number = 0; i < _enemyLine.enemyVector.length; i++)
+				for(var i:Number = 0; i < EnemyLine.enemyVector.length; i++)
 				{
-					if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
+					if(EnemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
 					{
 						return false;
 					}
@@ -349,7 +347,7 @@ package aniPangShootingWorld.round
 				}
 				
 				_typeArray = UtilFunction.shuffle(_typeArray, 5);
-				_enemyLine.setEnemyLine(_typeArray, this);
+				EnemyLine.setEnemyLine(_typeArray, this);
 				enenmyDraw();
 			}
 		}
@@ -363,7 +361,7 @@ package aniPangShootingWorld.round
 			
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
-				addChild(_enemyLine.enemyVector[i]);
+				addChild(EnemyLine.enemyVector[i]);
 			}
 		}
 		
@@ -374,10 +372,10 @@ package aniPangShootingWorld.round
 		{
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
-				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
+				if(getChildIndex(EnemyLine.enemyVector[i]) != -1)
 				{
-					_enemyLine.enemyVector[i].deleteHPBar();
-					removeChild(_enemyLine.enemyVector[i],true);
+					EnemyLine.enemyVector[i].deleteHPBar();
+					removeChild(EnemyLine.enemyVector[i], true);
 				}	
 			}
 			_EnemyCnt++;	//Note @유영선 제거 개수 (라운드에 level 조절)
