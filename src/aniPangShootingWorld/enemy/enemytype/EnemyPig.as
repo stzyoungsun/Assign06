@@ -19,9 +19,7 @@ package aniPangShootingWorld.enemy.enemytype
 	public class EnemyPig extends EnemyObject
 	{
 		private var _bulletManager : BulletManager;
-		
 		private var _stage:Sprite;
-		private var _temp : int = 1;
 		
 		public function EnemyPig(textureVector:Vector.<FwTexture>, frame : Number, bulletManager : BulletManager, stage : Sprite)
 		{

@@ -34,7 +34,7 @@ package framework.background
 		
 		private function createBackGround():void
 		{
-			tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
+//			tempbitmapdata.copyPixels(_backGroundBitmapData, tempRegion, new Point(0,0));
 			var tempbitmapdata : BitmapData = new BitmapData(_backGroudTexture.width, _backGroudTexture.height/_sliceNum);
 			var tempRegion : Rectangle = new Rectangle(0,_backGroudTexture.height/_sliceNum,_backGroudTexture.width,_backGroudTexture.height/_sliceNum)
 			// TODO @jihwan.ryu 텍스쳐 UV 좌표 수정으로 배경을 움직이도록 해야함
@@ -64,7 +64,7 @@ package framework.background
 					_backGroudTexture.height / _sliceNum
 				);
 				
-				tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
+//				tempbitmapdata.copyPixels(_backGroundBitmapData, tempRegion, new Point(0,0));
 				
 				texture = FwTexture.fromBitmapData(tempbitmapdata);
 				width = Framework.viewport.width;
