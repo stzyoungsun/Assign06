@@ -2,54 +2,50 @@ package aniPangShootingWorld.player
 {
 	import flash.utils.getTimer;
 	
-	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.resourceName.AtlasResource;
+	import aniPangShootingWorld.util.GameTexture;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.Image;
+	import framework.display.ImageTextField;
 	import framework.display.Sprite;
-	import framework.display.TextImageField;
-	import framework.texture.FwTexture;
+	import framework.texture.AtlasTexture;
+	import framework.texture.TextureManager;
 
 	public class PlayerState extends Sprite
 	{
 		private var _mainStateDlg : Image;
 		private var _heartDlg : Image;
 		private var _powerDlg : Image;
-		private var _coinDlg : TextImageField;
+		private var _coinDlg : ImageTextField;
 		
 		public static const MAX_HERAT : Number = 5;
 		public static const MAX_POWER : Number = 5;
 		
 		public static var sGoldCount : Number = 0;
-		
-		public static var sPlayerHeart : Number = PlayerState.MAX_HERAT;
 		public static var sTotalHeart : Number = 0;
-		
-		public static var sPlayerPower : Number = 0;
+		public static var sPlayerHeart : Number = PlayerState.MAX_HERAT;
 		public static var sTotalPower : Number = 0;
+		public static var sPlayerPower : Number = 0;
 		
 		public static var sSuperPowerFlag : Boolean = false;
+		
 		public function PlayerState()
 		{
-			_mainStateDlg = new Image(0,0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["state.png"].bitmapData));
+			_mainStateDlg = new Image(0, 0, GameTexture.playerState);
 			_mainStateDlg.width = Framework.viewport.width/2;
 			_mainStateDlg.height = Framework.viewport.height/15;
 			
-			_heartDlg = new Image(_mainStateDlg.width*197/1000,_mainStateDlg.height*8/140,FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData));
+			_heartDlg = new Image(_mainStateDlg.width*197/1000, _mainStateDlg.height*8/140, GameTexture.playerHeart[5]);
 			_heartDlg.width = Framework.viewport.width*3/13;
 			_heartDlg.height = Framework.viewport.height/41;
 			 
-			_powerDlg = new Image(_heartDlg.x + _mainStateDlg.width/40,_heartDlg.height - _mainStateDlg.height/15,FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData));
+			_powerDlg = new Image(_heartDlg.x + _mainStateDlg.width/40, _heartDlg.height - _mainStateDlg.height/15, GameTexture.playerPower[0]);
 			_powerDlg.width = Framework.viewport.width*3/13;
 			_powerDlg.height = Framework.viewport.height/41;
-			
-			if(MenuView.sloadedImage.checkXml("Number_Sprite.xml"))
-			{
-				var numberAtlas : AtlasBitmapData = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Number_Sprite.png"],MenuView.sloadedImage.xmlDictionary["Number_Sprite.xml"])
-			}
-		
-			_coinDlg = new TextImageField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width/30,Framework.viewport.width/30,numberAtlas);
+
+			var numberAtlas:AtlasTexture = TextureManager.getInstance().atlasTextureDictionary[AtlasResource.NUMBER];
+			_coinDlg = new ImageTextField(_powerDlg.x -_powerDlg.width/6 ,_powerDlg.y, Framework.viewport.width/30, Framework.viewport.width/30, numberAtlas);
 			
 			addChild(_mainStateDlg);
 			addChild(_heartDlg);
@@ -68,7 +64,6 @@ package aniPangShootingWorld.player
 			observedPower();
 			observedCoin();
 		}
-		
 		
 		public override function render():void
 		{
@@ -95,8 +90,7 @@ package aniPangShootingWorld.player
 		
 		private function observedCoin():void
 		{
-			// TODO Auto Generated method stub
-			_coinDlg.createTextImage(sGoldCount);
+			_coinDlg.text = String(sGoldCount);
 		}
 		
 		/**
@@ -105,7 +99,6 @@ package aniPangShootingWorld.player
 		 */		
 		private function observedPower():void
 		{
-			// TODO Auto Generated method stub
 			if(sPlayerPower >5)
 				sPlayerPower = 5;
 			if(sPlayerPower < 0)
@@ -115,32 +108,32 @@ package aniPangShootingWorld.player
 			{
 				case 0:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power1.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[0];
 					break;
 				}
 				case 1:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power2.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[1];
 					break;
 				}
 				case 2:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power4.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[2];
 					break;
 				}
 				case 3:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power6.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[3];
 					break;
 				}
 				case 4:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power8.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[4];
 					break;
 				}
 				case 5:
 				{
-					_powerDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["power10.png"].bitmapData);
+					_powerDlg.texture = GameTexture.playerPower[5];
 					sSuperPowerFlag = true;
 					sPlayerPower = 0;
 					this._prevTime = getTimer();
@@ -155,8 +148,6 @@ package aniPangShootingWorld.player
 		 */		
 		private function observedHeart():void
 		{
-			// TODO Auto Generated method stub
-//			trace(sPlayerHeart);
 			if(sPlayerHeart >5)
 				sPlayerHeart = 5;
 			if(sPlayerHeart < 0)
@@ -166,32 +157,32 @@ package aniPangShootingWorld.player
 			{
 				case 0:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart1.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[0];
 					break;
 				}
 				case 1:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart2.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[1];
 					break;
 				}
 				case 2:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart4.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[2];
 					break;
 				}
 				case 3:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart6.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[3];
 					break;
 				}
 				case 4:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart8.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[4];
 					break;
 				}
 				case 5:
 				{
-					_heartDlg.texture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["heart10.png"].bitmapData);
+					_heartDlg.texture = GameTexture.playerHeart[5];
 					break;
 				}
 			}
@@ -200,7 +191,6 @@ package aniPangShootingWorld.player
 		public override function dispose():void
 		{
 			super.dispose();
-			
 		}
 	}
 }

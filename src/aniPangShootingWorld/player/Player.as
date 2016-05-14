@@ -2,9 +2,8 @@ package aniPangShootingWorld.player
 {
 	import flash.utils.getTimer;
 	
-	import aniPangShootingWorld.resource.SoundResource;
+	import aniPangShootingWorld.resourceName.SoundResource;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -13,9 +12,9 @@ package aniPangShootingWorld.player
 	import framework.gameobject.Collision;
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
-	import com.adobe.nativeExtensions.Vibration;
+	import framework.texture.FwTexture;
 
-	//import com.adobe.nativeExtensions.Vibration;
+	import com.adobe.nativeExtensions.Vibration;
 
 	/**
 	 * Note @유영선 사용자가 직접 조종하는 객체입니다
@@ -25,7 +24,6 @@ package aniPangShootingWorld.player
 	{
 		private static var _sPlayer:Player;
 		
-		private var _playerAtlas:AtlasBitmapData;
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
 		private var _soundManager:SoundManager;
@@ -38,22 +36,21 @@ package aniPangShootingWorld.player
 		 * @param stage			현재 Round의 객체
 		 * 
 		 */		
-		public function Player(playerAtlas : AtlasBitmapData, frame : Number, bulletManager  : BulletManager,stage:Sprite )
-		{	
-			_playerAtlas = playerAtlas;
-			_bulletManager = bulletManager;
-			
+		public function Player(textureVector:Vector.<FwTexture>, frame:Number, bulletManager:BulletManager, stage:Sprite )
+		{
 			//@Note 유영선  플레이어의 y값을 설정 합니다. 플레이어는 화면 바닥에 고정
 			y = Framework.viewport.height - Framework.viewport.height/5;
-			super(_playerAtlas, frame, 0, y);
+			super(textureVector, frame, 0, y);
 			
 			//@Note 유영선  현재 플레이어의 상태를  PLAYER_GENERAL로 설정합니다.
 			this.objectType = ObjectType.PLAYER_GENERAL;
+			
+			_bulletManager = bulletManager;
 			//@Note 유영선  플레이어의 미사일을 생성
 			_bulletManager.createBullet(this.x,this.y);
+			
 			_stage=stage;
 			
-			_playerAtlas = null;
 			_prevTime = getTimer();
 			
 			_soundManager = SoundManager.getInstance();
@@ -99,7 +96,6 @@ package aniPangShootingWorld.player
 					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_bulletManager.bulletNumVector.push(i);
 				}
-				
 				//@Note 유영선  플레이어 미사일이 적들과 충돌 했으면 그 미사일을 제거합니다.
 				else if(_bulletManager.bulletVector[i].objectType == ObjectType.PLAYER_BULLET_COLLISION)
 				{
@@ -107,7 +103,6 @@ package aniPangShootingWorld.player
 					_bulletManager.bulletVector[i].objectType = ObjectType.PLAYER_BULLET_IDLE;
 					_bulletManager.bulletNumVector.push(i);
 				}
-				
 				else
 				{
 					_bulletManager.bulletVector[i].shootingState(bulletstate,i);
