@@ -39,6 +39,8 @@ package framework.core
 		private var _touch:Touch;
 		private var _touchedObject:DisplayObject;
 		
+		private var _showStats:Boolean;
+		
 		private static var _sCurrent:Framework;
 		private static var _sPoint:Point = new Point(0, 0);
 		
@@ -59,7 +61,7 @@ package framework.core
 			// viewport 설정, Framework.display.stage 객체 생성
 			_viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			_stage = new Stage(_viewPort.width, _viewPort.height, stage.color);
-			_statsDisplay = new FrameWorkDrawCall(_viewPort.width*4/9,0,_viewPort.width/25,_viewPort.width/25);
+			
 			// 시작 클래스 설정
 			_rootClass = rootClass;
 			
@@ -77,22 +79,14 @@ package framework.core
 			_nativeStage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
 			_nativeStage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
 			
+			_showStats = false;
+			
 			// Stage3D context 생성 요청
 			_stage3D = _nativeStage.stage3Ds[0];
 			_stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 			_stage3D.requestContext3D();
 		}
 		
-		public function  showStats(value:Boolean):void
-		{
-			if (value == false) return;
-			
-			if (value)
-			{
-				trace("들어옴");
-				if (_statsDisplay) _stage.addChild(_statsDisplay);
-			}
-		}
 		/**
 		 * Stage3D의 context가 생성되면 호출되는 메서드 
 		 * @param event - 발생한 이벤트 정보를 갖고있는 Event 객체
@@ -120,6 +114,13 @@ package framework.core
 			
 			// 외부에서 static 메서드를 호출할 때 사용하는 변수
 			_sCurrent = this;
+			
+			_statsDisplay = new FrameWorkDrawCall(_viewPort.width*4/9, 0, _viewPort.width/25, _viewPort.width/25);
+			
+			if (_showStats)
+			{
+				_stage.addChild(_statsDisplay);
+			}
 			
 			// 메인으로 설정한 클래스를 stage의 첫 번째 자식으로 등록
 			var root:DisplayObject = new _rootClass() as DisplayObject;
@@ -242,7 +243,8 @@ package framework.core
 			
 			_stage.render();
 			// @FIXME jihwan.ryu 드로우콜 횟수 출력 - 화면 출력으로 변경
-			_statsDisplay.createTextImage(_painter.drawCount);
+			_statsDisplay.text = String(_painter.drawCount);
+			
 			_painter.finishQuadBatch();
 			
 			// 버퍼에 그려진 데이터를 화면에 출력
@@ -277,6 +279,8 @@ package framework.core
 			_nativeOverlay.scaleX = _viewPort.width / _stage.stageWidth;
 			_nativeOverlay.scaleY = _viewPort.height / _stage.stageHeight;
 		}
+		
+		public function set showStats(value:Boolean):void { _showStats = value; }
 		
 		// static get 메서드
 		public static function get current():Framework { return _sCurrent; }
