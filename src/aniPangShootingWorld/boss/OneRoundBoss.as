@@ -6,12 +6,12 @@ package aniPangShootingWorld.boss
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.round.Round;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.Bullet;
 	import framework.gameobject.BulletManager;
+	import framework.texture.FwTexture;
 	
 	public class OneRoundBoss extends BossObject
 	{
@@ -28,9 +28,9 @@ package aniPangShootingWorld.boss
 		private var _wait:Boolean;
 		private var _remainBullet:Boolean;
 		
-		public function OneRoundBoss(bossAtlas : AtlasBitmapData, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
+		public function OneRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
-			super(bossAtlas, frame, bulletManager, stage);
+			super(textureVector, frame, bulletManager, stage);
 			
 			_prevTime = 0;
 			

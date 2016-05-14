@@ -1,12 +1,12 @@
 package aniPangShootingWorld.boss
 {
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.Bullet;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Collision;
+	import framework.texture.FwTexture;
 
 	/**
 	 * 라운드의 마지막 몬스터인 보스를 나타내는 클래스. 해당 클래스는 추상 클래스이며, 이 클래스를 상속받아서 사용해야한다.<br/>
@@ -27,9 +27,9 @@ package aniPangShootingWorld.boss
 		 * @param bulletManager - 보스의 탄을 관리하는 BulletManager 객체
 		 * @param stage - 현재 보스가 렌더링되고 있는 라운드
 		 */
-		public function BossObject(bossAtlas:AtlasBitmapData, frame:Number, bulletManager:BulletManager, stage:Sprite)
+		public function BossObject(textureVector:Vector.<FwTexture>, frame:Number, bulletManager:BulletManager, stage:Sprite)
 		{
-			super(bossAtlas, frame, 0, 0);
+			super(textureVector, frame, 0, 0);
 			this.objectType = ObjectType.BOSS_GENERAL;
 			_stage = stage;
 			_bulletManager = bulletManager;
