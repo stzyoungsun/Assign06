@@ -5,7 +5,7 @@ package aniPangShootingWorld.enemy
 	 */	
 	public class EnemyObjectUtil
 	{
-		public static const ENEMY_SPRITENAME_ARRAY : Array = new Array ("Rat_Sprite.png","Pig_Sprite.png");
+		public static const ENEMY_SPRITENAME_ARRAY : Array = new Array ("Rat_Sprite.png", "Pig_Sprite.png");
 		public static const ENEMY_XML_ARRAY : Array = new Array ("Rat_Sprite.xml","Pig_Sprite.xml");
 		
 		public static const ENEMY_RAT : Number = 0;
@@ -15,7 +15,8 @@ package aniPangShootingWorld.enemy
 		public static const ENEMY_DOG : Number = 4;
 		
 		public static const MAX_LINE_COUNT : int = 5;
-		public static const MAX_ENEMY_TYPE : int= 4;
+		public static const MAX_ENEMY_TYPE : int = 4;
+		
 		public function EnemyObjectUtil()
 		{
 		}
