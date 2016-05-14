@@ -139,12 +139,12 @@ package aniPangShootingWorld.round
 			}
 			
 			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
-			if(PlayerState.sSuperPowerFlag == true) 
-			{
-				_backGround.step = Framework.viewport.height/30;
-			}
-			else
-				_backGround.step = 1;
+//			if(PlayerState.sSuperPowerFlag == true) 
+//			{
+//				_backGround.step = Framework.viewport.height/30;
+//			}
+//			else
+//				_backGround.step = 1;
 			
 			//Note @유영선 시작 전 화면 구현
 			if(this.objectType == ObjectType.ROUND_PREV)
@@ -464,8 +464,8 @@ package aniPangShootingWorld.round
 		 */		
 		private function backGroundDraw():void
 		{
-			_backGround = new BackGround(2, 60, 1, MenuView.sloadedImage.imageDictionary[RoundSetting.instance.roundObject[_roundNum].background].bitmapData);
-			addChild(_backGround);
+//			_backGround = new BackGround(2, 60, 1, TextureManager.getInstance().textureDictionary[RoundSetting.instance.roundObject[_roundNum].background]);
+//			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
 			_bossWarningView = new Image(0, 0, TextureManager.getInstance().textureDictionary["boss_warning.png"]);
