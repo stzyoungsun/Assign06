@@ -17,9 +17,9 @@ package framework.texture
 		 * @param atlasBitmap 스프라이트 이미지들이 담긴 비트맵 데이터
 		 * @param spriteXml
 		 */
-		public function AtlasTexture(spriteSheetBitmapData:BitmapData, atlasXmlData:String)
+		public function AtlasTexture(spriteTexture:FwTexture, atlasXmlData:String)
 		{
-			_baseTexture = FwTexture.fromBitmapData(spriteSheetBitmapData);
+			_baseTexture = spriteTexture;
 			_subTextureDictionary = new Dictionary();
 			parseAtlasXml(XML(atlasXmlData));
 		}
