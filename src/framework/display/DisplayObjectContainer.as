@@ -76,7 +76,7 @@ package framework.display
 		 * @param index - 지우려는 DisplayObject 대상이 위치한 index
 		 * @param dispose - Child에 할당된 자원을 해제할 것인지 여부를 결정하는 변수
 		 */
-		public function removeChildAt(index:int, dispose:Boolean=false):void
+		public function removeChildAt(index:int, dispose:Boolean = false):void
 		{
 			if (index >= 0 && index < _children.length)
 			{
@@ -89,6 +89,19 @@ package framework.display
 			else
 			{
 				throw new RangeError("Invalid child index");
+			}
+		}
+		
+		public function removeChildren(start:Number = 0, end:Number = -1, dispose:Boolean = false):void
+		{
+			var numChildren:int = _children.length;
+			
+			if(end < 0) end = numChildren;
+			
+			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
+			for(var i:int = end - 1; i >= start; i--)
+			{
+				removeChildAt(i, true);
 			}
 		}
 		
@@ -333,11 +346,8 @@ package framework.display
 			super.dispose();
 			if(_children == null) return;
 			
-			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
-			for(var i:int = _children.length - 1; i >= 0; i--)
-			{
-				removeChildAt(i, true);
-			}
+			removeChildren(0, _children.length, true);
+			
 			_children = null;
 		}
 		
