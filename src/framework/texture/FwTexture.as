@@ -75,8 +75,6 @@ package framework.texture
 			return v;
 		}
 		
-		public function get bitmapData():BitmapData{ return null; }
-		public function set bitmapData(bitmapData:BitmapData):void {}
 		public function get baseTexture():Texture { return null; }		
 		public function get parent():FwTexture { return null; }
 		public function get region():Rectangle { return null; }

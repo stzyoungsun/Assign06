@@ -1,14 +1,11 @@
 package aniPangShootingWorld.util
 {
 	import aniPangShootingWorld.player.PlayerState;
-	import aniPangShootingWorld.resourceName.AtlasResource;
 	
 	import framework.core.Framework;
 	import framework.display.Image;
 	import framework.display.ImageTextField;
 	import framework.display.Sprite;
-	import framework.texture.AtlasTexture;
-	import framework.texture.TextureManager;
 
 	public class ResultDlg extends Sprite
 	{
@@ -22,8 +19,8 @@ package aniPangShootingWorld.util
 		private var _textHeartField : ImageTextField;
 		private var _textPowerField : ImageTextField;
 		private var _textCoinField : ImageTextField;
-		
 		private var _textTotalField : ImageTextField;
+		
 		public function ResultDlg()
 		{
 			super();

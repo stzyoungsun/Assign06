@@ -1,6 +1,5 @@
 package framework.texture
 {
-	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.geom.Rectangle;
 	
@@ -10,7 +9,6 @@ package framework.texture
 		private var _parent:FwTexture;
 		private var _region:Rectangle;
 		private var _uvRegion:Rectangle;
-		private var _bitmapData:BitmapData;
 		
 		public function SubTexture(baseTexture:Texture, parent:FwTexture, region:Rectangle, textureRegion:Rectangle)
 		{
@@ -26,8 +24,6 @@ package framework.texture
 			);
 		}
 		
-		public override function get bitmapData():BitmapData{ return _bitmapData; }
-		public override function set bitmapData(bitmapData:BitmapData):void { _bitmapData = bitmapData; }
 		public override function get baseTexture():Texture { return _baseTexture; }
 		public override function get parent():FwTexture { return _parent; }
 		public override function get region():Rectangle { return _region; }
