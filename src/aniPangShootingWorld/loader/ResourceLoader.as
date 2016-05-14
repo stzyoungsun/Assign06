@@ -13,15 +13,16 @@ package aniPangShootingWorld.loader
 	import avmplus.getQualifiedClassName;
 	
 	import framework.sound.SoundManager;
+	import framework.texture.FwTexture;
+	import framework.texture.TextureManager;
 	
 	/**
 	 * 이미지와 xml 2가지를  분리하여 Dictionary에 저장
 	 * 기존에 구현 했던 Loaderclass 수정
 	 */		
-	public class LoaderControl
+	public class ResourceLoader
 	{
 		// 로더에서 이미지 로드가 완료 된 xml과 image 파일이 저장 된 객체
-		private var _loadedImage : LoadedImage;  
 		
 		// @jihwan.ryu 이미지 리소스의 URL을 담은 Array 객체
 		private var _urlImageArray:Array;
@@ -29,27 +30,28 @@ package aniPangShootingWorld.loader
 		private var _urlSoundArray:Array;
 		// XML 한 개씩 출력으르 조절 하기 위한 변수
 		private var _urlXmlVector : Vector.<String>;
-
 		private var _loaderXML:URLLoader;
 
 		private var _onCompleteFunction:Function;
 		private var _onProgressFunction:Function;
 		
-		private var _imageLength : Number;
-		private var _currentCount : int;
+		private var _imageLength:Number;
+		private var _currentCount:int;
+		
+		private var _textureManager:TextureManager;
 		
 		public static var _sImageMaxCount:int;
 		
-		public function LoaderControl(onCompleteFunction : Function, onProgressFunction : Function)
+		public function ResourceLoader(onCompleteFunction : Function, onProgressFunction : Function)
 		{
 			_onCompleteFunction = onCompleteFunction;
 			_onProgressFunction = onProgressFunction;
 			
-			_loadedImage = new LoadedImage();
-			
 			_urlImageArray = new Array();
 			_urlSoundArray = new Array();
 			_urlXmlVector = new Vector.<String>();
+			
+			_textureManager = TextureManager.getInstance();
 			
 			_currentCount = 0;
 			_imageLength = 0;
@@ -60,7 +62,7 @@ package aniPangShootingWorld.loader
 			getFolderResource(File.applicationDirectory.resolvePath(directoryName));
 			
 			buildSoundLoader();
-			buildLoader();
+			buildImageLoader();
 			buildXMLLoader();
 		}
 		
@@ -107,6 +109,26 @@ package aniPangShootingWorld.loader
 				files = null;
 			}
 		}
+		
+		/**
+		 * Note @유영선 이미지 파일 로드 
+		 */		
+		private function buildImageLoader():void
+		{
+			if(_urlImageArray.length == 0 )
+			{
+				return;
+			}
+			
+			_sImageMaxCount =_urlImageArray.length; 
+			
+			for(var i:int = 0; i<_urlImageArray.length; ++i)
+			{
+				var loader:Loader = new Loader();
+				loader.load(new URLRequest(_urlImageArray[i]));
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadImageComplete);	
+			}
+		}
 	
 		/**
 		 * Note @유영선 XML 로드 
@@ -122,69 +144,6 @@ package aniPangShootingWorld.loader
 			_sImageMaxCount += _urlXmlVector.length;
 			_loaderXML = new URLLoader(new URLRequest(_urlXmlVector[0]));
 			_loaderXML.addEventListener(Event.COMPLETE, onLoadXMLComplete);
-		}
-		
-		/**
-		 * Note @유영선 이미지 파일 로드 
-		 */		
-		private function buildLoader():void
-		{
-			if(_urlImageArray.length == 0 )
-			{
-				return;
-			}
-			
-			_sImageMaxCount =_urlImageArray.length; 
-			
-			for(var i:int = 0; i<_urlImageArray.length; ++i)
-			{
-				var loader:Loader = new Loader();
-				loader.load(new URLRequest(_urlImageArray[i]));
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);	
-			}
-		}
-		
-		/**
-		 * @param e
-		 * Note @유영선 한 이미지가 완료 후 다른 이미지 로딩 진행
-		 */		
-		private function onLoadComplete(e:Event):void
-		{
-			var loaderInfo:LoaderInfo = LoaderInfo(e.target);
-			loaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete);
-			
-			var filename:String = decodeURIComponent(loaderInfo.url);
-			var extension:Array = filename.split('/');
-			
-			_loadedImage.imageNameVector.push(extension[extension.length-1]);
-			_loadedImage.imageDictionary[extension[extension.length-1]] = e.target.content as Bitmap;
-			
-			loaderInfo.loader.unload();
-			loaderInfo = null;
-			
-			chedckedImage();
-		}
-		
-		/**
-		 * @param e
-		 * Note @유영선 XML 로딩 진행 (순서에 따라 로딩을 위해 한개씩 로딩 진행)
-		 */		
-		private function onLoadXMLComplete(e:Event):void
-		{
-			_loaderXML.removeEventListener(Event.COMPLETE, onLoadXMLComplete);
-			_loaderXML = null;
-		
-			var extension:Array = _urlXmlVector[0].split('/');
-			_loadedImage.xmlDictionary[extension[extension.length-1]] = e.currentTarget.data;
-			_urlXmlVector.removeAt(0);
-			
-			chedckedImage();
-			
-			if(_urlXmlVector.length != 0)
-			{
-				_loaderXML = new URLLoader(new URLRequest(_urlXmlVector[0]));
-				_loaderXML.addEventListener(Event.COMPLETE, onLoadXMLComplete)
-			}	
 		}
 		
 		/**
@@ -206,6 +165,48 @@ package aniPangShootingWorld.loader
 		}
 		
 		/**
+		 * @param e
+		 * Note @유영선 한 이미지가 완료 후 다른 이미지 로딩 진행
+		 */		
+		private function onLoadImageComplete(e:Event):void
+		{
+			var loaderInfo:LoaderInfo = LoaderInfo(e.target);
+			loaderInfo.removeEventListener(Event.COMPLETE, onLoadImageComplete);
+			var extension:Array = decodeURIComponent(loaderInfo.url).split('/');
+
+			var bitmap:Bitmap = e.target.content as Bitmap;
+			_textureManager.textureDictionary[extension[extension.length-1]] = FwTexture.fromBitmapData(bitmap.bitmapData);
+			
+			loaderInfo.loader.unload();
+			loaderInfo = null;
+			
+			chedckedImage();
+		}
+		
+		/**
+		 * @param e
+		 * Note @유영선 XML 로딩 진행 (순서에 따라 로딩을 위해 한개씩 로딩 진행)
+		 */		
+		private function onLoadXMLComplete(e:Event):void
+		{
+			_loaderXML.removeEventListener(Event.COMPLETE, onLoadXMLComplete);
+			_loaderXML = null;
+		
+			var extension:Array = _urlXmlVector[0].split('/');
+			
+			_textureManager.xmlDictionary[extension[extension.length-1]] =  e.currentTarget.data;
+			_urlXmlVector.removeAt(0);
+			
+			chedckedImage();
+			
+			if(_urlXmlVector.length != 0)
+			{
+				_loaderXML = new URLLoader(new URLRequest(_urlXmlVector[0]));
+				_loaderXML.addEventListener(Event.COMPLETE, onLoadXMLComplete)
+			}	
+		}
+		
+		/**
 		 * Note @jihwan.ryu 사운드 파일의 로딩이 완료되면 호출되는 메서드. 로딩된 사운드 리소스는 SoundManager에 등록된다. 
 		 * @param event - 이벤트 정보를 가진 Event 객체
 		 */
@@ -214,12 +215,12 @@ package aniPangShootingWorld.loader
 			var sound:Sound = event.currentTarget as Sound;
 			sound.removeEventListener(Event.COMPLETE, onLoadSoundComplete);
 			
-			var filename:String = decodeURIComponent(sound.url);
-			var extension:Array = filename.split('/');
+			var extension:Array = decodeURIComponent(sound.url).split('/');
 			
 			// 사운드 매니저에 입력
 			var soundManager:SoundManager = SoundManager.getInstance();
 			soundManager.addSound(extension[extension.length - 1], sound);
+			sound.close();
 		}
 		
 		/**
@@ -237,6 +238,7 @@ package aniPangShootingWorld.loader
 				
 			if(_currentCount == _sImageMaxCount) 
 			{
+				_textureManager.createAtlasTexture();
 				_onCompleteFunction();
 				_onCompleteFunction = null;
 				_onProgressFunction = null;
@@ -246,20 +248,11 @@ package aniPangShootingWorld.loader
 		public function dispose() : void
 		{
 			// TODD @유영선 해제 필요 하면 여기다 추가
-			
 			_loaderXML.removeEventListener(Event.COMPLETE,onLoadXMLComplete);
 			
 			_urlXmlVector = null;
 			_urlImageArray = null;
 			_urlSoundArray = null;
-			
-			_loadedImage.dispose();
-			_loadedImage = null;
 		}
-		
-		/**
-		 * @return 이미지 로드가 완료 된 객체
-		 */		
-		public function get loadedImage():LoadedImage{ return _loadedImage; }
 	}
 }
