@@ -1,14 +1,12 @@
 package aniPangShootingWorld.round
 {
-	
 	import aniPangShootingWorld.enemy.EnemyObject;
-	import aniPangShootingWorld.loader.LoadedImage;
-	import aniPangShootingWorld.loader.LoaderControl;
+	import aniPangShootingWorld.loader.ResourceLoader;
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.PrevLoadImage;
 	import aniPangShootingWorld.util.RoundSetting;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
 	import framework.display.Image;
@@ -16,6 +14,7 @@ package aniPangShootingWorld.round
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 	import framework.scene.SceneManager;
+	import framework.texture.AtlasTexture;
 	import framework.texture.FwTexture;
 	
 	/**
@@ -24,10 +23,7 @@ package aniPangShootingWorld.round
 	public class MenuView extends Sprite
 	{
 		//Note @유영선 리소스를 로드하는 LoaderControl 생성
-		private var _loaderControl : LoaderControl;		
-		
-		//Note @유영선 static 변수로 로드한 이미지 들을 저장
-		private  static var _sloadedImage : LoadedImage;
+		private var _resourceLoader : ResourceLoader;
 		
 		//Note @유영선 메뉴 화면 이미지
 		private var _menuImage : Image;
@@ -36,25 +32,27 @@ package aniPangShootingWorld.round
 		//Note @유영선 화면을 터치해주세요 이미지
 		private var _menuText : MovieClip;
 		
+		private var _loadingGaugeTexture:AtlasTexture;
+		
 		/**
 		 * 로드 전 이미지를 불러와서 화면에 출력합니다.
-		 */		
+		 */
 		public function MenuView()
 		{
 			_menuImage = new Image(0, 0, FwTexture.fromBitmapData(new PrevLoadImage.MENUVIEW().bitmapData));
-			addChild(_menuImage);
 			_menuImage.width = Framework.viewport.width;
 			_menuImage.height = Framework.viewport.height;
+			addChild(_menuImage);
 			
-			_loadingImage = new Image(Framework.viewport.width/4, Framework.viewport.height*3/4, FwTexture.fromBitmapData((new PrevLoadImage.LOADING30()).bitmapData));
+			_loadingGaugeTexture = new AtlasTexture(FwTexture.fromBitmapData((new PrevLoadImage.LOADING_GAUGE()).bitmapData), PrevLoadImage.LOADING_XML);
+			_loadingImage = new Image(Framework.viewport.width / 4, Framework.viewport.height * 3 / 4, _loadingGaugeTexture.subTextures[30]);
+			_loadingImage.width = Framework.viewport.width / 2;
+			_loadingImage.height = Framework.viewport.height / 20;
 			addChild(_loadingImage);
-			_loadingImage.width = Framework.viewport.width/2;
-			_loadingImage.height = Framework.viewport.height/20;
 			
-			_loaderControl = new LoaderControl(onLoaderComplete, onProgress);
-			_loaderControl.resourceLoad("resource");
+			_resourceLoader = new ResourceLoader(onLoaderComplete, onProgress);
+			_resourceLoader.resourceLoad("resource");
 		}
-		
 		/**
 		 * Note @유영선 이미지 로드 중일때 콜하는 함수
 		 */		
@@ -63,21 +61,21 @@ package aniPangShootingWorld.round
 			//Note @유영선 각각 상태 카운터에 따라 로딩 이미지를 설정
 			if(progressCount == 60)
 			{
-				_loadingImage.texture = FwTexture.fromBitmapData((new PrevLoadImage.LOADING60()).bitmapData);
-				_loadingImage.width = Framework.viewport.width/2;
-				_loadingImage.height = Framework.viewport.height/20;
+				_loadingImage.texture = _loadingGaugeTexture.subTextures[60];
+				_loadingImage.width = Framework.viewport.width / 2;
+				_loadingImage.height = Framework.viewport.height / 20;
 				Framework.current.render();
 			}
 			else
 			{
-				_loadingImage.texture = FwTexture.fromBitmapData((new PrevLoadImage.LOADING90()).bitmapData);
-				_loadingImage.width = Framework.viewport.width/2;
-				_loadingImage.height = Framework.viewport.height/20;
+				_loadingImage.texture = _loadingGaugeTexture.subTextures[90];
+				_loadingImage.width = Framework.viewport.width / 2;
+				_loadingImage.height = Framework.viewport.height / 20;
 				Framework.current.render();
 			}
 			
-			_loadingImage.width = Framework.viewport.width/2;
-			_loadingImage.height = Framework.viewport.height/20;
+			_loadingImage.width = Framework.viewport.width / 2;
+			_loadingImage.height = Framework.viewport.height / 20;
 		}
 		
 		/**
@@ -90,21 +88,17 @@ package aniPangShootingWorld.round
 			_loadingImage.dispose();
 			_loadingImage = null;
 			
-			_sloadedImage = _loaderControl.loadedImage;
+			GameTexture.createGameTexture();
 			
-			if(!_sloadedImage.checkXml(("MenuText.xml"))) throw new Error("not found xml");
-			
-			_menuText = new MovieClip(new AtlasBitmapData(_sloadedImage.imageDictionary["MenuText.png"],_sloadedImage.xmlDictionary["MenuText.xml"]),
-				10,Framework.viewport.width/4,Framework.viewport.height*3/4);
-			addChild(_menuText);
-			
-			_menuText.width = Framework.viewport.width/2;;
+			_menuText = new MovieClip(GameTexture.pressTouch, 10, Framework.viewport.width / 4, Framework.viewport.height * 3 / 4);
+			_menuText.width = Framework.viewport.width/2;
 			_menuText.height = Framework.viewport.height/10;
 			_menuText.start();
 			
+			addChild(_menuText);			
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			RoundSetting.instance.settingRound();
-			_loaderControl = null;
+			_resourceLoader = null;
 		}
 		
 		/**
@@ -119,7 +113,7 @@ package aniPangShootingWorld.round
 			{
 				case TouchPhase.ENDED:
 					SceneManager.instance.addScene(this);
-					var oneRound : Round = new Round(0);
+					var oneRound:Round = new Round(0);
 					PlayerState.sPlayerHeart = 5;
 					PlayerState.sPlayerPower = 0;
 					PlayerState.sGoldCount = 0;
@@ -136,9 +130,6 @@ package aniPangShootingWorld.round
 		{
 			super.dispose();
 			
-			_sloadedImage.dispose();
-			_sloadedImage = null;
-			
 			_menuImage.dispose();
 			_menuImage = null;
 			
@@ -146,7 +137,5 @@ package aniPangShootingWorld.round
 			_menuText.dispose();
 			_menuText = null;
 		}
-		
-		public static function get sloadedImage():LoadedImage{return _sloadedImage;}
 	}
 }
