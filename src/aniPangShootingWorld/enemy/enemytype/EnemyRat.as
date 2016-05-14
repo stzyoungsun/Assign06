@@ -1,15 +1,10 @@
 package aniPangShootingWorld.enemy.enemytype
 {
-	import flash.utils.getTimer;
-	
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
-	import aniPangShootingWorld.round.MenuView;
-	import aniPangShootingWorld.util.HPbar;
 	
-	import framework.animaiton.AtlasBitmapData;
-	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.texture.FwTexture;
 	
 	/**
 	 * Note @유영선 pig 객체와 거의 동일 하고 각각 객체 마다 특징을 가짐
@@ -18,19 +13,17 @@ package aniPangShootingWorld.enemy.enemytype
 	 */	
 	public class EnemyRat extends EnemyObject
 	{
-		private var _enemyAtlas : AtlasBitmapData;
+		private var _stage : Sprite;
 		
-		private var _temp : int = 1;
-		
-		public function EnemyRat(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
+		public function EnemyRat(textureVector:Vector.<FwTexture>, frame:Number, stage:Sprite)
 		{
-			_enemyAtlas = enemyAtlas;
-			super(_enemyAtlas,frame,stage);
-			
-			_prevTime = getTimer();
+			super(textureVector, frame, stage);
+			_stage = stage;
+			_prevTime = 0;
 			
 			_pEnemyType = EnemyObjectUtil.ENEMY_RAT;
+			
 			maxHP = 2;
-		}	
+		}
 	}
 }

@@ -5,12 +5,12 @@ package aniPangShootingWorld.enemy.enemytype
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.PlayerState;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Collision;
+	import framework.texture.FwTexture;
 	
 	/**
 	 * Note @유영선 pig 적의 클래스 입니다. 
@@ -18,19 +18,17 @@ package aniPangShootingWorld.enemy.enemytype
 	 */
 	public class EnemyPig extends EnemyObject
 	{
-		private var _enemyAtlas : AtlasBitmapData;
 		private var _bulletManager : BulletManager;
 		
 		private var _stage:Sprite;
 		private var _temp : int = 1;
 		
-		public function EnemyPig(enemyAtlas : AtlasBitmapData, frame : Number, bulletManager : BulletManager, stage : Sprite)
+		public function EnemyPig(textureVector:Vector.<FwTexture>, frame : Number, bulletManager : BulletManager, stage : Sprite)
 		{
-			//Note @유영선 적 객체의 비트맵데이터
-			_enemyAtlas = enemyAtlas;
+			super(textureVector, frame, stage);
+			
 			//Note @유영선 적 들의 bulletManager
 			_bulletManager = bulletManager;
-			super(_enemyAtlas,frame,stage);
 			//Note @유영선 적의 미사일의 시작 위치를 설정
 			_bulletManager.createBullet(this.x,this.y);
 			//Note @유영선 ronud의 stage
@@ -39,6 +37,7 @@ package aniPangShootingWorld.enemy.enemytype
 			_prevTime = 0;
 			
 			_pEnemyType = EnemyObjectUtil.ENEMY_PIG;
+			
 			maxHP = 1;
 		}
 		
@@ -49,10 +48,8 @@ package aniPangShootingWorld.enemy.enemytype
 		{
 			//Note @유영선 발사 할 미사일 번호를 저장하는 변수
 			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
-			
 			//Note @유영선 선택 된 미사일을 ENEMY_BULLET_MOVING 상태로 설정
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.ENEMY_BULLET_MOVING;
-			
 			//Note @유영선 선택 된 미사일을 적들의 위치에 따라 재설정 그리고 크거 조절
 			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/3, this.height/3);
 			//Note @유영선 round의 stage에 addChild
@@ -110,16 +107,9 @@ package aniPangShootingWorld.enemy.enemytype
 		{
 			super.dispose();
 			this.stop();
-			
-			if(_stage.getChildIndex(_bulletManager.bulletVector[0]) != -1)
-				_stage.removeChild(_bulletManager.bulletVector[0]);
-			
-			_enemyAtlas.dispose();
-			_enemyAtlas = null;
-			_stage = null;
+
 			_bulletManager.dispose();
 			_bulletManager = null;
 		}
-		
 	}
 }

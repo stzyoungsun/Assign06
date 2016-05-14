@@ -3,15 +3,15 @@ package aniPangShootingWorld.enemy
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.PlayerState;
-	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.UtilFunction;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.texture.FwTexture;
 	
 	/**
 	 * Note @유영선 적 클래스의 부모입니다. 공통 적으로 적용되는 autoMoving 함수가 있습니다.
@@ -19,17 +19,17 @@ package aniPangShootingWorld.enemy
 	public class EnemyObject extends MovieClip
 	{
 		private var _stage : Sprite;
-		
-		public static var sSpeed : Number = 1;
 		private var _enemyHPbar:HPbar;
-		
 		private var _maxHP: Number;
 		private var _enemyHP : Number;
 		
 		protected var _pEnemyType : Number;
-		public function EnemyObject(enemyAtlas : AtlasBitmapData, frame : Number, stage : Sprite)
+		
+		public static var sSpeed : Number = 1;
+		
+		public function EnemyObject(textureVector:Vector.<FwTexture>, frame:Number, stage:Sprite)
 		{
-			super(enemyAtlas,frame,0,0);
+			super(textureVector, frame, 0, 0);
 			_stage = stage;
 			this._objectType = ObjectType.ENEMY_GENERAL;
 		}
@@ -53,7 +53,7 @@ package aniPangShootingWorld.enemy
 		public function addHPBar() : void
 		{
 			_enemyHP = _maxHP;
-			_enemyHPbar = new HPbar(-999, 0, MenuView.sloadedImage.imageDictionary["100per.png"].bitmapData);
+			_enemyHPbar = new HPbar(-999, 0, GameTexture.bossHpBar[9]);
 			_stage.addChild(_enemyHPbar);
 		}
 		
@@ -65,9 +65,9 @@ package aniPangShootingWorld.enemy
 				_enemyHPbar = null;
 			}
 		}
+		
 		/**
-		 *Note @유영선 몬스터가 죽어서 아이템이 되었을 경우에는 공통 적인 부분 이므로 부모 클래스에서 처리합니다. 
-		 * 
+		 *Note @유영선 몬스터가 죽어서 아이템이 되었을 경우에는 공통적인 부분 이므로 부모 클래스에서 처리합니다.
 		 */		
 		public override function render():void
 		{
@@ -120,7 +120,6 @@ package aniPangShootingWorld.enemy
 		public override function dispose():void
 		{
 			super.dispose();
-	
 		}
 		
 		public function get maxHP():Number{return _maxHP;}
