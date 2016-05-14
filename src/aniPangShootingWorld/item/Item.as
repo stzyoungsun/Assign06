@@ -2,11 +2,11 @@ package aniPangShootingWorld.item
 {
 	import aniPangShootingWorld.player.PlayerState;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.texture.FwTexture;
 
 	public class Item extends MovieClip
 	{
@@ -14,14 +14,12 @@ package aniPangShootingWorld.item
 		private var _starty : Number;
 		private var _endx : Number;
 		private var _endy : Number;
-		
 		private var _stepx : Number;
 		private var _stepy : Number;
-		
 		private var _upFlag : Boolean = true;
 		private var _stage : Sprite;
+		
 		/**
-		 * 
 		 * @param itemAtlas	아이템의 아틀라스 비트캡
 		 * @param frame	아이템 번쩍거림의 속도	
 		 * @param startx 아이템의 시작 x
@@ -30,14 +28,15 @@ package aniPangShootingWorld.item
 		 * @param endy 아이템이 튀어오르는 y
 		 * @param objectType 아이템의 타입
 		 * @param stage 라운드의 스테이지
-		 * 
 		 */		
-		public function Item(itemAtlas : AtlasBitmapData, frame : Number, startx : Number, starty : Number, endx : Number, endy : Number, objectType : String, stage : Sprite)
+		public function Item(textureVector:Vector.<FwTexture>, frame : Number, startx : Number, starty : Number, endx : Number, endy : Number, objectType : String, stage : Sprite)
 		{
-			_stage = stage;
-			super(itemAtlas,30,startx,starty);
+			super(textureVector, 30, startx, starty);
+			
 			this.objectType = objectType;
 			this.start();
+			
+			_stage = stage;
 			_startx = startx;
 			_starty = starty;
 			_endx = endx;
