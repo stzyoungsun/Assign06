@@ -1,7 +1,9 @@
-package aniPangShootingWorld.resource
+package aniPangShootingWorld.resourceName
 {
 	public class SoundResource
 	{
+		public function SoundResource():void { throw new Error("Abstract Class"); }
+		
 		public static const PLAYER_MISSILE:String = "player_missile.mp3";
 		public static const PLAYER_DIE:String = "player_die.mp3";
 		
