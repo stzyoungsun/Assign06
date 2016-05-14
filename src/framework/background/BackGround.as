@@ -11,18 +11,18 @@ package framework.background
 
 	public class BackGround extends Image
 	{
-		private var _backGroundBitmapData:BitmapData;
+		private var _backGroudTexture:FwTexture;
 		private var _sliceNum:Number;
 		private var _frame:Number;
 		private var _step:Number;
 		private var _drawPoint:Number;
 		private var _prevTime:Number;
 		
-		public function BackGround(sliceNum:Number, frame:Number,step:Number, backGroudBitmapData:BitmapData)
+		public function BackGround(sliceNum:Number, frame:Number,step:Number, backGroudTexture:FwTexture)
 		{
-			super(0, 0, FwTexture.fromBitmapData(backGroudBitmapData));
+			super(0, 0, backGroudTexture);
 			
-			_backGroundBitmapData = backGroudBitmapData;
+			_backGroudTexture = backGroudTexture;
 			_sliceNum = sliceNum;
 			_frame = frame;
 			_step = step;
@@ -34,9 +34,10 @@ package framework.background
 		
 		private function createBackGround():void
 		{
-			var tempbitmapdata : BitmapData = new BitmapData(_backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
-			var tempRegion : Rectangle = new Rectangle(0,_backGroundBitmapData.height/_sliceNum,_backGroundBitmapData.width,_backGroundBitmapData.height/_sliceNum)
 			tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
+			var tempbitmapdata : BitmapData = new BitmapData(_backGroudTexture.width, _backGroudTexture.height/_sliceNum);
+			var tempRegion : Rectangle = new Rectangle(0,_backGroudTexture.height/_sliceNum,_backGroudTexture.width,_backGroudTexture.height/_sliceNum)
+			// TODO @jihwan.ryu 텍스쳐 UV 좌표 수정으로 배경을 움직이도록 해야함
 			
 			texture = FwTexture.fromBitmapData(tempbitmapdata);
 			width = Framework.viewport.width;
@@ -50,17 +51,17 @@ package framework.background
 			
 			if(curTimerBackGround - _prevTime > 1000/_frame)
 			{
-				var tempbitmapdata : BitmapData = new BitmapData(_backGroundBitmapData.width, _backGroundBitmapData.height/_sliceNum);
-				if((_backGroundBitmapData.height*(_sliceNum-1)/_sliceNum)-_drawPoint <= 0)
+				var tempbitmapdata : BitmapData = new BitmapData(_backGroudTexture.width, _backGroudTexture.height/_sliceNum);
+				if((_backGroudTexture.height*(_sliceNum-1)/_sliceNum)-_drawPoint <= 0)
 				{
 					_drawPoint = 0;
 				}
 				
 				var tempRegion : Rectangle = new Rectangle(
 					0,
-					(_backGroundBitmapData.height * (_sliceNum-1) / _sliceNum) - (_drawPoint += _step),
-					_backGroundBitmapData.width,
-					_backGroundBitmapData.height / _sliceNum
+					(_backGroudTexture.height * (_sliceNum-1) / _sliceNum) - (_drawPoint += _step),
+					_backGroudTexture.width,
+					_backGroudTexture.height / _sliceNum
 				);
 				
 				tempbitmapdata.copyPixels(_backGroundBitmapData,tempRegion,new Point(0,0));
@@ -75,8 +76,9 @@ package framework.background
 		public override function dispose():void
 		{
 			super.dispose();
-			_backGroundBitmapData = null;
+			_backGroudTexture = null;
 		}
-		public function set step(value:Number):void {_step = value;}
+		
+		public function set step(value:Number):void { _step = value; }
 	}
 }
