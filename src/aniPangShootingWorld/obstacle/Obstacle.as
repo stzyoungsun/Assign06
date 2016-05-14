@@ -1,19 +1,19 @@
 package aniPangShootingWorld.obstacle
 {
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.texture.FwTexture;
 
 	public class Obstacle extends MovieClip
 	{
-		private var _stage : Sprite;
+		private var _stage :Sprite;
 		
-		public function Obstacle(meteoAtlas : AtlasBitmapData, frame : Number, stage:Sprite)
+		public function Obstacle(textureVector:Vector.<FwTexture>, frame:Number, stage:Sprite)
 		{
 			_stage = stage;
 			
-			super(meteoAtlas, frame, 0, 0);
+			super(textureVector, frame, 0, 0);
 			this.objectType = ObjectType.OBSTACLE_IDLE;
 		}
 		

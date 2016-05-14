@@ -3,9 +3,8 @@ package aniPangShootingWorld.obstacle
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.MenuView;
+	import aniPangShootingWorld.util.GameTexture;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.core.Framework;
 	import framework.display.Image;
 	import framework.display.ObjectType;
@@ -17,7 +16,6 @@ package aniPangShootingWorld.obstacle
 		private var _stage : Sprite;
 		private var _meteoLine : Image;	//메테오 조정 선
 		private var _meteoWarrning : Image;	//메테오 경고 창
-		
 		private var _shootFlag : Boolean = false;
 		
 		/**
@@ -25,18 +23,19 @@ package aniPangShootingWorld.obstacle
 		 * @param frame 메테오의 회전 속도
 		 * @param stage 메테오를 쏠 stage
 		 */		
-		public function Meteo(meteoAtlas : AtlasBitmapData, frame : Number, stage:Sprite)
+		public function Meteo(textureVector:Vector.<FwTexture>, frame : Number, stage:Sprite)
 		{
-			super(meteoAtlas, frame, stage);
+			super(textureVector, frame, stage);
 			_stage = stage;
-			_meteoLine = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["meteoLine.png"].bitmapData));
-			_meteoWarrning = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["meteowarning.png"].bitmapData));
 			
-			_stage.addChild(_meteoLine);
-			_stage.addChild(_meteoWarrning);
+			_meteoLine = new Image(0, 0, GameTexture.meteorLine);
+			_meteoWarrning = new Image(0, 0, GameTexture.meteorWarning);
 			
 			_meteoLine.visible = false;
 			_meteoWarrning.visible = false;
+			
+			_stage.addChild(_meteoLine);
+			_stage.addChild(_meteoWarrning);
 		}
 		
 		/** 
@@ -85,7 +84,6 @@ package aniPangShootingWorld.obstacle
 		
 		private function autoMoving():void
 		{
-			// TODO Auto Generated method stub
 			this.y+=Framework.viewport.height/60;
 			
 			if(this.y > Framework.viewport.height)
@@ -96,7 +94,6 @@ package aniPangShootingWorld.obstacle
 		
 		private function shootMeteo():void
 		{
-			// TODO Auto Generated method stub
 			this.objectType = ObjectType.OBSTACLE_MOVING;
 			_meteoWarrning.visible = false;
 			_meteoLine.visible = false;
@@ -108,12 +105,10 @@ package aniPangShootingWorld.obstacle
 			this.y = -this.height;
 			
 			this.start();
-			
 		}
 		
 		private function drawWarrning():void
 		{
-			// TODO Auto Generated method stub
 			_meteoWarrning.visible = true;
 			_meteoWarrning.width = Framework.viewport.width/10;
 			_meteoWarrning.height = Framework.viewport.width/10;
@@ -124,7 +119,6 @@ package aniPangShootingWorld.obstacle
 		
 		private function aimMeteo():void
 		{
-			// TODO Auto Generated method stub
 			_meteoLine.visible = true;
 			_meteoLine.y = 0;
 			_meteoLine.width = Framework.viewport.width/10;
