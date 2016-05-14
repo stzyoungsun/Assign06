@@ -1,6 +1,5 @@
 package aniPangShootingWorld.round
 {
-	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
@@ -12,13 +11,13 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.obstacle.Obstacle;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
-	import aniPangShootingWorld.resource.SoundResource;
+	import aniPangShootingWorld.resourceName.SoundResource;
+	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
 	import aniPangShootingWorld.util.RoundSetting;
 	import aniPangShootingWorld.util.UtilFunction;
 	
-	import framework.animaiton.AtlasBitmapData;
 	import framework.animaiton.MovieClip;
 	import framework.background.BackGround;
 	import framework.core.Framework;
@@ -30,7 +29,7 @@ package aniPangShootingWorld.round
 	import framework.gameobject.BulletManager;
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
-	import framework.texture.FwTexture;
+	import framework.texture.TextureManager;
 	
 	
 	public class Round extends Sprite
@@ -43,8 +42,6 @@ package aniPangShootingWorld.round
 		private var _player : Player;
 		//Note @유영선 플레이어 상태창 저장 할 변수
 		private var _playerState : PlayerState;
-		//Note @유영선 적들의 비트맵데이터를 저장할 변수
-		private var _enemyAtlasVector : Vector.<AtlasBitmapData> = new Vector.<AtlasBitmapData>;
 		//Note @유영선 적들의 라인을 저장 할 변수
 		private var _enemyLine : EnemyLine = new EnemyLine();
 		
@@ -84,16 +81,11 @@ package aniPangShootingWorld.round
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
-		private var playerBulletTexture:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["Bulletone.png"].bitmapData);
-		private var bossBulletTexture:FwTexture;
 		
 		private var _roundNum : Number;
 		
 		public function Round(roundNum : Number)
 		{
-			var parent:FwTexture = FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["boss_missile.png"].bitmapData);
-			bossBulletTexture = FwTexture.fromTexture(parent, new Rectangle(10, 10, parent.width, parent.height));
-
 			this.objectType = ObjectType.ROUND_PREV;
 			_roundNum = roundNum;
 			//Note @유영선 배경 그라운드를 화면에 출력
@@ -229,7 +221,6 @@ package aniPangShootingWorld.round
 		 */		
 		protected function onNextClick(event:TouchEvent):void
 		{
-	
 			if(event.touch.phase == TouchPhase.ENDED)
 			{
 				this.dispose();
@@ -263,36 +254,19 @@ package aniPangShootingWorld.round
 		 */		
 		private function prevGameStart():void
 		{
-			//Note @유영선 xml 있는지 검사
-			var preXml : String = RoundSetting.instance.roundObject[_roundNum].prevstart + ".xml";
-			var preSheet : String = RoundSetting.instance.roundObject[_roundNum].prevstart + ".png";
-			
-			if(!MenuView.sloadedImage.checkXml((preXml))) throw new Error("not found xml");
-			
-			_prevGameView = new MovieClip(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[preSheet]
-				,MenuView.sloadedImage.xmlDictionary[preXml]),1,0,0,true);
-			
+			_prevGameView = new MovieClip(GameTexture.readyNumber, 1, 0, 0, true);
 			_prevGameView.width = Framework.viewport.width/2;
 			_prevGameView.height = Framework.viewport.height/3;
 			_prevGameView.x = Framework.viewport.width/2 - _prevGameView.width/2;
 			_prevGameView.y = Framework.viewport.height/2 - _prevGameView.height/2;
-			
 			_prevGameView.start();
-			
 			addChild(_prevGameView);
 		}
 		
 		private function ShootMeteo():void
 		{
-			// TODO Auto Generated method stub
-			//Note @유영선 xml 있는지 검사
 			//Note @유영선 메테오를 저장 할 변수 입니다.
-			var meteoObstacle : Obstacle;
-			
-			if(!MenuView.sloadedImage.checkXml(("meteo_Sheet.xml"))) throw new Error("not found xml");
-			
-			meteoObstacle = new Meteo(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["meteo_Sheet.png"]
-				,MenuView.sloadedImage.xmlDictionary["meteo_Sheet.xml"]),30,this);
+			var meteoObstacle:Obstacle = new Meteo(GameTexture.meteor, 30, this);
 			(meteoObstacle as Meteo).meteoShoot();
 			//addChild(_meteoObstacle);
 		}
@@ -312,7 +286,7 @@ package aniPangShootingWorld.round
 				_boss.start();
 				addChild(_boss);
 				
-				_bossHPbar = new HPbar(0, 0, MenuView.sloadedImage.imageDictionary["100per.png"].bitmapData);
+				_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
 				_bossHPbar.hpBarInit(_boss);
 				addChild(_bossHPbar);
 			}
@@ -325,39 +299,18 @@ package aniPangShootingWorld.round
 		 */		
 		private function bossSetting():void
 		{
-			var bossXml : String = RoundSetting.instance.roundObject[_roundNum].BossName + ".xml";
-			var bossSheet : String = RoundSetting.instance.roundObject[_roundNum].BossName + ".png";
-			
-			if(!MenuView.sloadedImage.checkXml((bossXml))) throw new Error("not found xml");
-			
 			switch(_roundNum)
 			{
 				case 0:
 				{
-					_boss = new OneRoundBoss(
-						new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[bossSheet],
-							MenuView.sloadedImage.xmlDictionary[bossXml]),
-						10, 
-						RoundSetting.instance.roundObject[_roundNum].BossHP,
-						new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
-						this
-					);
+					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
-					
 				case 1:
 				{
-					_boss = new OneRoundBoss(
-						new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[bossSheet],
-							MenuView.sloadedImage.xmlDictionary[bossXml]),
-						10,
-						RoundSetting.instance.roundObject[_roundNum].BossHP,
-						new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, bossBulletTexture),
-						this
-					);
+					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
-
 			}
 		}
 		
@@ -372,35 +325,31 @@ package aniPangShootingWorld.round
 				for(var i:Number = 0; i < _enemyLine.enemyVector.length; i++)
 				{
 					if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
+					{
 						return false;
+					}
 				}
 			}
-
 			return true;
 		}
 		
 		private function CreateEnemyLine():void
 		{
 			//Note @유영선 적 비트맵의 크기가 0이 아니면 적을 화면에서 삭제
-			if(_enemyAtlasVector.length != 0)
+			if(_typeArray.length != 0)
 			{
 				enenmyRemove();
 			}
-			
 			if(this.objectType == ObjectType.ROUND_GENERAL)
 			{
 				//Note @유영선 적들의 타입 배열을 랜덤하게 섞음
 				for(var cnt : int =0 ; cnt < EnemyObjectUtil.MAX_LINE_COUNT; cnt++)
-					_typeArray[cnt] = _randomArray[cnt]
-				
-				_typeArray = UtilFunction.shuffle(_typeArray,5);
-				
-				for(var i : Number =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i++)
 				{
-					_enemyAtlasVector[i] = new AtlasBitmapData(MenuView.sloadedImage.imageDictionary[EnemyObjectUtil.ENEMY_SPRITENAME_ARRAY[_typeArray[i]]]
-						,MenuView.sloadedImage.xmlDictionary[EnemyObjectUtil.ENEMY_XML_ARRAY[_typeArray[i]]]);
+					_typeArray[cnt] = _randomArray[cnt];
 				}
-				_enemyLine.setEnemyLine(_enemyAtlasVector,_typeArray, this);
+				
+				_typeArray = UtilFunction.shuffle(_typeArray, 5);
+				_enemyLine.setEnemyLine(_typeArray, this);
 				enenmyDraw();
 			}
 		}
@@ -412,8 +361,10 @@ package aniPangShootingWorld.round
 		{
 			if(this.objectType != ObjectType.ROUND_GENERAL) return;
 			
-			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
+			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
+			{
 				addChild(_enemyLine.enemyVector[i]);
+			}
 		}
 		
 		/**
@@ -421,7 +372,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function enenmyRemove() : void
 		{
-			for(var i: int =0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
+			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
 				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
 				{
@@ -474,18 +425,15 @@ package aniPangShootingWorld.round
 		 */		
 		private function playerDraw():void
 		{
-			var bulletMgr : BulletManager = new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, playerBulletTexture);
-			_player = new Player(new AtlasBitmapData(MenuView.sloadedImage.imageDictionary["Player.png"],MenuView.sloadedImage.xmlDictionary["Player.xml"]),5,
-				bulletMgr,this);
+			_player = new Player(GameTexture.player, 5, new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, GameTexture.bullet[0]), this);
 			
 			_player.width = Framework.viewport.width/6;
 			_player.height = Framework.viewport.height/6;
+			_player.start();
 			
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			addChild(_player);
-			_player.start();
-			bulletMgr = null;
 		}
 		
 		/** 
@@ -502,13 +450,11 @@ package aniPangShootingWorld.round
 			switch(event.touch.phase)
 			{
 				case TouchPhase.MOVED:
-					
 					_player.x += event.touch.globalX - event.touch.previousGlobalX;
 					if(_player.x < 0)
 						_player.x = 0;
 					else if(_player.x >= Framework.viewport.width - _player.width)
 						_player.x = Framework.viewport.width - _player.width;
-					
 					break;
 			}
 		}
@@ -522,7 +468,7 @@ package aniPangShootingWorld.round
 			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
-			_bossWarningView = new Image(0, 0, FwTexture.fromBitmapData(MenuView.sloadedImage.imageDictionary["warning.png"].bitmapData));
+			_bossWarningView = new Image(0, 0, TextureManager.getInstance().textureDictionary["boss_warning.png"]);
 			_bossWarningView.visible = false;
 			addChild(_bossWarningView);
 		}
@@ -536,7 +482,8 @@ package aniPangShootingWorld.round
 			
 			_bossHPbar = null;
 			_boss = null;
-		}	
+		}
+		
 		public function set resultTimer(value:Number):void{_resultTimer = value;}
 	}
 }
