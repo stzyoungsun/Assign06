@@ -1,12 +1,14 @@
 package framework.display
 {
+	import flash.utils.Dictionary;
+	
 	import framework.texture.AtlasTexture;
 	import framework.texture.FwTexture;
 	import framework.util.ImageCharacterResource;
 
 	public class ImageTextField extends Sprite
 	{
-		private var _characterTextureVector:Vector.<FwTexture>;
+		private var _characterTextureDic:Dictionary;
 		private var _numWidth : int;
 		private var _numHeight : int;
 		
@@ -17,7 +19,7 @@ package framework.display
 		 * @param height 한 글자 당 크기
 		 * @param atlasTexture 글자들을 담고 있는 아틀라스 텍스쳐
 		 */		
-		public function ImageTextField(x:int, y:int, width:int, height:int, atlasTexture:AtlasTexture = null)
+		public function ImageTextField(x:int, y:int, width:int, height:int, numberTexture:AtlasTexture = null, alphabetTexture : AtlasTexture = null)
 		{
 			this.x = x;
 			this.y = y;
@@ -25,38 +27,46 @@ package framework.display
 			_numWidth = width;
 			_numHeight = height;
 			
-			_characterTextureVector = new Vector.<FwTexture>();
+			_characterTextureDic = new Dictionary;
 			
-			if(atlasTexture == null)
+			if(numberTexture == null)
 			{
-				atlasTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.NUMBER_IMAGE()).bitmapData), XML((new ImageCharacterResource.NUMBER_XML)));
+				numberTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.NUMBER_IMAGE()).bitmapData), XML((new ImageCharacterResource.NUMBER_XML)));
+			}
+			
+			if(alphabetTexture ==  null)
+			{
+				alphabetTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.ALPHABET_IMAGE()).bitmapData), XML((new ImageCharacterResource.ALPHABET_XML)));
 			}
 			
 			for (var i:int = 0; i < 10; i++)
 			{
-				_characterTextureVector.push(atlasTexture.subTextures[i + ".png"]);
+				_characterTextureDic[i + ".png"] = numberTexture.subTextures[i + ".png"];
 			}
+			
+			for(var key : Object in alphabetTexture.subTextures)
+			{
+				_characterTextureDic[key] = alphabetTexture.subTextures[key];
+			}
+			
 		}
 		
 		public function set text(value:String):void
 		{
 			var numChildren:Number = children.length;
 			var textLength:Number = value.length;
-			
+		
 			if(numChildren > textLength )
 			{
 				removeChildren(textLength, numChildren, true);
 				numChildren = textLength;
 			}
 			
-			var numberArray:Array = pushNumber(int(value));
-			
 			for(var i : int = 0; i < textLength; i++)
 			{
-				var number:Number = numberArray.pop();
 				if(numChildren == 0 || numChildren <= i)
 				{
-					var image:Image = new Image(this.x + _numWidth * 0.75 * i, this.y, _characterTextureVector[number]);
+					var image:Image = new Image(this.x + _numWidth * 0.75 * i, this.y, _characterTextureDic[value.charAt(i)+".png"]);
 					image.width = _numWidth;
 					image.height = _numHeight;
 					
@@ -65,31 +75,9 @@ package framework.display
 				else
 				{
 					image = children[i] as Image;
-					image.texture = _characterTextureVector[number];
+					image.texture = _characterTextureDic[value.charAt(i)+".png"];
 				}
 			}
-		}
-		
-		private function pushNumber(drawNumber:int):Array
-		{
-			var numberArray : Array = new Array();
-			var tempNumber : int = 0;
-			
-			if(drawNumber == 0)
-			{
-				numberArray.push(0);
-				return numberArray;
-			}
-			
-			while(drawNumber != 0)
-			{
-				tempNumber = drawNumber % 10;
-				drawNumber = drawNumber / 10;
-				
-				numberArray.push(tempNumber);
-			}
-			
-			return numberArray;
 		}
 	}
 }
