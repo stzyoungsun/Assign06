@@ -19,7 +19,7 @@ package framework.display
 		 * @param height 한 글자 당 크기
 		 * @param atlasTexture 글자들을 담고 있는 아틀라스 텍스쳐
 		 */		
-		public function ImageTextField(x:int, y:int, width:int, height:int, numberTexture:AtlasTexture = null, alphabetTexture : AtlasTexture = null)
+		public function ImageTextField(x:int, y:int, width:int, height:int, numberTexture:AtlasTexture = null, AlphabetTexture : AtlasTexture = null)
 		{
 			this.x = x;
 			this.y = y;
@@ -34,28 +34,27 @@ package framework.display
 				numberTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.NUMBER_IMAGE()).bitmapData), XML((new ImageCharacterResource.NUMBER_XML)));
 			}
 			
-			if(alphabetTexture ==  null)
+			if(AlphabetTexture ==  null)
 			{
-				alphabetTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.ALPHABET_IMAGE()).bitmapData), XML((new ImageCharacterResource.ALPHABET_XML)));
+				AlphabetTexture = new AtlasTexture(FwTexture.fromBitmapData((new ImageCharacterResource.ALPHABET_IMAGE()).bitmapData), XML((new ImageCharacterResource.ALPHABET_XML)));
 			}
 			
-			for (var i:int = 0; i < 10; i++)
+			for (var key_N : Object in numberTexture.subTextures)
 			{
-				_characterTextureDic[i + ".png"] = numberTexture.subTextures[i + ".png"];
+				_characterTextureDic[key_N] = numberTexture.subTextures[key_N];
 			}
 			
-			for(var key : Object in alphabetTexture.subTextures)
+			for(var key_A : Object in AlphabetTexture.subTextures)
 			{
-				_characterTextureDic[key] = alphabetTexture.subTextures[key];
+				_characterTextureDic[key_A] = AlphabetTexture.subTextures[key_A];
 			}
-			
 		}
 		
 		public function set text(value:String):void
 		{
 			var numChildren:Number = children.length;
 			var textLength:Number = value.length;
-		
+
 			if(numChildren > textLength )
 			{
 				removeChildren(textLength, numChildren, true);
@@ -64,9 +63,21 @@ package framework.display
 			
 			for(var i : int = 0; i < textLength; i++)
 			{
+				trace(value.charAt(i));
+				
+				
+				if(! _characterTextureDic[value.charAt(i)+".png"] && !_characterTextureDic["null.png"]) throw new Error("숫자 또는 알파벳만 가능합니다.");
+				
 				if(numChildren == 0 || numChildren <= i)
 				{
-					var image:Image = new Image(this.x + _numWidth * 0.75 * i, this.y, _characterTextureDic[value.charAt(i)+".png"]);
+					var image : Image;
+					if(value.charAt(i) == ' ')
+					{
+						image = new Image(this.x + _numWidth * 0.75 * i, this.y, _characterTextureDic["null.png"]);
+					}
+					else
+						image = new Image(this.x + _numWidth * 0.75 * i, this.y, _characterTextureDic[value.charAt(i)+".png"]);
+					
 					image.width = _numWidth;
 					image.height = _numHeight;
 					
@@ -75,7 +86,12 @@ package framework.display
 				else
 				{
 					image = children[i] as Image;
-					image.texture = _characterTextureDic[value.charAt(i)+".png"];
+					if(value.charAt(i) == ' ')
+					{
+						image.texture = _characterTextureDic["null.png"];
+					}
+					else
+						image.texture = _characterTextureDic[value.charAt(i)+".png"];
 				}
 			}
 		}
