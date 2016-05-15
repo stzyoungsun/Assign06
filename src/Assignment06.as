@@ -17,7 +17,7 @@ package
 	public class Assignment06 extends Sprite
 	{
 		private var fw:Framework = new Framework(MenuView, stage);
-		private var _pushMessage : Extension = new Extension();
+		//private var _pushMessage : Extension = new Extension();
 		
 		public function Assignment06()
 		{
@@ -34,7 +34,7 @@ package
 		private function deactivateListener(event:Event):void
 		{
 			trace("종료");
-			_pushMessage.push(new PrevLoadImage.ICON().bitmapData, "30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~", 30000);
+			//_pushMessage.push(new PrevLoadImage.ICON().bitmapData, "30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~", 30000);
 			fw.stop();
 		}
 		

@@ -335,9 +335,5 @@
         <requestedDisplayResolution>high</requestedDisplayResolution>
     </iPhone>
 
-<extensions>
-        <extensionID>com.lpesign.Extension</extensionID>
-        <extensionID>com.distriqt.AndroidSupport</extensionID>
-        <extensionID>com.adobe.Vibration</extensionID>
-    </extensions>
+
 </application>

@@ -157,13 +157,13 @@ package aniPangShootingWorld.player
 				{
 					_shieldTime = getTimer();
 					
-					var vibe:Vibration;
-					
-					if (Vibration.isSupported)
-					{
-						vibe = new Vibration();
-						vibe.vibrate(1000);
-					}
+//					var vibe:Vibration;
+//					
+//					if (Vibration.isSupported)
+//					{
+//						vibe = new Vibration();
+//						vibe.vibrate(1000);
+//					}
 					
 					this.objectType = ObjectType.PLAYER_SHIELD_MODE;
 					PlayerState.sPlayerHeart--;
