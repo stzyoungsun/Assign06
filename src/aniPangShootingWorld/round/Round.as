@@ -195,7 +195,9 @@ package aniPangShootingWorld.round
 			//Note @유영선 결과 창 구현
 			else if(this.objectType == ObjectType.ROUND_CLEAR)
 			{
+				
 				var curResultTimer : int = getTimer();
+				PlayerState.sPlayerPower = 0;
 				//Note @유영선 보스 워닝 화면 5초간 출력
 				if(curResultTimer - _resultTimer > 4000)
 				{

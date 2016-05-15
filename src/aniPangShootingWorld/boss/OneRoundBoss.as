@@ -166,7 +166,7 @@ package aniPangShootingWorld.boss
 				_stage.objectType = ObjectType.ROUND_CLEAR;
 				_stage.removeChild(this);
 				(_stage as Round).resultTimer = getTimer();
-				var item : ItemGroup = new ItemGroup(15,this.x, this.y,_stage);
+				var item : ItemGroup = new ItemGroup(30,this.x, this.y,_stage);
 				item.drawItem();
 			}
 		}

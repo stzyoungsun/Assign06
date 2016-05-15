@@ -93,7 +93,7 @@ package aniPangShootingWorld.enemy
 			{
 				case ObjectType.ITEM_IDLE:
 				{
-					var randomNumber : Number = UtilFunction.random(0,2,1);
+					var randomNumber : Number = UtilFunction.random(0,5,1);
 					var item : ItemGroup = new ItemGroup(randomNumber,this.x, this.y,_stage);
 					item.drawItem();
 					this.x = -999;
