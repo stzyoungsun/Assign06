@@ -84,13 +84,13 @@ package framework.display
 		 */
 		public override function dispatchEvent(event:Event):Boolean
 		{
+			var result:Boolean = false;
+			// 객체가 해당 event에 대한 리스너가 등록되어 있다면 dispatchEvent 호출
+			if(hasEventListener(event.type)) result = super.dispatchEvent(event);
 			// 부모가 존재하고 bubbles 속성이 true면 부모의 dispatchEvent 호출
-			if(_parent != null && event.bubbles)
-			{
-				_parent.dispatchEvent(event);
-			}
-			// super 호출 후 결과 반환
-			return super.dispatchEvent(event);
+			else if(_parent != null && event.bubbles) _parent.dispatchEvent(event);
+			
+			return result;
 		}
 		
 		/**
