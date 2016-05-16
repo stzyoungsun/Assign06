@@ -10,6 +10,7 @@ package framework.event
 		private var _touch:Touch;
 		
 		public static const TOUCH:String = "touch";
+		public static const TRIGGERED:String = "triggered";
 		
 		public function TouchEvent(touch:Touch, type:String, bubbles:Boolean = false)
 		{

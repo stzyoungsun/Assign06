@@ -93,7 +93,7 @@ package framework.display
 			else if(touch.phase == TouchPhase.ENDED && _valid == true)
 			{
 				setOriginalView();
-				dispatchEvent(new Event("TRIGGERED"));
+				dispatchEvent(new Event(TouchEvent.TRIGGERED));
 			}
 			// 터치 중 움직이면, 터치의 위치에 따라 _valid와 버튼의 외형을 결정한다.
 			else if(touch.phase == TouchPhase.MOVED)
