@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TextureAtlas imagePath="message_box.png">
-   <SubTexture name="button1.png" x="451" y="0" width="245" height="67" />
-   <SubTexture name="button2.png" x="451" y="68" width="245" height="67" />
-   <SubTexture name="button3.png" x="451" y="136" width="245" height="67" />
-   <SubTexture name="close.png" x="451" y="204" width="90" height="104" />
-   <SubTexture name="dialog.png" x="0" y="0" width="450" height="400" />
+   <SubTexture name="button1.png" x="0" y="352" width="205" height="60" />
+   <SubTexture name="button2.png" x="0" y="413" width="205" height="60" />
+   <SubTexture name="button3.png" x="206" y="352" width="205" height="60" />
+   <SubTexture name="close.png" x="411" y="0" width="50" height="50" />
+   <SubTexture name="content.png" x="0" y="0" width="410" height="300" />
+   <SubTexture name="title.png" x="0" y="301" width="410" height="50" />
 </TextureAtlas>

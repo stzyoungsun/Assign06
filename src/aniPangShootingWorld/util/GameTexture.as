@@ -206,8 +206,9 @@ package aniPangShootingWorld.util
 			_sRoundResult = textureManager.atlasTextureDictionary[AtlasResource.RESULT].subTextures[AtlasResource.RESULT_SUB_ROUND_RESULT];
 			
 			_sMessageBox = new <FwTexture>[
-				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_DIALOG],
-				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_CLOSE],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_CONTENT],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_TITLE_BAR],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_CLOSE],
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_1],
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_2],
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_3]
@@ -289,11 +290,12 @@ package aniPangShootingWorld.util
 		public static function get roundResult():FwTexture { return _sRoundResult; }
 		
 		/**
-		 * <br/>[0]:MESSAGE_BOX_SUB_DIALOG<br/>
-		 * [1]:MESSAGE_BOX_SUB_CLOSE<br/>
-		 * [2]:MESSAGE_BOX_SUB_BUTTON_1<br/>
-		 * [3]:MESSAGE_BOX_SUB_BUTTON_2<br/>
-		 * [4]:MESSAGE_BOX_SUB_BUTTON_3
+		 * <br/>[0]:MESSAGE_BOX_SUB_CONTENT<br/>
+		 * [1]:MESSAGE_BOX_SUB_TITLE_BAR<br/>
+		 * [2]:MESSAGE_BOX_SUB_BUTTON_CLOSE<br/>
+		 * [3]:MESSAGE_BOX_SUB_BUTTON_1<br/>
+		 * [4]:MESSAGE_BOX_SUB_BUTTON_2<br/>
+		 * [5]:MESSAGE_BOX_SUB_BUTTON_3
 		 */
 		public static function get messageBox():Vector.<FwTexture> { return _sMessageBox; }
 	}

@@ -102,8 +102,9 @@ package aniPangShootingWorld.resourceName
 		public static const RESULT_SUB_ROUND_RESULT:String = "round_result.png";
 		
 		public static const MESSAGE_BOX:String = "message_box.png";
-		public static const MESSAGE_BOX_SUB_DIALOG:String = "dialog.png";
-		public static const MESSAGE_BOX_SUB_CLOSE:String = "close.png";
+		public static const MESSAGE_BOX_SUB_CONTENT:String = "content.png";
+		public static const MESSAGE_BOX_SUB_TITLE_BAR:String = "title.png";
+		public static const MESSAGE_BOX_SUB_BUTTON_CLOSE:String = "close.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_1:String = "button1.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_2:String = "button2.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_3:String = "button3.png";
