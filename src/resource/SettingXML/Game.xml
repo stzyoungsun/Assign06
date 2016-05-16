@@ -1,17 +1,22 @@
-{ "Scene":[{"ViewPng":"StageWindow.png"
+{ "GameWing" : 30
+  ,"GameTotalGold" : 3000
+  ,"GameTotalRound" : 11
+  ,"Scene":[{"ViewPng":"selectview.png"
   ,"RoundStartNum":0
   ,"Roundcnt" : 5
-  ,"Round" : [{"state":0,"x":0.3, "y":0.85}
-		,{"state":0,"x":0.6, "y":0.75}
-		,{"state":0,"x":0.7, "y":0.55}
-		,{"state":0,"x":0.8, "y":0.25}
+  ,"Round" : [{"state":4,"x":0.3, "y":0.65}
+		,{"state":0,"x":0.6, "y":0.55}
+		,{"state":0,"x":0.7, "y":0.40}
+		,{"state":0,"x":0.83, "y":0.25}
 		,{"state":0,"x":0.3, "y":0.15}]
   },
- {"Roundcnt" : 6
-,"Round" : [{"state":0,"name":"2"}
-		,{"state":0,"name":"2"}
-		,{"state":0,"name":"2"}
-		,{"state":0,"name":"2"}
-		,{"state":0,"name":"2"}
-		,{"state":0,"name":"2"}]	
+ {"ViewPng":"selectview.png"
+ ,"RoundStartNum":5
+,"Roundcnt" : 6
+ ,"Round" : [{"state":0, "x":0.25, "y":0.65}
+		,{"state":0, "x":0.55, "y":0.55}
+		,{"state":0, "x":0.7, "y":0.43}
+		,{"state":0, "x":0.83, "y":0.25}
+		,{"state":0, "x":0.55, "y":0.1}
+		,{"state":0, "x":0.3, "y":0.15}]	
 }]}

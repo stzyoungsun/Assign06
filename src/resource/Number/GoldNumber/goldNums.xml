@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="goldNums.png">
+   <SubTexture name="0.png" x="0" y="0" width="32" height="32" />
+   <SubTexture name="1.png" x="33" y="0" width="32" height="32" />
+   <SubTexture name="2.png" x="66" y="0" width="32" height="32" />
+   <SubTexture name="3.png" x="0" y="33" width="32" height="32" />
+   <SubTexture name="4.png" x="33" y="33" width="32" height="32" />
+   <SubTexture name="5.png" x="66" y="33" width="32" height="32" />
+   <SubTexture name="6.png" x="99" y="0" width="32" height="32" />
+   <SubTexture name="7.png" x="132" y="0" width="32" height="32" />
+   <SubTexture name="8.png" x="99" y="33" width="32" height="32" />
+   <SubTexture name="9.png" x="132" y="33" width="32" height="32" />
+</TextureAtlas>
