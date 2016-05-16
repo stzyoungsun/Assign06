@@ -91,14 +91,21 @@ package aniPangShootingWorld.resourceName
 		public static const PRESS_TOUCH_SUB_1:String = "press_touch_1.png";
 		public static const PRESS_TOUCH_SUB_2:String = "press_touch_2.png";
 		
-		public static const READY_NUMBER:String = "ready_sheet.png"
-		public static const READY_NUMBER_SUB_READY_1:String = "ready_1.png"
-		public static const READY_NUMBER_SUB_READY_2:String = "ready_2.png"
-		public static const READY_NUMBER_SUB_READY_3:String = "ready_3.png"
-		public static const READY_NUMBER_SUB_START:String = "start.png"
+		public static const READY_NUMBER:String = "ready_sheet.png";
+		public static const READY_NUMBER_SUB_READY_1:String = "ready_1.png";
+		public static const READY_NUMBER_SUB_READY_2:String = "ready_2.png";
+		public static const READY_NUMBER_SUB_READY_3:String = "ready_3.png";
+		public static const READY_NUMBER_SUB_START:String = "start.png";
 			
-		public static const RESULT:String = "result_sheet.png"
-		public static const RESULT_SUB_NEXT_BUTTON:String = "next_button.png"
-		public static const RESULT_SUB_ROUND_RESULT:String = "round_result.png"
+		public static const RESULT:String = "result_sheet.png";
+		public static const RESULT_SUB_NEXT_BUTTON:String = "next_button.png";
+		public static const RESULT_SUB_ROUND_RESULT:String = "round_result.png";
+		
+		public static const MESSAGE_BOX:String = "message_box.png";
+		public static const MESSAGE_BOX_SUB_DIALOG:String = "dialog.png";
+		public static const MESSAGE_BOX_SUB_CLOSE:String = "close.png";
+		public static const MESSAGE_BOX_SUB_BUTTON_1:String = "button1.png";
+		public static const MESSAGE_BOX_SUB_BUTTON_2:String = "button2.png";
+		public static const MESSAGE_BOX_SUB_BUTTON_3:String = "button3.png";
 	}
 }

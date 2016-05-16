@@ -58,6 +58,9 @@ package aniPangShootingWorld.util
 		private static var _sNextButton:FwTexture;
 		private static var _sRoundResult:FwTexture;
 		
+		// message_box
+		private static var _sMessageBox:Vector.<FwTexture>;
+		
 		public function GameTexture() { throw new Error("Abstract Class"); }
 
 		public static function createGameTexture():void
@@ -202,6 +205,14 @@ package aniPangShootingWorld.util
 			
 			_sRoundResult = textureManager.atlasTextureDictionary[AtlasResource.RESULT].subTextures[AtlasResource.RESULT_SUB_ROUND_RESULT];
 			
+			_sMessageBox = new <FwTexture>[
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_DIALOG],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_CLOSE],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_1],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_2],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_3]
+			]
+			
 			_sCreated = true;
 		}
 
@@ -225,14 +236,65 @@ package aniPangShootingWorld.util
 		/**
 		 * Single Texture
 		 */
+		/**
+		 * <br/>[0]:ITEM_MISSILE_METEOR_SUB_BULLET_1<br/>
+		 * [1]:ITEM_MISSILE_METEOR_SUB_BULLET_2<br/>
+		 * [2]:ITEM_MISSILE_METEOR_SUB_BULLET_3<br/>
+		 * [3]:ITEM_MISSILE_METEOR_SUB_BULLET_4<br/>
+		 * [4]:ITEM_MISSILE_METEOR_SUB_BULLET_5<br/>
+		 * [5]:ITEM_MISSILE_METEOR_SUB_BULLET_6<br/>
+		 * [6]:ITEM_MISSILE_METEOR_SUB_BULLET_7<br/>
+		 * [7]:ITEM_MISSILE_METEOR_SUB_BULLET_8<br/>
+		 * [8]:ITEM_MISSILE_METEOR_SUB_BULLET_BOSS
+		 */
 		public static function get bullet():Vector.<FwTexture> { return _sBullet; }
+		
+		/**
+		 * <br/>[0]:BOSS_SUB_PER_10<br/>
+		 * [1]:BOSS_SUB_PER_20<br/>
+		 * [2]:BOSS_SUB_PER_30<br/>
+		 * [3]:BOSS_SUB_PER_40<br/>
+		 * [4]:BOSS_SUB_PER_50<br/>
+		 * [5]:BOSS_SUB_PER_60<br/>
+		 * [6]:BOSS_SUB_PER_70<br/>
+		 * [7]:BOSS_SUB_PER_80<br/>
+		 * [8]:BOSS_SUB_PER_90<br/>
+		 * [9]:BOSS_SUB_PER_100
+		 */
 		public static function get bossHpBar():Vector.<FwTexture> { return _sBossHpBar; }
 		public static function get meteorLine():FwTexture { return _sMeteorLine; }
 		public static function get meteorWarning():FwTexture { return _sMeteorWarning; }
+		
+		/**
+		 * <br/>[0]:PLAYER_STATE_SUB_HEART_1<br/>
+		 * [1]:PLAYER_STATE_SUB_HEART_2<br/>
+		 * [2]:PLAYER_STATE_SUB_HEART_4<br/>
+		 * [3]:PLAYER_STATE_SUB_HEART_6<br/>
+		 * [4]:PLAYER_STATE_SUB_HEART_8<br/>
+		 * [5]:PLAYER_STATE_SUB_HEART_10
+		 */
 		public static function get playerHeart():Vector.<FwTexture> { return _sPlayerHeart; }
+		
+		/**
+		 * <br/>[0]:PLAYER_STATE_SUB_POWER_1<br/>
+		 * [1]:PLAYER_STATE_SUB_POWER_2<br/>
+		 * [2]:PLAYER_STATE_SUB_POWER_4<br/>
+		 * [3]:PLAYER_STATE_SUB_POWER_6<br/>
+		 * [4]:PLAYER_STATE_SUB_POWER_8<br/>
+		 * [5]:PLAYER_STATE_SUB_POWER_10
+		 */
 		public static function get playerPower():Vector.<FwTexture> { return _sPlayerPower; }
 		public static function get playerState():FwTexture { return _sPlayerState; }
 		public static function get nextButton():FwTexture { return _sNextButton; }
 		public static function get roundResult():FwTexture { return _sRoundResult; }
+		
+		/**
+		 * <br/>[0]:MESSAGE_BOX_SUB_DIALOG<br/>
+		 * [1]:MESSAGE_BOX_SUB_CLOSE<br/>
+		 * [2]:MESSAGE_BOX_SUB_BUTTON_1<br/>
+		 * [3]:MESSAGE_BOX_SUB_BUTTON_2<br/>
+		 * [4]:MESSAGE_BOX_SUB_BUTTON_3
+		 */
+		public static function get messageBox():Vector.<FwTexture> { return _sMessageBox; }
 	}
 }

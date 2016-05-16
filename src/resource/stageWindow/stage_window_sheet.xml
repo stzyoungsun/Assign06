@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="stage_window_sheet.png">
+   <SubTexture name="coinWindow.png" x="0" y="0" width="150" height="41" />
+   <SubTexture name="pass.png" x="151" y="0" width="90" height="90" />
+   <SubTexture name="passed1.png" x="0" y="42" width="90" height="90" />
+   <SubTexture name="passed2.png" x="0" y="133" width="90" height="90" />
+   <SubTexture name="passed3.png" x="91" y="91" width="90" height="90" />
+   <SubTexture name="passing.png" x="242" y="0" width="90" height="90" />
+   <SubTexture name="passyet.png" x="182" y="91" width="90" height="90" />
+   <SubTexture name="Point.png" x="91" y="42" width="20" height="20" />
+</TextureAtlas>
