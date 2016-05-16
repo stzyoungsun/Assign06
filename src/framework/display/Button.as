@@ -23,6 +23,7 @@ package framework.display
 		private var _valid:Boolean;
 		private var _originalWidth:Number;
 		private var _originalHeight:Number;
+		private var _buttonContents:Sprite;
 		
 		/**
 		 * 생성자. 버튼을 구성하는 외형을 설정
@@ -33,6 +34,7 @@ package framework.display
 		 */
 		public function Button(text:String, textWidth:Number, textHeight:Number, texture:FwTexture = null)
 		{
+			_buttonContents = new Sprite();
 			_buttonImageText = new ImageTextField(0, 0, textWidth, textHeight);
 			_buttonImageText.text = text;
 			
@@ -65,9 +67,10 @@ package framework.display
 			_buttonImageText.x = (_buttonBackground.width - _buttonImageText.width) / 2;
 			_buttonImageText.y = (_buttonBackground.height - _buttonImageText.height) / 2;
 			
-			addChild(_buttonBackground);
-			addChild(_buttonImageText);
+			_buttonContents.addChild(_buttonBackground);
+			_buttonContents.addChild(_buttonImageText);
 			
+			addChild(_buttonContents);
 			// 터치 이벤트 등록
 			addEventListener(TouchEvent.TOUCH, onTouchButton);
 		}
@@ -124,14 +127,14 @@ package framework.display
 		 */
 		private function setPushView():void
 		{
-			_buttonBackground.x = _buttonBackground.width / 10;
-			_buttonBackground.y = _buttonBackground.height / 10;
+			_buttonContents.x = _buttonContents.width / 10;
+			_buttonContents.y = _buttonContents.height / 10;
 			
 			_originalWidth = _buttonBackground.width;
 			_originalHeight = _buttonBackground.height;
 			
-			_buttonBackground.width = _originalWidth * 0.8;
-			_buttonBackground.height = _originalHeight * 0.8;
+			_buttonContents.width = _originalWidth * 0.8;
+			_buttonContents.height = _originalHeight * 0.8;
 		}
 		
 		/**
@@ -139,11 +142,11 @@ package framework.display
 		 */
 		private function setOriginalView():void
 		{
-			_buttonBackground.x = 0;
-			_buttonBackground.y = 0;
+			_buttonContents.x = 0;
+			_buttonContents.y = 0;
 			
-			_buttonBackground.width = _originalWidth;
-			_buttonBackground.height = _originalHeight;
+			_buttonContents.width = _originalWidth;
+			_buttonContents.height = _originalHeight;
 		}
 		
 		public override function set width(value:Number):void
