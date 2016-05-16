@@ -30,9 +30,10 @@ package aniPangShootingWorld.ui
 		/**
 		 * 생성자 - 화면에 렌더링할 외형을 설정하고 각 버튼들에 이벤트 리스너를 등록한다. 
 		 * @param systemMessage - 사용자에게 보여줄 시스템 메시지
+		 * @param maxLength - 한 줄에 입력가능한 최대 글자 수
 		 * @param hasButton - 하단에 확인, 취소 버튼을 만들것인지 결정하는 변수
 		 */
-		public function MessageBox(systemMessage:String, hasButton:Boolean = false)
+		public function MessageBox(systemMessage:String, maxLength:int = 25, hasButton:Boolean = false)
 		{
 			// MessageBox 내의 모든 자식 객체를 담는 Sprite 객체
 			_messageBoxCanvas = new Sprite();
@@ -56,7 +57,20 @@ package aniPangShootingWorld.ui
 			_contentImage = new Image(0, 0, GameTexture.messageBox[0]);
 			// 시스템 메시지 출력을 위한 이미지텍스트필드 객체 생성 & 텍스트 설정
 			_systemMessageTextField = new ImageTextField(_contentImage.x + 10, _contentImage.y + 10, Framework.viewport.width / 40, Framework.viewport.height / 40);
-			_systemMessageTextField.text = systemMessage;
+			
+			if(maxLength < systemMessage.length)
+			{
+				var count:int = Math.ceil(systemMessage.length / maxLength);
+				var newLineTreatedString:String = "";
+				
+				while(count != 0)
+				{
+					newLineTreatedString += systemMessage.substring(0, maxLength) + "\n";
+					systemMessage = systemMessage.substring(maxLength, systemMessage.length);
+					count--;
+				}
+			}
+			_systemMessageTextField.text = newLineTreatedString;
 			
 			// 컨텐츠 Sprite 객체에 addChild
 			_contentCanvas.addChild(_contentImage);
@@ -92,6 +106,11 @@ package aniPangShootingWorld.ui
 		public function set systemMessage(value:String):void
 		{
 			_systemMessageTextField.text = value;
+		}
+		
+		public override function set width(value:Number):void
+		{
+			super.width = value;
 		}
 	}
 }
