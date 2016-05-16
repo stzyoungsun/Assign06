@@ -35,6 +35,18 @@ package aniPangShootingWorld.resourceName
 		public static const CHARACTER_SUB_RAT1:String = "rat_1.png";
 		public static const CHARACTER_SUB_RAT2:String = "rat_2.png";
 		
+		public static const SELECTVIEW_SUB : String = "selectview_sub.png";
+		public static const SELECTVIEW_SUB_COINWINDOW : String = "coinWindow.png";
+		public static const SELECTVIEW_SUB_PASS : String = "pass.png";
+		public static const SELECTVIEW_SUB_PASSED1 : String = "passed1.png";
+		public static const SELECTVIEW_SUB_PASSED2 : String = "passed2.png";
+		public static const SELECTVIEW_SUB_PASSED3 : String = "passed3.png";
+		public static const SELECTVIEW_SUB_PASSING : String = "passing.png";
+		public static const SELECTVIEW_SUB_PASSYET : String = "passyet.png";
+		public static const SELECTVIEW_SUB_POINT : String = "Point.png";
+		public static const SELECTVIEW_SUB_COIN : String = "coin.png";
+		public static const SELECTVIEW_SUB_WING : String = "wing.png";
+		
 		public static const ITEM_MISSILE_METEOR:String = "missle_item_meteor.png";
 		public static const ITEM_MISSILE_METEOR_SUB_BULLET_1:String = "bullet_1.png";
 		public static const ITEM_MISSILE_METEOR_SUB_BULLET_2:String = "bullet_2.png";
@@ -71,6 +83,18 @@ package aniPangShootingWorld.resourceName
 		public static const NUMBER_SUB_7:String = "7.png";
 		public static const NUMBER_SUB_8:String = "8.png";
 		public static const NUMBER_SUB_9:String = "9.png";
+		
+		public static const GOLD_NUMBER:String = "goldNums.png";
+		public static const GOLD_NUMBER_SUB_0:String = "0.png";
+		public static const GOLD_NUMBER_SUB_1:String = "1.png";
+		public static const GOLD_NUMBER_SUB_2:String = "2.png";
+		public static const GOLD_NUMBER_SUB_3:String = "3.png";
+		public static const GOLD_NUMBER_SUB_4:String = "4.png";
+		public static const GOLD_NUMBER_SUB_5:String = "5.png";
+		public static const GOLD_NUMBER_SUB_6:String = "6.png";
+		public static const GOLD_NUMBER_SUB_7:String = "7.png";
+		public static const GOLD_NUMBER_SUB_8:String = "8.png";
+		public static const GOLD_NUMBER_SUB_9:String = "9.png";
 		
 		public static const PLAYER_STATE:String = "player_state.png";
 		public static const PLAYER_STATE_SUB_HEART_1:String = "heart1.png";

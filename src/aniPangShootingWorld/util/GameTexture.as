@@ -61,6 +61,9 @@ package aniPangShootingWorld.util
 		// message_box
 		private static var _sMessageBox:Vector.<FwTexture>;
 		
+		//selecd Window
+		private static var _sSubSelectViews:Vector.<FwTexture>;
+		
 		public function GameTexture() { throw new Error("Abstract Class"); }
 
 		public static function createGameTexture():void
@@ -213,6 +216,18 @@ package aniPangShootingWorld.util
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_3]
 			]
 			
+			_sSubSelectViews = new <FwTexture>[
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_COINWINDOW],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASS],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSED1],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSED2],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSED3],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSING],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSYET],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_POINT],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_COIN],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_WING]
+			]
 			_sCreated = true;
 		}
 
@@ -296,5 +311,19 @@ package aniPangShootingWorld.util
 		 * [4]:MESSAGE_BOX_SUB_BUTTON_3
 		 */
 		public static function get messageBox():Vector.<FwTexture> { return _sMessageBox; }
+		
+		/**
+		 * <br/>[0]:SELECTVIEW_SUB_COINWINDOW<br/>
+		 * [1]:SELECTVIEW_SUB_PASS<br/>
+		 * [2]:SELECTVIEW_SUB_PASSED1<br/>
+		 * [3]:SELECTVIEW_SUB_PASSED2<br/>
+		 * [4]:SELECTVIEW_SUB_PASSED3<br/>
+		 * [5]:SELECTVIEW_SUB_PASSING<br/>
+		 * [6]:SELECTVIEW_SUB_PASSYET<br/>
+		 * [7]:SELECTVIEW_SUB_POINT
+		 * [8]:SELECTVIEW_SUB_COiN
+		 * [9]:SELECTVIEW_SUB_WING
+		 */
+		public static function get subSelectViews():Vector.<FwTexture> { return _sSubSelectViews;}
 	}
 }
