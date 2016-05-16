@@ -15,7 +15,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
-	import aniPangShootingWorld.util.RoundSetting;
+	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.MovieClip;

@@ -3,9 +3,10 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.loader.ResourceLoader;
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.round.Setting.GameSetting;
+	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.PrevLoadImage;
-	import aniPangShootingWorld.util.RoundSetting;
 	
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -98,6 +99,8 @@ package aniPangShootingWorld.round
 			addChild(_menuText);			
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			RoundSetting.instance.settingRound();
+			GameSetting.instance.gameSettingInit();
+			
 			_resourceLoader = null;
 		}
 		
@@ -113,14 +116,15 @@ package aniPangShootingWorld.round
 			{
 				case TouchPhase.ENDED:
 					SceneManager.instance.addScene(this);
-					var oneRound:Round = new Round(0);
-					PlayerState.sPlayerHeart = 5;
-					PlayerState.sPlayerPower = 0;
-					PlayerState.sGoldCount = 0;
-					PlayerState.sTotalHeart = 0;
-					PlayerState.sTotalPower = 0;
-					EnemyObject.sSpeed = 1;
-					SceneManager.instance.addScene(oneRound);
+					var selectView:SelectView = new SelectView();
+					
+//					PlayerState.sPlayerHeart = 5;
+//					PlayerState.sPlayerPower = 0;
+//					PlayerState.sGoldCount = 0;
+//					PlayerState.sTotalHeart = 0;
+//					PlayerState.sTotalPower = 0;
+					
+					SceneManager.instance.addScene(selectView);
 					SceneManager.instance.sceneChange(); 
 					break;
 			}
