@@ -1,4 +1,4 @@
-package aniPangShootingWorld.util
+package aniPangShootingWorld.round.Setting
 {
 	import framework.texture.TextureManager;
 	
@@ -8,8 +8,7 @@ package aniPangShootingWorld.util
 	{
 		private static var _instance : RoundSetting;
 		private static var _constructed : Boolean;
-		private  var _roundObjectArray : Array;
-		
+	
 		public function RoundSetting()
 		{
 			if (!_constructed) throw new Error("Singleton, use Scene.instance");
@@ -29,6 +28,8 @@ package aniPangShootingWorld.util
 			}
 			return _instance;
 		}
+		
+		private  var _roundObjectArray : Array;
 		
 		public function settingRound() : void
 		{
