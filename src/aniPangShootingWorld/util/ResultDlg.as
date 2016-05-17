@@ -3,6 +3,7 @@ package aniPangShootingWorld.util
 	import aniPangShootingWorld.player.PlayerState;
 	
 	import framework.core.Framework;
+	import framework.display.Button;
 	import framework.display.Image;
 	import framework.display.ImageTextField;
 	import framework.display.Sprite;
@@ -10,7 +11,7 @@ package aniPangShootingWorld.util
 	public class ResultDlg extends Sprite
 	{
 		private var _resultMain : Image;
-		private var _nextButton : Image;
+		private var _nextButton : Button;
 		
 		private var _curPower : int = 0;
 		private var _curHeart : int = 0;
@@ -26,7 +27,7 @@ package aniPangShootingWorld.util
 			super();
 			
 			_resultMain = new Image(0, 0, GameTexture.roundResult);
-			_nextButton = new Image(0, 0, GameTexture.nextButton);
+			_nextButton = new Button("Retrun SelectView", Framework.viewport.width/35, Framework.viewport.height/35, GameTexture.messageBox[3]);
 			
 			_resultMain.width = Framework.viewport.width;
 			_resultMain.height = Framework.viewport.height;
@@ -86,6 +87,6 @@ package aniPangShootingWorld.util
 			_nextButton.visible = true;
 		}
 		
-		public function get nextButton():Image{return _nextButton;}
+		public function get nextButton():Button{return _nextButton;}
 	}
 }
