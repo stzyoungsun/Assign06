@@ -1,5 +1,6 @@
 package framework.display
 {
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -10,6 +11,9 @@ package framework.display
 	public class DisplayObjectContainer extends DisplayObject
 	{
 		private var _children:Vector.<DisplayObject>;
+		
+		private static var _sMatrix:Matrix = new Matrix();
+		private static var _sPoint:Point = new Point();
 		
 		/**
 		 * 생성자
@@ -319,19 +323,25 @@ package framework.display
 		 */
 		public override function hitTest(localPoint:Point):DisplayObject
 		{
-			if (!visible) return null;
-			if(_children == null) return null;
+			if (!visible || _children == null) return null;
 			var target:DisplayObject = null;
 			// localPoint의 좌표값
 			var localX:Number = localPoint.x;
 			var localY:Number = localPoint.y;
 			var numChildren:int = _children.length;
 			
-			for(var i:int = numChildren - 1; i >= 0; --i)
+			for(var i:int = numChildren - 1; i >= 0; i--)
 			{
 				var child:DisplayObject = _children[i];
+				
+				_sMatrix.copyFrom(child.transformationMatrix);
+				_sMatrix.invert();
+				
+				_sPoint.x = _sMatrix.a * localX + _sMatrix.c * localY + _sMatrix.tx;
+				_sPoint.y = _sMatrix.d * localY + _sMatrix.b * localX + _sMatrix.ty;
+				
 				// child의 hitTest 메서드 호출 후 결과가 null이 아니면 반환
-				target = child.hitTest(localPoint);
+				target = child.hitTest(_sPoint);
 				if (target) return target;
 			}
 			return null;

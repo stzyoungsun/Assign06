@@ -66,8 +66,6 @@ package framework.display
 				return null;
 			}
 			
-			var bounds:Rectangle = new Rectangle(localX - pivotX, localY - pivotY, width, height);
-			
 			// 포함되어있는지 검사
 			if (bounds.containsPoint(localPoint))
 			{
@@ -89,7 +87,6 @@ package framework.display
 			if(hasEventListener(event.type)) result = super.dispatchEvent(event);
 			// 부모가 존재하고 bubbles 속성이 true면 부모의 dispatchEvent 호출
 			else if(_parent != null && event.bubbles) _parent.dispatchEvent(event);
-			
 			return result;
 		}
 		
@@ -267,28 +264,6 @@ package framework.display
 		
 		public function get y():Number { return _y; }
 		public function set y(value:Number):void { _y = value; }
-		
-		/**
-		 * 부모의 위치에 따른 객체의 상대적인 좌표값을 얻어오는 메서드. DisplayObject 객체의 조상들의 x값을 누적한 값을 반환한다.
-		 * @return 누적된 x값
-		 */
-		internal function get localX():Number
-		{
-			var value:Number = _x;
-			if(_parent)	value += _parent.localX;
-			return value;
-		}
-		
-		/**
-		 * 부모의 위치에 따른 객체의 상대적인 좌표값을 얻어오는 메서드. DisplayObject 객체의 조상들의 y값을 누적한 값을 반환한다.
-		 * @return 누적된 y값
-		 */
-		internal function get localY():Number
-		{
-			var value:Number = _y;
-			if(_parent)	value += _parent.localY;
-			return value;
-		}
 		
 		public function get scaleX():Number { return _scaleX; }
 		public function set scaleX(value:Number):void { _scaleX = value; }
