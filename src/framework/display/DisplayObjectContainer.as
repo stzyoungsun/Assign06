@@ -105,7 +105,7 @@ package framework.display
 			// loop 문을 이용해 Vector를 순회하면서 dispose 메서드를 호출
 			for(var i:int = end - 1; i >= start; i--)
 			{
-				removeChildAt(i, true);
+				removeChildAt(i, dispose);
 			}
 		}
 		

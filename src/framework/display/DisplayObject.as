@@ -192,6 +192,16 @@ package framework.display
 		}
 		
 		/**
+		 * 부모 객체로부터 자신을 제거하는 메서드 
+		 * @param dispose - 자원도 해제할 것인지 설정하는 변수
+		 */
+		public function removeFromParent(dispose:Boolean = false):void
+		{
+			if(_parent) _parent.removeChild(this, dispose);
+			else if(dispose) this.dispose();
+		}
+		
+		/**
 		 * DisplayObject의 Pivot을 설정해주는 메서드. Framework.util.Align 클래스를 이용해 설정 가능
 		 * @param horizontalAlign - 수평 정렬 (Align.LEFT, Align.RIGHT, Align.CENTER)
 		 * @param verticalAlign - 수직 정렬 (Align.TOP, Align.BOTTOM, Align.CENTER)

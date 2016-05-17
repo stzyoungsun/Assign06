@@ -1,5 +1,7 @@
 package aniPangShootingWorld.ui
 {
+	import flash.events.Event;
+	
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;
@@ -8,6 +10,7 @@ package aniPangShootingWorld.ui
 	import framework.display.Image;
 	import framework.display.ImageTextField;
 	import framework.display.Sprite;
+	import framework.event.TouchEvent;
 	
 	/**
 	 * 사용자에게 시스템 메시지를 UI를 통해 보여주는 클래스
@@ -27,13 +30,16 @@ package aniPangShootingWorld.ui
 		private var _okBtn:Button;
 		private var _cancelBtn:Button;
 		
+		private var _okFunction:Function;
+		private var _cancelFunction:Function;
+		
 		/**
 		 * 생성자 - 화면에 렌더링할 외형을 설정하고 각 버튼들에 이벤트 리스너를 등록한다. 
 		 * @param systemMessage - 사용자에게 보여줄 시스템 메시지
 		 * @param maxLength - 한 줄에 입력가능한 최대 글자 수
 		 * @param hasButton - 하단에 확인, 취소 버튼을 만들것인지 결정하는 변수
 		 */
-		public function MessageBox(systemMessage:String, maxLength:int = 25, hasButton:Boolean = false)
+		public function MessageBox(systemMessage:String, maxLength:int = 25, hasButton:Boolean = false, okFunction:Function = null, cancelFunction:Function = null)
 		{
 			// MessageBox 내의 모든 자식 객체를 담는 Sprite 객체
 			_messageBoxCanvas = new Sprite();
@@ -49,6 +55,7 @@ package aniPangShootingWorld.ui
 			_closeBtn.width = Framework.viewport.height / 40;
 			_closeBtn.height = Framework.viewport.height / 40;
 			_closeBtn.x = Framework.viewport.width / 2 - Framework.viewport.height / 40;
+			_closeBtn.addEventListener(TouchEvent.TRIGGERED, onTriggeredButton);
 			// 타이틀바 Sprite 객체에 addChild
 			_titleBarCanvas.addChild(_titleBarImage);
 			_titleBarCanvas.addChild(_closeBtn);
@@ -120,6 +127,27 @@ package aniPangShootingWorld.ui
 			
 			// _messageBoxCanvas를 addChild
 			addChild(_messageBoxCanvas);
+			
+			_okFunction = okFunction;
+			_cancelFunction = cancelFunction;
+		}
+		
+		public function onTriggeredButton(event:Event):void
+		{
+			var button:Button = event.currentTarget as Button;
+			
+			switch(button)
+			{
+				case _okBtn:
+					if(_okFunction != null) _okFunction();
+					break;
+				case _cancelBtn:
+					if(_cancelBtn != null) _cancelFunction();
+					break;
+				case _closeBtn:
+					removeFromParent();
+					break;
+			}
 		}
 		
 		/**

@@ -184,6 +184,11 @@ package framework.display
 			_buttonContents.height = _originalHeight;
 		}
 		
+		public override function dispose():void
+		{
+			_buttonBounds = null;
+		}
+		
 		public override function set width(value:Number):void
 		{
 			super.width = value;

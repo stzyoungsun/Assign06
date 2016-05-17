@@ -109,5 +109,10 @@ package framework.display
 				}
 			}
 		}
+		
+		public override function dispose():void
+		{
+			_characterTextureDic = null;
+		}
 	}
 }
