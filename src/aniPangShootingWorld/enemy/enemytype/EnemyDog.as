@@ -1,12 +1,16 @@
 package aniPangShootingWorld.enemy.enemytype
 {
+	import flash.utils.getTimer;
+	
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
+	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
 	
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
+	import framework.gameobject.Bullet;
 	import framework.gameobject.BulletManager;
 	import framework.gameobject.Collision;
 	import framework.texture.FwTexture;
@@ -20,6 +24,7 @@ package aniPangShootingWorld.enemy.enemytype
 		private var _bulletManager : BulletManager;
 		private var _stage:Sprite;
 		
+		private var shootFlag : Boolean = false;
 		public function EnemyDog(textureVector:Vector.<FwTexture>, frame : Number, bulletManager : BulletManager, stage : Sprite)
 		{
 			super(textureVector, frame, stage);
@@ -31,7 +36,6 @@ package aniPangShootingWorld.enemy.enemytype
 			//Note @유영선 ronud의 stage
 			_stage = stage;
 			//Note @유영선 시간 조절을 위한 변수 (Displayobject 변수)
-			_prevTime = 0;
 			
 			_pEnemyType = EnemyObjectUtil.ENEMY_DOG;
 			
@@ -43,14 +47,26 @@ package aniPangShootingWorld.enemy.enemytype
 		 */		
 		public function shooting() : void
 		{
-			//Note @유영선 발사 할 미사일 번호를 저장하는 변수
-			var bulletNum : Number = _bulletManager.bulletNumVector.pop();
-			//Note @유영선 선택 된 미사일을 ENEMY_BULLET_MOVING 상태로 설정
-			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.ENEMY_BULLET_MOVING;
-			//Note @유영선 선택 된 미사일을 적들의 위치에 따라 재설정 그리고 크거 조절
-			_bulletManager.bulletVector[bulletNum].initBullet(this.x+this.width/3,this.y,this.width/3, this.height/3);
-			//Note @유영선 round의 stage에 addChild
-			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			
+			
+			var bulletX : Number= this.x + this.width / 2;
+			var bulletY : Number= this.y;
+			//Note @유영선  플레이어가 발사 속도를 조절
+			if(shootFlag == false)
+			{
+				//Note @유영선 발사 할 미사일 번호를 저장하는 변수
+				var bulletNum : Number = _bulletManager.bulletNumVector.pop();
+				//Note @유영선 선택 된 미사일을 ENEMY_BULLET_MOVING 상태로 설정
+				_bulletManager.bulletVector[bulletNum].objectType = ObjectType.ENEMY_BULLET_MOVING;
+				
+				var _shotAngle : Number = Math.atan2(Player.currentPlayer.y - bulletY, Player.currentPlayer.x + Player.currentPlayer.width / 2 - bulletX) / Math.PI / 2;
+				//Note @유영선 선택 된 미사일을 적들의 위치에 따라 재설정 그리고 크거 조절
+				_bulletManager.bulletVector[bulletNum].initBullet(bulletX,bulletY,this.width/3, this.height/3,_shotAngle,Framework.viewport.height/80);
+				//Note @유영선 round의 stage에 addChild
+				_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+				shootFlag = true;
+			}
+			
 		}
 		
 		/**
@@ -60,6 +76,7 @@ package aniPangShootingWorld.enemy.enemytype
 		{
 			for(var i :int= 0; i < _bulletManager.totalBullet; i ++)
 			{
+				if(_bulletManager.bulletVector[i].objectType == ObjectType.PLAYER_BULLET_IDLE) return;
 				//Note @유영선 충돌 체크 매니져를 이용하여 벽과의 충돌과 미사일의 상태가 ENEMY_BULLET_COLLISION이면 stage에서 제거
 				if((Collision.bulletToWall(_bulletManager.bulletVector[i])&& _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_MOVING)|| _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
 				{
@@ -81,10 +98,20 @@ package aniPangShootingWorld.enemy.enemytype
 		 */		
 		public function bulletstate(bulletNum : Number) : void
 		{
+			var bullet:Bullet = _bulletManager.bulletVector[bulletNum];
+			var radian:Number = bullet.angle * Math.PI * 2;
 			if(PlayerState.sSuperPowerFlag == false)
-				_bulletManager.bulletVector[bulletNum].y += Framework.viewport.height/80*EnemyObject.sSpeed;
+			{
+				bullet.x += bullet.speed * Math.cos(radian);
+				bullet.y += bullet.speed * Math.sin(radian);
+			}
+				
 			else
-				_bulletManager.bulletVector[bulletNum].y += Framework.viewport.height/40;
+			{
+				bullet.x += bullet.speed*2 * Math.cos(radian);
+				bullet.y += bullet.speed*2 * Math.sin(radian);
+			}
+				
 		}
 		
 		/**

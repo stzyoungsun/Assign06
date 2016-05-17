@@ -76,8 +76,8 @@ package aniPangShootingWorld.enemy
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
 				this.showImageAt(0);
-				if(this._pEnemyType == EnemyObjectUtil.ENEMY_DOG) 
-					(this as EnemyDog).shooting()
+				
+				if(this._pEnemyType == EnemyObjectUtil.ENEMY_DOG) (this as EnemyDog).shooting()
 			}	
 			else if(this.objectType == ObjectType.ENEMY_COLLISION)
 			{
