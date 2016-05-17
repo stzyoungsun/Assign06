@@ -58,7 +58,6 @@ package framework.display
 			else
 			{
 				_buttonBackground = new Image(0, 0, texture);
-				
 				// ImageTextField의 길이가 버튼 텍스쳐보다 크면 길이를 더 늘려준다.
 				// 너비
 				if(_buttonImageText.width > _buttonBackground.width)
@@ -76,13 +75,13 @@ package framework.display
 			_buttonImageText.x = (_buttonBackground.width - _buttonImageText.width) / 2;
 			_buttonImageText.y = (_buttonBackground.height - _buttonImageText.height) / 2;
 			
-			addChild(_buttonContents);
 			_buttonContents.addChild(_buttonBackground);
 			_buttonContents.addChild(_buttonImageText);
 			
-			
+			addChild(_buttonContents);
 			// 터치 이벤트 등록
 			addEventListener(TouchEvent.TOUCH, onTouchButton);
+			
 			_buttonBounds = new Rectangle();
 		}
 		
@@ -187,16 +186,16 @@ package framework.display
 		
 		public override function set width(value:Number):void
 		{
-			_buttonBackground.width = value;
+			super.width = value;
 			// ImageTextField 위치 조절
-			_buttonImageText.x = (_buttonBackground.width - _buttonImageText.width) / 2;
+			_buttonImageText.x = (this.width - _buttonImageText.width) / 2;
 		}
 		
 		public override function set height(value:Number):void
 		{
-			_buttonBackground.height = value;
+			super.height = value;
 			// ImageTextField 위치 조절
-			_buttonImageText.y = (_buttonBackground.height - _buttonImageText.height) / 2;
+			_buttonImageText.y = (this.height - _buttonImageText.height) / 2;
 		}
 		
 		public function get buttonImageText():ImageTextField{return _buttonImageText;}
