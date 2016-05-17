@@ -1,8 +1,5 @@
 package framework.display
 {
-	import flash.display.BitmapData;
-	import flash.geom.Matrix;
-	
 	import framework.Rendering.Painter;
 	import framework.core.Framework;
 	import framework.texture.FwTexture;

@@ -112,10 +112,5 @@ package aniPangShootingWorld.ui
 		{
 			_systemMessageTextField.text = value;
 		}
-		
-		public override function set width(value:Number):void
-		{
-			super.width = value;
-		}
 	}
 }
