@@ -74,8 +74,10 @@ package aniPangShootingWorld.ui
 					systemMessage = systemMessage.substring(maxLength, systemMessage.length);
 					count--;
 				}
+				
+				_systemMessageTextField.text = newLineTreatedString;
 			}
-			_systemMessageTextField.text = newLineTreatedString;
+			_systemMessageTextField.text = systemMessage;
 			
 			// 컨텐츠 Sprite 객체에 addChild
 			_contentCanvas.addChild(_contentImage);

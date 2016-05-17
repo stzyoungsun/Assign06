@@ -12,10 +12,12 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.resourceName.SoundResource;
+	import aniPangShootingWorld.round.SelectViewSub.RoundButton;
+	import aniPangShootingWorld.round.Setting.GameSetting;
+	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
-	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.MovieClip;
@@ -76,6 +78,10 @@ package aniPangShootingWorld.round
 		//Note @유영선 결과창
 		private var _resultView : ResultDlg;
 		private var _resultTimer : Number;
+		
+		private var _gameSetting : Object;
+		
+		private var _enemyLine : EnemyLine = new EnemyLine();
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
@@ -85,7 +91,14 @@ package aniPangShootingWorld.round
 		public function Round(roundNum : Number)
 		{
 			this.objectType = ObjectType.ROUND_PREV;
+			_gameSetting = GameSetting.instance.roundStateArray;
 			_roundNum = roundNum;
+			
+			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT-4;
+			PlayerState.sPlayerPower = 0;
+			PlayerState.sGoldCount = 0;
+			PlayerState.sTotalHeart = 0;
+			PlayerState.sTotalPower = 0;
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
@@ -210,6 +223,7 @@ package aniPangShootingWorld.round
 						_resultView.totalDraw();
 						_resultView.nextButtonDraw();
 						_resultView.nextButton.addEventListener(TouchEvent.TOUCH, onNextClick);
+						
 						this.objectType = ObjectType.ROUND_IDLE;
 					}
 				}
@@ -224,10 +238,70 @@ package aniPangShootingWorld.round
 			if(event.touch.phase == TouchPhase.ENDED)
 			{
 				this.dispose();
-				var RoundObject : Round = new Round(1);
-				SceneManager.instance.addScene(RoundObject);
+				
+				clearStarCheck()
+				var selectView : SelectView = new SelectView(findViewNum());
+				
+				SceneManager.instance.addScene(selectView);
 				SceneManager.instance.sceneChange(); 
 			}
+		}
+		
+		/** 
+		 * Note @유영선 재화 획득 개수에 따라 별의 개수를 설정 합니다.
+		 */		
+		private function clearStarCheck():void
+		{
+			// TODO Auto Generated method stub
+			var findView : Number = findViewNum();
+			var getTotalItem : Number = PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount;
+			if(getTotalItem < 80)
+				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.ONE_START_CLEAR;
+			else if(getTotalItem < 160)
+				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.TWO_STAR_CLEAR;
+			else 
+				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.THREE_STAR_CLEAR;
+			
+			_gameSetting.GameTotalGold += getTotalItem;
+		}
+		
+		/** 
+		 * @return View 안에서의 라운드 위치를 리턴 합니다
+		 */		
+		private function findViewInRoundNum(fineViewNum) : Number
+		{
+			var roundNum : Number = _roundNum;
+			
+			if(findViewNum() == 0) return roundNum;
+				
+			else
+			{
+				for(var i : int = fineViewNum; i > 0; --i)
+				{
+					roundNum -= _gameSetting.Scene[fineViewNum-1].Roundcnt;
+				}
+				return roundNum;
+			}
+		}
+		
+		/**
+		 * 라운드 상태에 따른 ViewNum을 탐색합니다.
+		 */		
+		private function  findViewNum():Number
+		{
+			// TODO Auto Generated method stub
+			var veiwNum : Number = 0;
+			var cnt : int = 0;
+			while(cnt < _gameSetting.GameTotalRound)
+			{
+				if((_gameSetting.Scene[cnt].RoundStartNum+_gameSetting.Scene[cnt].Roundcnt) > _roundNum)
+					break;
+				cnt++;
+			}
+			
+			veiwNum = cnt;
+			
+			return veiwNum;
 		}
 		
 		private function roundSetting(roundString : String, speedString : String):void
@@ -268,7 +342,6 @@ package aniPangShootingWorld.round
 			//Note @유영선 메테오를 저장 할 변수 입니다.
 			var meteoObstacle:Obstacle = new Meteo(GameTexture.meteor, 30, this);
 			(meteoObstacle as Meteo).meteoShoot();
-			//addChild(_meteoObstacle);
 		}
 		
 		/**
@@ -311,6 +384,12 @@ package aniPangShootingWorld.round
 					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
+					
+				case 2:
+				{
+					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					break;
+				}
 			}
 		}
 		
@@ -320,11 +399,11 @@ package aniPangShootingWorld.round
 		 */		
 		private function checkEnemy():Boolean
 		{
-			if(EnemyLine.enemyVector)
+			if(_enemyLine.enemyVector)
 			{
-				for(var i:Number = 0; i < EnemyLine.enemyVector.length; i++)
+				for(var i:Number = 0; i < _enemyLine.enemyVector.length; i++)
 				{
-					if(EnemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
+					if(_enemyLine.enemyVector[i].objectType != ObjectType.ENEMY_REMOVE)
 					{
 						return false;
 					}
@@ -349,7 +428,7 @@ package aniPangShootingWorld.round
 				}
 				
 				_typeArray = UtilFunction.shuffle(_typeArray, 5);
-				EnemyLine.setEnemyLine(_typeArray, this);
+				_enemyLine.setEnemyLine(_typeArray, this);
 				enenmyDraw();
 			}
 		}
@@ -363,7 +442,7 @@ package aniPangShootingWorld.round
 			
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
-				addChild(EnemyLine.enemyVector[i]);
+				addChild(_enemyLine.enemyVector[i]);
 			}
 		}
 		
@@ -374,10 +453,10 @@ package aniPangShootingWorld.round
 		{
 			for(var i:int = 0; i < EnemyObjectUtil.MAX_LINE_COUNT; i ++)
 			{
-				if(getChildIndex(EnemyLine.enemyVector[i]) != -1)
+				if(getChildIndex(_enemyLine.enemyVector[i]) != -1)
 				{
-					EnemyLine.enemyVector[i].deleteHPBar();
-					removeChild(EnemyLine.enemyVector[i], true);
+					_enemyLine.enemyVector[i].deleteHPBar();
+					removeChild(_enemyLine.enemyVector[i], true);
 				}	
 			}
 			_EnemyCnt++;	//Note @유영선 제거 개수 (라운드에 level 조절)
