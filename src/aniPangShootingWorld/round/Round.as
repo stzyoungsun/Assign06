@@ -506,8 +506,8 @@ package aniPangShootingWorld.round
 		{
 			_player = new Player(GameTexture.player, 5, new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, GameTexture.bullet[0]), this);
 			
-			_player.width = Framework.viewport.width/6;
-			_player.height = Framework.viewport.height/6;
+			_player.width = Framework.viewport.width/8;
+			_player.height = Framework.viewport.height/8;
 			_player.start();
 			
 			addEventListener(TouchEvent.TOUCH, onTouch);
