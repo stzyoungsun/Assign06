@@ -116,7 +116,7 @@ package aniPangShootingWorld.round
 			{
 				case TouchPhase.ENDED:
 					SceneManager.instance.addScene(this);
-					var selectView:SelectView = new SelectView();
+					var selectView:SelectView = new SelectView(0);
 					
 //					PlayerState.sPlayerHeart = 5;
 //					PlayerState.sPlayerPower = 0;

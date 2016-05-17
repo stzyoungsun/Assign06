@@ -1,8 +1,11 @@
 package aniPangShootingWorld.player
 {
+	import com.adobe.nativeExtensions.Vibration;
+	
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.resourceName.SoundResource;
+	import aniPangShootingWorld.round.SelectView;
 	
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -13,8 +16,6 @@ package aniPangShootingWorld.player
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
 	import framework.texture.FwTexture;
-
-	import com.adobe.nativeExtensions.Vibration;
 
 	/**
 	 * Note @유영선 사용자가 직접 조종하는 객체입니다
@@ -195,6 +196,8 @@ package aniPangShootingWorld.player
 			if(PlayerState.sPlayerHeart == 0)
 			{
 				_stage.dispose();
+				var selectView : SelectView = new SelectView(0);
+				SceneManager.instance.addScene(selectView);
 				SceneManager.instance.sceneChange();
 				return;
 			}
