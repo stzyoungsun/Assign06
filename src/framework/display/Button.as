@@ -2,11 +2,11 @@ package framework.display
 {
 	import flash.display.BitmapData;
 	import flash.events.Event;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
-	import framework.display.DisplayObjectContainer;
-	import framework.display.Image;
-	import framework.display.ImageTextField;
+	import framework.core.Framework;
 	import framework.event.Touch;
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
@@ -24,6 +24,10 @@ package framework.display
 		private var _originalWidth:Number;
 		private var _originalHeight:Number;
 		private var _buttonContents:Sprite;
+		private var _buttonBounds:Rectangle;
+		
+		private static var _sMatrix:Matrix = new Matrix();
+		private static var _sPoint:Point = new Point();
 		
 		/**
 		 * 생성자. 버튼을 구성하는 외형을 설정
@@ -73,6 +77,8 @@ package framework.display
 			addChild(_buttonContents);
 			// 터치 이벤트 등록
 			addEventListener(TouchEvent.TOUCH, onTouchButton);
+			
+			_buttonBounds = new Rectangle();
 		}
 		
 		/**
@@ -87,6 +93,26 @@ package framework.display
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				_valid = true;
+				_sMatrix.identity();
+				
+				var currentObject:DisplayObject = this;
+				while(currentObject != Framework.stage)
+				{
+					_sMatrix.concat(currentObject.transformationMatrix);
+					currentObject = currentObject.parent;
+				}
+				
+				var bounds:Rectangle = new Rectangle(0, 0, width, height);
+				var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
+				var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+				
+				minX = _sMatrix.a * bounds.x + _sMatrix.c * bounds.y + _sMatrix.tx;
+				maxX = _sMatrix.a * bounds.width + _sMatrix.c * bounds.y + _sMatrix.tx;
+				minY = _sMatrix.d * bounds.y + _sMatrix.b * bounds.x + _sMatrix.ty;
+				maxY = _sMatrix.d * bounds.height + _sMatrix.b * bounds.x + _sMatrix.ty;
+				
+				_buttonBounds.setTo(minX, minY, maxX - minX, maxY - minY);
+				
 				setPushView();
 			}
 			// 터치가 끝날 때, _valid가 true이면 TRIGGERED 이벤트 발생하도록 설정
@@ -98,7 +124,10 @@ package framework.display
 			// 터치 중 움직이면, 터치의 위치에 따라 _valid와 버튼의 외형을 결정한다.
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				if(checkButtonBounds(new Point(touch.globalX, touch.globalY)))
+				_sPoint.x = touch.globalX;
+				_sPoint.y = touch.globalY;
+				
+				if(_buttonBounds.containsPoint(_sPoint))
 				{
 					if(_valid == false)	setPushView();
 					_valid = true;
