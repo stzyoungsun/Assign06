@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas imagePath="resource_loading_gauge.png">
+<TextureAtlas imagePath="loading_gauge.png">
    <SubTexture name="100" x="0" y="0" width="438" height="31" />
    <SubTexture name="30" x="0" y="32" width="438" height="31" />
    <SubTexture name="60" x="0" y="64" width="438" height="31" />
