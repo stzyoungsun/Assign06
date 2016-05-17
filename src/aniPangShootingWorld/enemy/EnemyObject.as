@@ -1,5 +1,7 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.enemy.enemytype.EnemyDog;
+	import aniPangShootingWorld.enemy.enemytype.EnemyMonkey;
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.PlayerState;
@@ -74,6 +76,7 @@ package aniPangShootingWorld.enemy
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
 				this.showImageAt(0);
+				if(this._pEnemyType == EnemyObjectUtil.ENEMY_DOG) (this as EnemyDog).shooting()
 			}	
 			else if(this.objectType == ObjectType.ENEMY_COLLISION)
 			{
