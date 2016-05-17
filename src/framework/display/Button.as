@@ -10,6 +10,7 @@ package framework.display
 	import framework.event.Touch;
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
+	import framework.texture.AtlasTexture;
 	import framework.texture.FwTexture;
 	
 	/**
@@ -36,10 +37,14 @@ package framework.display
 		 * @param textHeight - 텍스트 하나의 높이
 		 * @param texture - 버튼에 적용할 텍스쳐. 기본 값은 null
 		 */
-		public function Button(text:String, textWidth:Number, textHeight:Number, texture:FwTexture = null)
+		public function Button(text:String, textWidth:Number, textHeight:Number, texture:FwTexture = null, textTexture : AtlasTexture = null)
 		{
 			_buttonContents = new Sprite();
-			_buttonImageText = new ImageTextField(0, 0, textWidth, textHeight);
+			if(textTexture == null)
+				_buttonImageText = new ImageTextField(0, 0, textWidth, textHeight);
+			else
+				_buttonImageText = new ImageTextField(0, 0, textWidth, textHeight, textTexture);
+			
 			_buttonImageText.text = text;
 			
 			// texture가 null이면 회색 배경을 텍스쳐로 적용한다.
@@ -63,7 +68,7 @@ package framework.display
 				// 높이
 				if(_buttonImageText.height > _buttonBackground.height)
 				{
-					_buttonBackground.height += _buttonImageText.height * 1.2;
+					_buttonBackground.height = _buttonImageText.height * 1.2;
 				}
 			}
 			
@@ -71,13 +76,13 @@ package framework.display
 			_buttonImageText.x = (_buttonBackground.width - _buttonImageText.width) / 2;
 			_buttonImageText.y = (_buttonBackground.height - _buttonImageText.height) / 2;
 			
+			addChild(_buttonContents);
 			_buttonContents.addChild(_buttonBackground);
 			_buttonContents.addChild(_buttonImageText);
 			
-			addChild(_buttonContents);
+			
 			// 터치 이벤트 등록
 			addEventListener(TouchEvent.TOUCH, onTouchButton);
-			
 			_buttonBounds = new Rectangle();
 		}
 		
@@ -98,6 +103,8 @@ package framework.display
 				var currentObject:DisplayObject = this;
 				while(currentObject != Framework.stage)
 				{
+					if(currentObject == null) break;
+					
 					_sMatrix.concat(currentObject.transformationMatrix);
 					currentObject = currentObject.parent;
 				}
@@ -189,7 +196,12 @@ package framework.display
 		{
 			_buttonBackground.height = value;
 			// ImageTextField 위치 조절
-			_buttonImageText.y = (_buttonBackground.width - _buttonImageText.width) / 2;
+			_buttonImageText.y = (_buttonBackground.height - _buttonImageText.height) / 2;
 		}
+		
+		public function get buttonImageText():ImageTextField{return _buttonImageText;}
+		public function set buttonImageText(value:ImageTextField):void{_buttonImageText = value;}
+		public function get buttonBackground():Image{return _buttonBackground;}
+		public function set buttonBackground(value:Image):void{_buttonBackground = value;}
 	}
 }

@@ -36,16 +36,38 @@ package aniPangShootingWorld.round.Setting
 		
 		public function gameSettingInit() : void
 		{
-			_roundStateArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Game.xml"]);
+			var stream : FileStream = new FileStream();
+			var path:File = File.applicationStorageDirectory.resolvePath( "data/Game.xml" );
+			var xmlData : String;
+			if(path.exists)
+			{
+				trace(path.url);
+				stream.open(path,FileMode.READ);
+				xmlData = stream.readMultiByte(stream.bytesAvailable,"utf-8");
+				if(xmlData == "null")
+				{
+					_roundStateArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Game.xml"]);
+				}
+				else _roundStateArray = json.JSON.decode(xmlData);
+			}
+			else
+			{
+				trace("File Not");
+				
+			}
+			
+			
 		}
 		
 		public function SaveSetting() : void
 		{
 			var s : String = json.JSON.encode(_roundStateArray);
+			
 			var pattern : RegExp = /}/g;
 			s = s.replace(pattern,"}\n");
 			
-			var path : File = new File(File.applicationDirectory.nativePath).resolvePath("./../src/resource/SettingXML/Game.xml");
+			var path:File = File.applicationStorageDirectory.resolvePath( "data/Game.xml" );
+			trace(path.url);
 			var fileStream : FileStream = new FileStream();
 			fileStream.open(path, FileMode.WRITE);
 			

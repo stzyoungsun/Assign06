@@ -4,6 +4,7 @@ package aniPangShootingWorld.round
 	
 	import aniPangShootingWorld.round.SelectViewSub.ItemWindow;
 	import aniPangShootingWorld.round.SelectViewSub.RoundButton;
+	import aniPangShootingWorld.round.SelectViewSub.StoreBox;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	
@@ -29,13 +30,17 @@ package aniPangShootingWorld.round
 		private var _nextButton : Button;
 		private var _prevButton : Button;
 		
+		private var _storeButton : Button;
 		private var _viewNum : Number = 0;
+		
+		private static var _current : Sprite;
 		/**
 		 * 스테이지를 선택 하는 창이 나옵니다.
 		 */		
 		public function SelectView(ViewNum : Number)
 		{
 			_viewNum = ViewNum;
+			_current = this;
 			sgameTotalGold = GameSetting.instance.roundStateArray.GameTotalGold;
 			sgameWingCount = GameSetting.instance.roundStateArray.GameWing;
 			
@@ -58,6 +63,17 @@ package aniPangShootingWorld.round
 			drawItemWindow();
 			drawNextButton();
 			drawPrevButton();
+			drawStoreButton();
+		}
+		
+		private function drawStoreButton():void
+		{
+			_storeButton = new Button("Store",Framework.viewport.width/35,Framework.viewport.width/35,GameTexture.messageBox[5]);
+			_storeButton.x = Framework.viewport.width -_storeButton.width;
+			_storeButton.y = Framework.viewport.height/12;
+			addChild(_storeButton);
+			
+			_storeButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
 		}
 		
 		private function drawNextButton():void
@@ -65,7 +81,7 @@ package aniPangShootingWorld.round
 			// TODO Auto Generated method stub
 			if(GameSetting.instance.roundStateArray.GameTotalRound <= _sceneSetting.RoundStartNum + _sceneSetting.Roundcnt) return;
 			
-			_nextButton = new Button("Next", Framework.viewport.width/45, Framework.viewport.width/45, GameTexture.messageBox[2]);
+			_nextButton = new Button("Next", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[3]);
 			addChild(_nextButton);
 			
 			_nextButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
@@ -76,7 +92,7 @@ package aniPangShootingWorld.round
 			// TODO Auto Generated method stub
 			if(_sceneSetting.RoundStartNum == 0) return;
 			
-			_prevButton = new Button("Prev", Framework.viewport.width/45, Framework.viewport.width/45, GameTexture.messageBox[3]);
+			_prevButton = new Button("Prev", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[4]);
 			_prevButton.y = Framework.viewport.height - _prevButton.height;
 			addChild(_prevButton);
 			
@@ -101,6 +117,19 @@ package aniPangShootingWorld.round
 					ViewInit(--_viewNum);
 					break;
 				}
+					
+				case _storeButton:
+				{
+					var storebox : StoreBox = new StoreBox();
+					storebox.width = Framework.viewport.width/2;
+					storebox.height = Framework.viewport.height/3;
+					trace(Framework.viewport.width);
+					trace(Framework.viewport.height);
+					storebox.x = (Framework.viewport.width - Framework.viewport.width/2)/2;
+					storebox.y = Framework.viewport.height/2 - Framework.viewport.height/3/2;
+					
+					addChild(storebox);
+ 				}
 			}
 				
 			
@@ -120,7 +149,7 @@ package aniPangShootingWorld.round
 			// TODO Auto Generated method stub
 			for(var i : int =0; i < _sceneSetting.Roundcnt; i++)
 			{
-				var roundButton : RoundButton = new RoundButton(_sceneSetting.RoundStartNum+i+1, _sceneSetting.Round[i]);
+				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting);
 				addChild(roundButton);
 			}
 		}
@@ -152,5 +181,7 @@ package aniPangShootingWorld.round
 		{
 			super.dispose();
 		}
+		
+		public static function get current():Sprite{return _current;}
 	}
 }
