@@ -1,5 +1,6 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.enemy.enemytype.EnemyDog;
 	import aniPangShootingWorld.enemy.enemytype.EnemyMonkey;
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
 	import aniPangShootingWorld.enemy.enemytype.EnemyRat;
@@ -47,8 +48,8 @@ package aniPangShootingWorld.enemy
 						break;
 					
 					case EnemyObjectUtil.ENEMY_PIG:
-							bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1,
-							TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
+						bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1,
+						TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
 						_enemyVector.push(new EnemyPig(GameTexture.monsterPig, 10, bulletMgr, stage));
 						break;
 					
@@ -57,9 +58,9 @@ package aniPangShootingWorld.enemy
 						break;
 					
 					case EnemyObjectUtil.ENEMY_DOG:
-							bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 30,
-							TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
-						_enemyVector.push(new EnemyMonkey(GameTexture.monsterDog, 10, stage));
+						bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 30,
+						TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
+						_enemyVector.push(new EnemyDog(GameTexture.monsterDog, 10,bulletMgr, stage));
 						break;
 						
 				}
