@@ -58,14 +58,19 @@ package aniPangShootingWorld.ui
 			// 시스템 메시지 출력을 위한 이미지텍스트필드 객체 생성 & 텍스트 설정
 			_systemMessageTextField = new ImageTextField(_contentImage.x + 10, _contentImage.y + 10, Framework.viewport.width / 40, Framework.viewport.height / 40);
 			
+			// 메시지의 문자열의 길이가 maxLength보다 크면 메시지 문자열을 maxLength의 크기만큼 나눈 후 나눈 문자열의 끝에 개행문자를 덧붙여준다.
 			if(maxLength < systemMessage.length)
 			{
+				// 반복할 횟수 지정
 				var count:int = Math.ceil(systemMessage.length / maxLength);
+				// 개행처리된 문자열들이 저장될 변수
 				var newLineTreatedString:String = "";
 				
 				while(count != 0)
 				{
+					// 0 ~ maxLength만큼 자른 문자열에 개행문자를 더한 후 newLineTreatedString에 더함 
 					newLineTreatedString += systemMessage.substring(0, maxLength) + "\n";
+					// maxLength 이후부터 끝까지 문자열을 자른 후 대입
 					systemMessage = systemMessage.substring(maxLength, systemMessage.length);
 					count--;
 				}
