@@ -34,13 +34,13 @@ package framework.background
 			_move = move;
 			_prevTime = 0;
 			
+			// 시작 지점 설정
+			_startPoint = -Framework.viewport.height;
+			
 			// 첫 번째 이미지
 			_firstImage = new Image(0, 0, backgroudTexture);
 			_firstImage.width = Framework.viewport.width;
 			_firstImage.height = Framework.viewport.height;
-			
-			// 시작 지점 설정
-			_startPoint = -_firstImage.height;
 			
 			// 두 번째 이미지
 			_secondImage = new Image(0, _startPoint, backgroudTexture);
