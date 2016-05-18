@@ -1,5 +1,6 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.enemy.enemytype.EnemyChicken;
 	import aniPangShootingWorld.enemy.enemytype.EnemyDog;
 	import aniPangShootingWorld.enemy.enemytype.EnemyMonkey;
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
@@ -87,7 +88,10 @@ package aniPangShootingWorld.enemy
 				
 				if(enemyHP == 0)
 				{
+					if(this._pEnemyType == EnemyObjectUtil.ENEMY_CHICK) (this as EnemyChicken).devide();
+				
 					if(this._pEnemyType == EnemyObjectUtil.ENEMY_PIG) (this as EnemyPig).shooting()
+					
 					this.objectType = ObjectType.ITEM_IDLE;
 				}
 			}
