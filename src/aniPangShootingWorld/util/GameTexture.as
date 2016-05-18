@@ -24,6 +24,8 @@ package aniPangShootingWorld.util
 		// boss
 		private static var _sBoss1:Vector.<FwTexture>;
 		private static var _sBoss2:Vector.<FwTexture>;
+		private static var _sBoss3:Vector.<FwTexture>;
+		private static var _sBoss3Object:Vector.<FwTexture>;
 		//private static var _sBOSS_3:Vector.<FwTexture>;
 		
 		// item_missile_meteor
@@ -120,6 +122,21 @@ package aniPangShootingWorld.util
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_1],
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_2],
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_3]
+			];
+			
+			_sBoss3 = new <FwTexture>[
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_SUB_1],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_SUB_2]
+			];
+			
+			_sBoss3Object = new <FwTexture>[
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_1],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_2],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_3],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_4],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_5],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_6],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS3].subTextures[AtlasResource.BOSS3_OBJECT_7]
 			];
 			
 			_sMeteor = new <FwTexture>[
@@ -252,6 +269,8 @@ package aniPangShootingWorld.util
 		public static function get monsterChick():Vector.<FwTexture> { return _sMonsterChick; }
 		public static function get boss1():Vector.<FwTexture> { return _sBoss1; }
 		public static function get boss2():Vector.<FwTexture> { return _sBoss2; }
+		public static function get boss3():Vector.<FwTexture> { return _sBoss3; }
+		public static function get boss3Object():Vector.<FwTexture> { return _sBoss3Object; }
 		public static function get meteor():Vector.<FwTexture> { return _sMeteor; }
 		public static function get coin():Vector.<FwTexture> { return _sCoin; }
 		public static function get power():Vector.<FwTexture> { return _sPower; }

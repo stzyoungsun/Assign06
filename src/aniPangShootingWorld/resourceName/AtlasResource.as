@@ -34,6 +34,27 @@ package aniPangShootingWorld.resourceName
 		public static const BOSS2_SUB_PER_90:String = "90per.png";
 		public static const BOSS2_SUB_PER_100:String = "100per.png";
 		
+		public static const BOSS3:String = "boss3.png";
+		public static const BOSS3_SUB_1:String = "boss3-1.png";
+		public static const BOSS3_SUB_2:String = "boss3-2.png";
+		public static const BOSS3_SUB_PER_10:String = "10per.png";
+		public static const BOSS3_SUB_PER_20:String = "20per.png";
+		public static const BOSS3_SUB_PER_30:String = "30per.png";
+		public static const BOSS3_SUB_PER_40:String = "40per.png";
+		public static const BOSS3_SUB_PER_50:String = "50per.png";
+		public static const BOSS3_SUB_PER_60:String = "60per.png";
+		public static const BOSS3_SUB_PER_70:String = "70per.png";
+		public static const BOSS3_SUB_PER_80:String = "80per.png";
+		public static const BOSS3_SUB_PER_90:String = "90per.png";
+		public static const BOSS3_SUB_PER_100:String = "100per.png";
+		public static const BOSS3_OBJECT_1:String = "bossSub1.png";
+		public static const BOSS3_OBJECT_2:String = "bossSub2.png";
+		public static const BOSS3_OBJECT_3:String = "bossSub3.png";
+		public static const BOSS3_OBJECT_4:String = "bossSub4.png";
+		public static const BOSS3_OBJECT_5:String = "bossSub5.png";
+		public static const BOSS3_OBJECT_6:String = "bossSub6.png";
+		public static const BOSS3_OBJECT_7:String = "bossSub7.png";
+		
 		public static const CHARACTER:String = "character.png";
 		public static const CHARACTER_SUB_MAO_1:String = "mao_1.png";
 		public static const CHARACTER_SUB_MAO_2:String = "mao_2.png";
