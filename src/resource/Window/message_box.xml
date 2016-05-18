@@ -3,7 +3,9 @@
    <SubTexture name="button1.png" x="0" y="352" width="205" height="60" />
    <SubTexture name="button2.png" x="0" y="413" width="205" height="60" />
    <SubTexture name="button3.png" x="206" y="352" width="205" height="60" />
-   <SubTexture name="close.png" x="411" y="0" width="50" height="50" />
+   <SubTexture name="checked.png" x="411" y="0" width="64" height="64" />
+   <SubTexture name="close.png" x="411" y="130" width="50" height="50" />
    <SubTexture name="content.png" x="0" y="0" width="410" height="300" />
    <SubTexture name="title.png" x="0" y="301" width="410" height="50" />
+   <SubTexture name="unchecked.png" x="411" y="65" width="64" height="64" />
 </TextureAtlas>

@@ -220,7 +220,9 @@ package aniPangShootingWorld.util
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_CLOSE],
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_1],
 				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_2],
-				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_3]
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_BUTTON_3],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_CHECKED],
+				textureManager.atlasTextureDictionary[AtlasResource.MESSAGE_BOX].subTextures[AtlasResource.MESSAGE_BOX_SUB_UNCHECKED],
 			]
 			
 			_sSubSelectViews = new <FwTexture>[
@@ -233,7 +235,8 @@ package aniPangShootingWorld.util
 				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_PASSYET],
 				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_POINT],
 				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_COIN],
-				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_WING]
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_WING],
+				textureManager.atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB].subTextures[AtlasResource.SELECTVIEW_SUB_CONFIGURE]
 			]
 			_sCreated = true;
 		}
@@ -317,7 +320,9 @@ package aniPangShootingWorld.util
 		 * [2]:MESSAGE_BOX_SUB_BUTTON_CLOSE<br/>
 		 * [3]:MESSAGE_BOX_SUB_BUTTON_1<br/>
 		 * [4]:MESSAGE_BOX_SUB_BUTTON_2<br/>
-		 * [5]:MESSAGE_BOX_SUB_BUTTON_3
+		 * [5]:MESSAGE_BOX_SUB_BUTTON_3<br/>
+		 * [6]:MESSAGE_BOX_SUB_CHECKED<br/>
+		 * [7]:MESSAGE_BOX_SUB_UNCHECKED
 		 */
 		public static function get messageBox():Vector.<FwTexture> { return _sMessageBox; }
 		
@@ -329,9 +334,10 @@ package aniPangShootingWorld.util
 		 * [4]:SELECTVIEW_SUB_PASSED3<br/>
 		 * [5]:SELECTVIEW_SUB_PASSING<br/>
 		 * [6]:SELECTVIEW_SUB_PASSYET<br/>
-		 * [7]:SELECTVIEW_SUB_POINT
-		 * [8]:SELECTVIEW_SUB_COiN
-		 * [9]:SELECTVIEW_SUB_WING
+		 * [7]:SELECTVIEW_SUB_POINT<br/>
+		 * [8]:SELECTVIEW_SUB_COIN<br/>
+		 * [9]:SELECTVIEW_SUB_WING<br/>
+		 * [10]:SELECTVIEW_SUB_CONFIGURE
 		 */
 		public static function get subSelectViews():Vector.<FwTexture> { return _sSubSelectViews;}
 	}

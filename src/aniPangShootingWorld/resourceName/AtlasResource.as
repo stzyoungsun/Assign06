@@ -61,6 +61,7 @@ package aniPangShootingWorld.resourceName
 		public static const SELECTVIEW_SUB_POINT : String = "Point.png";
 		public static const SELECTVIEW_SUB_COIN : String = "coin.png";
 		public static const SELECTVIEW_SUB_WING : String = "wing.png";
+		public static const SELECTVIEW_SUB_CONFIGURE:String = "configure.png";
 		
 		public static const ITEM_MISSILE_METEOR:String = "missle_item_meteor.png";
 		public static const ITEM_MISSILE_METEOR_SUB_BULLET_1:String = "bullet_1.png";
@@ -147,5 +148,7 @@ package aniPangShootingWorld.resourceName
 		public static const MESSAGE_BOX_SUB_BUTTON_1:String = "button1.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_2:String = "button2.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_3:String = "button3.png";
+		public static const MESSAGE_BOX_SUB_CHECKED:String = "checked.png";
+		public static const MESSAGE_BOX_SUB_UNCHECKED:String = "unchecked.png";
 	}
 }
