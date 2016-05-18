@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="boos2.png">
+   <SubTexture name="100per.png" x="0" y="0" width="394" height="31" />
+   <SubTexture name="10per.png" x="0" y="32" width="394" height="31" />
+   <SubTexture name="20per.png" x="0" y="64" width="394" height="31" />
+   <SubTexture name="30per.png" x="0" y="96" width="394" height="31" />
+   <SubTexture name="40per.png" x="0" y="128" width="394" height="31" />
+   <SubTexture name="50per.png" x="0" y="160" width="394" height="31" />
+   <SubTexture name="60per.png" x="0" y="192" width="394" height="31" />
+   <SubTexture name="70per.png" x="0" y="224" width="394" height="31" />
+   <SubTexture name="80per.png" x="0" y="256" width="394" height="31" />
+   <SubTexture name="90per.png" x="0" y="288" width="394" height="31" />
+   <SubTexture name="boss2-1.png" x="395" y="0" width="300" height="300" />
+   <SubTexture name="boss2-2.png" x="696" y="0" width="300" height="300" />
+   <SubTexture name="boss2-3.png" x="0" y="320" width="300" height="300" />
+</TextureAtlas>
