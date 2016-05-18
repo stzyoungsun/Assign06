@@ -3,8 +3,9 @@ package aniPangShootingWorld.round
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
-	import aniPangShootingWorld.boss.OneRoundBoss;
-	import aniPangShootingWorld.boss.TwoRoundBoss;
+	import aniPangShootingWorld.boss.bosstype.OneRoundBoss;
+	import aniPangShootingWorld.boss.bosstype.ThreeRoundBoss;
+	import aniPangShootingWorld.boss.bosstype.TwoRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
@@ -350,19 +351,8 @@ package aniPangShootingWorld.round
 			if(_boss == null)
 			{
 				bossSetting();
-				_boss.x = Framework.viewport.width / 8;
-				_boss.y = 0;
-				_boss.width = Framework.viewport.width * 4 / 5;
-				_boss.height = Framework.viewport.height / 4;
-				_boss.start();
 				addChild(_boss);
-				
-//				_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
-//				_bossHPbar.hpBarInit(_boss);
-//				addChild(_bossHPbar);
 			}
-			
-			//_bossHPbar.calcHP(_boss.maxBossHp, _boss.bossHp);
 		}
 		
 		/** 
@@ -386,7 +376,7 @@ package aniPangShootingWorld.round
 					
 				case 2:
 				{
-					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					_boss = new ThreeRoundBoss(GameTexture.boss3, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}	
 			}
