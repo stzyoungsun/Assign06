@@ -5,6 +5,7 @@ package aniPangShootingWorld.round
 	
 	import aniPangShootingWorld.boss.BossObject;
 	import aniPangShootingWorld.boss.OneRoundBoss;
+	import aniPangShootingWorld.boss.TwoRoundBoss;
 	import aniPangShootingWorld.enemy.EnemyLine;
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
@@ -91,7 +92,7 @@ package aniPangShootingWorld.round
 		
 		public function Round(roundNum : Number)
 		{
-			this.objectType = ObjectType.ROUND_PREV;
+			this.objectType = ObjectType.ROUND_BOSS;
 			_gameSetting = GameSetting.instance.roundStateArray;
 			_roundNum = roundNum;
 			
@@ -103,7 +104,7 @@ package aniPangShootingWorld.round
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
-			prevGameStart();
+			//prevGameStart();
 			//Note @유영선 플레이어를 화면에 출력
 			playerDraw();
 			//Note @유영선 플레이어 상태창 화면에 출력
@@ -358,12 +359,12 @@ package aniPangShootingWorld.round
 				_boss.start();
 				addChild(_boss);
 				
-				_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
-				_bossHPbar.hpBarInit(_boss);
-				addChild(_bossHPbar);
+//				_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
+//				_bossHPbar.hpBarInit(_boss);
+//				addChild(_bossHPbar);
 			}
 			
-			_bossHPbar.calcHP(_boss.maxBossHp, _boss.bossHp);
+			//_bossHPbar.calcHP(_boss.maxBossHp, _boss.bossHp);
 		}
 		
 		/** 
@@ -380,7 +381,8 @@ package aniPangShootingWorld.round
 				}
 				case 1:
 				{
-					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					TwoRoundBoss.stotalBossCnt = 15;
+					_boss = new TwoRoundBoss(GameTexture.boss2, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
 					
@@ -388,8 +390,9 @@ package aniPangShootingWorld.round
 				{
 					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
-				}
+				}	
 			}
+			_boss.addHPBar();
 		}
 		
 		/**

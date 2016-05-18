@@ -1,5 +1,8 @@
 package aniPangShootingWorld.boss
 {
+	import aniPangShootingWorld.util.GameTexture;
+	import aniPangShootingWorld.util.HPbar;
+	
 	import framework.animaiton.MovieClip;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
@@ -19,7 +22,7 @@ package aniPangShootingWorld.boss
 		private var _bossHp:Number;
 		private var _maxBossHp:Number;
 		private var _stage:Sprite;
-		
+		private var _bossHPbar:HPbar;
 		/**
 		 * 생성자 - 객체 및 변수의 초기화 작업 진행 
 		 * @param bossAtlas - 보스의 이미지를 담은 AtlasBitmapData 객체
@@ -50,7 +53,28 @@ package aniPangShootingWorld.boss
 			
 			processCollision();
 			
+			if(_bossHPbar != null)
+			{
+				_bossHPbar.hpBarInit(this);
+				_bossHPbar.calcHP(maxBossHp,bossHp);
+			}
+		
 			bulletFrame();
+		}
+		
+		public function addHPBar() : void
+		{
+			_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
+			_stage.addChild(_bossHPbar);
+		}
+		
+		public function deleteHPBar() : void
+		{
+			if(_stage.getChildIndex(_bossHPbar) != -1)
+			{
+				_stage.removeChild(_bossHPbar,true);
+				_bossHPbar = null;
+			}
 		}
 		
 		/**
@@ -87,6 +111,7 @@ package aniPangShootingWorld.boss
 			else if(this.objectType == ObjectType.BOSS_DIE)
 			{
 				// 보스의 죽음 처리
+				deleteHPBar();
 				dieBoss();
 			}
 		}

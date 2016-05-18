@@ -126,8 +126,7 @@ package aniPangShootingWorld.round
 					
 				case _storeButton:
 				{
-					_storeButton.visible = false;
-					var storebox : StoreBox = new StoreBox(_storeButton);
+					var storebox : StoreBox = new StoreBox();
 					storebox.width = Framework.viewport.width/2;
 					storebox.height = Framework.viewport.height/3;
 					trace(Framework.viewport.width);

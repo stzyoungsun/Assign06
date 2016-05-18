@@ -15,11 +15,10 @@ package aniPangShootingWorld.round.SelectViewSub
 		private var _buyWingButton : Button;
 		private var _chargeFreeCoin : Button;
 		
-		private var _parentButton : Button;
-		public function StoreBox(parentButton : Button)
+		public function StoreBox()
 		{
 			super("",25,false);
-			_parentButton = parentButton;
+			
 			_buyWingButton = new Button("50G Buy Wing", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[3]);
 			_buyWingButton.width = this.width;
 			_buyWingButton.height = this.height/3;
@@ -82,7 +81,6 @@ package aniPangShootingWorld.round.SelectViewSub
 		public override function dispose():void
 		{
 			super.dispose();
-			_parentButton.visible = true;
 		}
 	}
 }
