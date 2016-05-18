@@ -6,6 +6,7 @@ package aniPangShootingWorld.enemy
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.UtilFunction;
@@ -74,6 +75,10 @@ package aniPangShootingWorld.enemy
 		 */		
 		public override function render():void
 		{
+			super.render();
+			
+			if(GameSetting.instance.pause) return;
+			
 			if(this.objectType == ObjectType.ENEMY_GENERAL)
 			{
 				this.showImageAt(0);
@@ -101,7 +106,7 @@ package aniPangShootingWorld.enemy
 			{
 				case ObjectType.ITEM_IDLE:
 				{
-					var randomNumber : Number = UtilFunction.random(0,5,1);
+					var randomNumber : Number = UtilFunction.random(0, 5, 1);
 					var item : ItemGroup = new ItemGroup(randomNumber,this.x, this.y,_stage);
 					item.drawItem();
 					this.x = -999;
@@ -117,7 +122,6 @@ package aniPangShootingWorld.enemy
 					
 				default:
 				{
-					super.render();
 					autoMoving();
 					_enemyHPbar.hpBarInit(this);
 					_enemyHPbar.calcHP(_maxHP,_enemyHP);

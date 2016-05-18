@@ -8,6 +8,7 @@ package framework.core
 	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
@@ -78,6 +79,7 @@ package framework.core
 			_nativeStage.addEventListener(MouseEvent.MOUSE_DOWN, onTouch);
 			_nativeStage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
 			_nativeStage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
+			_nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
 			
 			_showStats = false;
 			
@@ -188,6 +190,11 @@ package framework.core
 				// _touchedObject에 저장된 오브젝트의 dispatchEvent 호출
 				_touchedObject.dispatchEvent(touchEvent);
 			}
+		}
+		
+		private function onKey(event:KeyboardEvent):void
+		{
+			stage.dispatchEvent(event);
 		}
 		
 		/**

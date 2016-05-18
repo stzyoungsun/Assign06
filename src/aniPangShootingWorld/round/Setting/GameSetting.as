@@ -20,14 +20,12 @@ package aniPangShootingWorld.round.Setting
 		private var _vibration:Boolean;
 		private var _bgm:Boolean;
 		private var _effectSound:Boolean;
+		private var _pause:Boolean;
 		
 		public function GameSetting()
 		{
 			if (!_constructed) throw new Error("Singleton, use Scene.instance");
-			
-			_vibration = true;
-			_bgm = true;
-			_effectSound = true;
+			_pause = false;
 		}
 	
 		public static function get instance():GameSetting
@@ -60,6 +58,10 @@ package aniPangShootingWorld.round.Setting
 			{
 				_roundStateArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Game.xml"]);
 			}
+			
+			_vibration = true;
+			_bgm = true;
+			_effectSound = true;
 		}
 		
 		public function SaveSetting() : void
@@ -91,5 +93,8 @@ package aniPangShootingWorld.round.Setting
 
 		public function get effectSound():Boolean { return _effectSound; }
 		public function set effectSound(value:Boolean):void { _effectSound = value; }
+
+		public function get pause():Boolean { return _pause; }
+		public function set pause(value:Boolean):void { _pause = value; }
 	}
 }
