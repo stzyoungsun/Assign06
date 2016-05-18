@@ -132,5 +132,7 @@ package aniPangShootingWorld.resourceName
 		public static const MESSAGE_BOX_SUB_BUTTON_1:String = "button1.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_2:String = "button2.png";
 		public static const MESSAGE_BOX_SUB_BUTTON_3:String = "button3.png";
+		public static const MESSAGE_BOX_SUB_CHECKED:String = "checked.png";
+		public static const MESSAGE_BOX_SUB_UNCHECKED:String = "unchecked.png";
 	}
 }
