@@ -3,6 +3,7 @@ package aniPangShootingWorld.obstacle
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.player.Player;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;
@@ -54,10 +55,14 @@ package aniPangShootingWorld.obstacle
 		
 		public override function render():void
 		{
+			super.render();
+			
+			if(GameSetting.instance.pause) { return; }
+			
 			if(_shootFlag == true)
 			{
 				var curTimer:int = getTimer();
-				
+						
 				//Note @유영선  3초간 메테오를 조준 합니다.
 				if(curTimer - _prevTime < 3000)
 				{
@@ -77,7 +82,6 @@ package aniPangShootingWorld.obstacle
 			
 			if(this.objectType != ObjectType.OBSTACLE_IDLE)
 			{
-				super.render();
 				autoMoving();
 			}
 		}

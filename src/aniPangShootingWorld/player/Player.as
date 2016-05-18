@@ -128,6 +128,8 @@ package aniPangShootingWorld.player
 		{
 			super.render();
 			
+			if(GameSetting.instance.pause) return;
+			
 			var curTimerBullet:int = getTimer();
 			
 			//Note @유영선  플레이어가 발사 속도를 조절

@@ -1,6 +1,7 @@
 package aniPangShootingWorld.item
 {
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -56,6 +57,9 @@ package aniPangShootingWorld.item
 		public override function render():void
 		{
 			super.render();
+			
+			if(GameSetting.instance.pause) return;
+			
 			switch(this.objectType)
 			{
 				case ObjectType.ITEM_COIN_COLLISON:

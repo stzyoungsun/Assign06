@@ -155,21 +155,20 @@ package aniPangShootingWorld.ui
 				Framework.sceneStage.removeChild(_backImage);
 				backFlag = false;
 			}
-			this.dispose();
+			
 			if(parent.getChildIndex(this) != -1) removeFromParent();
 			
 			switch(button)
 			{
 				case _okBtn:
-					
 					if(_okFunction != null) _okFunction();
 					break;
 				case _cancelBtn:
 					if(_cancelBtn != null) _cancelFunction();
 					break;
-				case _closeBtn:
-					break;
 			}
+			
+			this.dispose();
 		}
 		
 		/**

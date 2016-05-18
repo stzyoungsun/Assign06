@@ -1,5 +1,8 @@
 package aniPangShootingWorld.round
 {
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
@@ -16,6 +19,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.round.SelectViewSub.RoundButton;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.round.Setting.RoundSetting;
+	import aniPangShootingWorld.ui.ConfigureBox;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
@@ -90,9 +94,11 @@ package aniPangShootingWorld.round
 		
 		public function Round(roundNum : Number)
 		{
-			this.objectType = ObjectType.ROUND_BOSS;
+			this.objectType = ObjectType.ROUND_PREV;
 			_gameSetting = GameSetting.instance.roundStateArray;
 			_roundNum = roundNum;
+			
+			GameSetting.instance.pause = true;
 			
 			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT;
 			PlayerState.sPlayerPower = 0;
@@ -102,7 +108,7 @@ package aniPangShootingWorld.round
 			//Note @유영선 배경 그라운드를 화면에 출력
 			backGroundDraw();
 			//Note @유영선 게임 준비 단계를 화면에 출력
-			//prevGameStart();
+			prevGameStart();
 			//Note @유영선 플레이어를 화면에 출력
 			playerDraw();
 			//Note @유영선 플레이어 상태창 화면에 출력
@@ -133,7 +139,8 @@ package aniPangShootingWorld.round
 		public override function render():void
 		{
 			super.render();
-			if(super.children == null) return;
+			
+			if(super.children == null || GameSetting.instance.pause) return;
 			
 			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm);
 				_soundManager.play(SoundResource.BGM_1, true);
@@ -167,12 +174,6 @@ package aniPangShootingWorld.round
 			//Note @유영선 모든 적들이 지워졌는지 체크 (일반 몬스터 모드) 다 지워졌으면 몬스터 다시 그림
 			else if(this.objectType == ObjectType.ROUND_GENERAL)
 			{
-				if(_prevGameView)
-				{
-					removeChild(_prevGameView,true);
-					_prevGameView = null;
-				}
-				
 				if(checkEnemy())
 					CreateEnemyLine();
 			}
@@ -206,9 +207,12 @@ package aniPangShootingWorld.round
 			//Note @유영선 결과 창 구현
 			else if(this.objectType == ObjectType.ROUND_CLEAR)
 			{
-				
 				var curResultTimer : int = getTimer();
 				PlayerState.sPlayerPower = 0;
+				
+				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				_prevGameView = null;
+				
 				//Note @결과 창 출력
 				if(curResultTimer - _resultTimer > 4000)
 				{
@@ -218,6 +222,7 @@ package aniPangShootingWorld.round
 					{
 						//Note @유영선 점수 결과 합산이 끝낱을 경우
 						removeEventListener(TouchEvent.TOUCH, onTouch);
+						
 						_resultView.totalDraw();
 						_resultView.nextButtonDraw();
 						_resultView.nextButton.addEventListener(TouchEvent.TOUCH, onNextClick);
@@ -332,6 +337,8 @@ package aniPangShootingWorld.round
 			_prevGameView.x = Framework.viewport.width/2 - _prevGameView.width/2;
 			_prevGameView.y = Framework.viewport.height/2 - _prevGameView.height/2;
 			_prevGameView.start();
+			_prevGameView.addEventListener("stop", onStopMovie);
+			
 			addChild(_prevGameView);
 		}
 		
@@ -513,8 +520,6 @@ package aniPangShootingWorld.round
 			_player.height = Framework.viewport.height/8;
 			_player.start();
 			
-			addEventListener(TouchEvent.TOUCH, onTouch);
-			
 			addChild(_player);
 		}
 		
@@ -529,7 +534,6 @@ package aniPangShootingWorld.round
 		
 		private function onTouch(event:TouchEvent):void
 		{
-			trace("들어옴");
 			switch(event.touch.phase)
 			{
 				case TouchPhase.MOVED:
@@ -540,6 +544,43 @@ package aniPangShootingWorld.round
 						_player.x = Framework.viewport.width - _player.width;
 					break;
 			}
+		}
+		
+		private function onKeyDown(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.MENU)
+			{
+				GameSetting.instance.pause = true;
+				
+				var configureBox:ConfigureBox = new ConfigureBox();
+				configureBox.width = Framework.viewport.width / 2;
+				configureBox.height = Framework.viewport.height / 3;
+				configureBox.x = Framework.viewport.width / 4;
+				configureBox.y = Framework.viewport.height / 3;
+				configureBox.addEventListener("resume", onResume);
+				addChild(configureBox);
+				
+				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				removeEventListener(TouchEvent.TOUCH, onTouch);
+			}
+			else if(event.keyCode == Keyboard.EXIT)
+			{
+				
+			}
+		}
+		
+		private function onResume(evnet:Event):void
+		{
+			prevGameStart();
+		}
+		
+		private function onStopMovie(event:Event):void
+		{
+			removeChild(_prevGameView);
+			_prevGameView.removeEventListener("stop", onStopMovie);
+			GameSetting.instance.pause = false;
+			addEventListener(TouchEvent.TOUCH, onTouch);
+			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
 		/**

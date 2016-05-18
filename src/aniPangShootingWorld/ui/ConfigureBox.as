@@ -11,54 +11,51 @@ package aniPangShootingWorld.ui
 		private var _vibrationCheckBox:CheckBox;
 		private var _bgmCheckBox:CheckBox;
 		private var _effectSoundCheckBox:CheckBox;
-		
-		private var _vibration:Boolean;
-		private var _bgm:Boolean;
-		private var _effectSound:Boolean;
 		private var _gameSetting:GameSetting;
 		
 		public function ConfigureBox()
 		{
-			super("", 0, true);
+			super("", 0, true, okBtnFunction, closeBtnFunction);
 			
 			_gameSetting = GameSetting.instance;
 			
 			_vibrationCheckBox = new CheckBox("Vibration");
 			_vibrationCheckBox.x = Framework.viewport.width / 50;
 			_vibrationCheckBox.y = Framework.viewport.height / 15;
-			_vibrationCheckBox.addEventListener("state_change", onStateChange);
+			_vibrationCheckBox.currentState = _gameSetting.vibration;
 			
 			_bgmCheckBox = new CheckBox("BGM");
 			_bgmCheckBox.x = Framework.viewport.width / 50;
 			_bgmCheckBox.y = Framework.viewport.height / 15 + _vibrationCheckBox.y;
-			_bgmCheckBox.addEventListener("state_change", onStateChange);
+			_bgmCheckBox.currentState = _gameSetting.bgm;
 			
 			_effectSoundCheckBox = new CheckBox("Effect Sound");
 			_effectSoundCheckBox.x = Framework.viewport.width / 50;
 			_effectSoundCheckBox.y = Framework.viewport.height / 15 + _bgmCheckBox.y;
-			_effectSoundCheckBox.addEventListener("state_change", onStateChange);
+			_effectSoundCheckBox.currentState = _gameSetting.effectSound;
 			
 			addChild(_vibrationCheckBox);
 			addChild(_bgmCheckBox);
 			addChild(_effectSoundCheckBox);
 		}
 		
-		private function onStateChange(event:Event):void
+		private function okBtnFunction():void
 		{
-			var checkBox:CheckBox = event.currentTarget as CheckBox;
+			_gameSetting.vibration = _vibrationCheckBox.currentState;
+			_gameSetting.bgm = _bgmCheckBox.currentState;
+			_gameSetting.effectSound = _effectSoundCheckBox.currentState;
 			
-			switch(checkBox)
-			{
-				case _vibrationCheckBox:
-					_gameSetting.vibration = _vibrationCheckBox.currentState;
-					break;
-				case _bgmCheckBox:
-					_gameSetting.bgm = _bgmCheckBox.currentState;
-					break;
-				case _effectSoundCheckBox:
-					_gameSetting.effectSound = _effectSoundCheckBox.currentState;
-					break;
-			}
+			dispatchEvent(new Event("resume"));
+		}
+		
+		private function closeBtnFunction():void
+		{
+			dispatchEvent(new Event("resume"));
+		}
+		
+		private function onClose(event:Event):void
+		{
+			dispatchEvent(new Event("resume"));
 		}
 	}
 }

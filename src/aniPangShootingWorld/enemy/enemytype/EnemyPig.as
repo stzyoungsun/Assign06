@@ -4,6 +4,7 @@ package aniPangShootingWorld.enemy.enemytype
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.PlayerState;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -94,6 +95,8 @@ package aniPangShootingWorld.enemy.enemytype
 		public override function render():void
 		{
 			super.render();
+			
+			if(GameSetting.instance.pause) return;
 			
 			if(_bulletManager.bulletVector[0].objectType != ObjectType.ENEMY_BULLET_IDLE) 
 				bulletFrame();

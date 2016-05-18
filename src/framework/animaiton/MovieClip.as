@@ -1,5 +1,6 @@
 package framework.animaiton
 {
+	import flash.events.Event;
 	import flash.utils.getTimer;
 	
 	import framework.display.Image;
@@ -53,6 +54,7 @@ package framework.animaiton
 		{
 			_play = false;
 			_prevTime = 0;
+			dispatchEvent(new Event("stop"));
 		}
 		
 		/**

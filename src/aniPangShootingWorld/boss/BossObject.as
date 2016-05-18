@@ -1,5 +1,6 @@
 package aniPangShootingWorld.boss
 {
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	
@@ -48,6 +49,8 @@ package aniPangShootingWorld.boss
 		public override function render():void
 		{
 			super.render();
+			
+			if(GameSetting.instance.pause) return;
 
 			shotBullet();
 			
