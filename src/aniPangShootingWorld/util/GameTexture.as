@@ -23,8 +23,8 @@ package aniPangShootingWorld.util
 		
 		// boss
 		private static var _sBoss1:Vector.<FwTexture>;
-//		private static var _sBOSS_2:Vector.<FwTexture>;
-//		private static var _sBOSS_3:Vector.<FwTexture>;
+		private static var _sBoss2:Vector.<FwTexture>;
+		//private static var _sBOSS_3:Vector.<FwTexture>;
 		
 		// item_missile_meteor
 		private static var _sMeteor:Vector.<FwTexture>;
@@ -114,6 +114,12 @@ package aniPangShootingWorld.util
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS].subTextures[AtlasResource.BOSS_SUB_1],
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS].subTextures[AtlasResource.BOSS_SUB_2],
 				textureManager.atlasTextureDictionary[AtlasResource.BOSS].subTextures[AtlasResource.BOSS_SUB_3]
+			];
+			
+			_sBoss2 = new <FwTexture>[
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_1],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_2],
+				textureManager.atlasTextureDictionary[AtlasResource.BOSS2].subTextures[AtlasResource.BOSS2_SUB_3]
 			];
 			
 			_sMeteor = new <FwTexture>[
@@ -242,6 +248,7 @@ package aniPangShootingWorld.util
 		public static function get monsterMoneky():Vector.<FwTexture> { return _sMonsterMoneky; }
 		public static function get monsterChick():Vector.<FwTexture> { return _sMonsterChick; }
 		public static function get boss1():Vector.<FwTexture> { return _sBoss1; }
+		public static function get boss2():Vector.<FwTexture> { return _sBoss2; }
 		public static function get meteor():Vector.<FwTexture> { return _sMeteor; }
 		public static function get coin():Vector.<FwTexture> { return _sCoin; }
 		public static function get power():Vector.<FwTexture> { return _sPower; }

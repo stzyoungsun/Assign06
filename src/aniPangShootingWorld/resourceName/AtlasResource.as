@@ -19,6 +19,21 @@ package aniPangShootingWorld.resourceName
 		public static const BOSS_SUB_PER_90:String = "90per.png";
 		public static const BOSS_SUB_PER_100:String = "100per.png";
 		
+		public static const BOSS2:String = "boss2.png";
+		public static const BOSS2_SUB_1:String = "boss2-1.png";
+		public static const BOSS2_SUB_2:String = "boss2-2.png";
+		public static const BOSS2_SUB_3:String = "boss2-3.png";
+		public static const BOSS2_SUB_PER_10:String = "10per.png";
+		public static const BOSS2_SUB_PER_20:String = "20per.png";
+		public static const BOSS2_SUB_PER_30:String = "30per.png";
+		public static const BOSS2_SUB_PER_40:String = "40per.png";
+		public static const BOSS2_SUB_PER_50:String = "50per.png";
+		public static const BOSS2_SUB_PER_60:String = "60per.png";
+		public static const BOSS2_SUB_PER_70:String = "70per.png";
+		public static const BOSS2_SUB_PER_80:String = "80per.png";
+		public static const BOSS2_SUB_PER_90:String = "90per.png";
+		public static const BOSS2_SUB_PER_100:String = "100per.png";
+		
 		public static const CHARACTER:String = "character.png";
 		public static const CHARACTER_SUB_MAO_1:String = "mao_1.png";
 		public static const CHARACTER_SUB_MAO_2:String = "mao_2.png";
