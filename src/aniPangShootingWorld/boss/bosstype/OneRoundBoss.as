@@ -1,4 +1,4 @@
-package aniPangShootingWorld.boss
+package aniPangShootingWorld.boss.bosstype
 {
 	import flash.utils.getTimer;
 	
@@ -12,6 +12,7 @@ package aniPangShootingWorld.boss
 	import framework.gameobject.Bullet;
 	import framework.gameobject.BulletManager;
 	import framework.texture.FwTexture;
+	import aniPangShootingWorld.boss.BossObject;
 	
 	public class OneRoundBoss extends BossObject
 	{
@@ -31,6 +32,12 @@ package aniPangShootingWorld.boss
 		public function OneRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(textureVector, frame, bulletManager, stage);
+			
+			this.x = Framework.viewport.width / 8;
+			this.y = 0;
+			this.width = Framework.viewport.width * 4 / 5;
+			this.height = Framework.viewport.height / 4;
+			this.start();
 			
 			_prevTime = 0;
 			

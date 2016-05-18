@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="boss3.png">
+   <SubTexture name="100per.png" x="0" y="0" width="394" height="31" />
+   <SubTexture name="10per.png" x="0" y="32" width="394" height="31" />
+   <SubTexture name="20per.png" x="0" y="64" width="394" height="31" />
+   <SubTexture name="30per.png" x="0" y="96" width="394" height="31" />
+   <SubTexture name="40per.png" x="0" y="128" width="394" height="31" />
+   <SubTexture name="50per.png" x="0" y="160" width="394" height="31" />
+   <SubTexture name="60per.png" x="0" y="192" width="394" height="31" />
+   <SubTexture name="70per.png" x="0" y="224" width="394" height="31" />
+   <SubTexture name="80per.png" x="0" y="256" width="394" height="31" />
+   <SubTexture name="90per.png" x="0" y="288" width="394" height="31" />
+   <SubTexture name="boss3-1.png" x="395" y="0" width="362" height="249" />
+   <SubTexture name="boss3-2.png" x="395" y="250" width="362" height="249" />
+   <SubTexture name="bossSub1.png" x="0" y="320" width="105" height="105" />
+   <SubTexture name="bossSub2.png" x="106" y="320" width="105" height="105" />
+   <SubTexture name="bossSub3.png" x="212" y="320" width="105" height="105" />
+   <SubTexture name="bossSub4.png" x="758" y="0" width="105" height="105" />
+   <SubTexture name="bossSub5.png" x="758" y="106" width="105" height="105" />
+   <SubTexture name="bossSub6.png" x="864" y="0" width="105" height="105" />
+   <SubTexture name="bossSub7.png" x="864" y="106" width="105" height="105" />
+</TextureAtlas>
