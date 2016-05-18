@@ -6,6 +6,7 @@ package aniPangShootingWorld.player
 	
 	import aniPangShootingWorld.resourceName.SoundResource;
 	import aniPangShootingWorld.round.SelectView;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -80,7 +81,7 @@ package aniPangShootingWorld.player
 			_bulletManager.bulletVector[bulletNum].objectType = ObjectType.PLAYER_BULLET_MOVING;
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);
 			// Note @jihwan.ryu 미사일 발사마다 효과음 재생
-			_soundManager.play(SoundResource.PLAYER_MISSILE);
+			if(GameSetting.instance.effectSound) _soundManager.play(SoundResource.PLAYER_MISSILE);
 		}
 		
 		/**
@@ -158,13 +159,16 @@ package aniPangShootingWorld.player
 				{
 					_shieldTime = getTimer();
 					
-//					var vibe:Vibration;
-//					
-//					if (Vibration.isSupported)
-//					{
-//						vibe = new Vibration();
-//						vibe.vibrate(1000);
-//					}
+					if(GameSetting.instance.vibration)
+					{
+						var vibe:Vibration;
+						
+						if (Vibration.isSupported)
+						{
+							vibe = new Vibration();
+							vibe.vibrate(1000);
+						}
+					}
 					
 					this.objectType = ObjectType.PLAYER_SHIELD_MODE;
 					PlayerState.sPlayerHeart--;

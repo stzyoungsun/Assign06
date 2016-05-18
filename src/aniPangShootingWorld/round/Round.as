@@ -1,6 +1,5 @@
 package aniPangShootingWorld.round
 {
-	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
@@ -32,7 +31,6 @@ package aniPangShootingWorld.round
 	import framework.gameobject.BulletManager;
 	import framework.scene.SceneManager;
 	import framework.sound.SoundManager;
-	import framework.texture.FwTexture;
 	import framework.texture.TextureManager;
 	
 	
@@ -136,7 +134,7 @@ package aniPangShootingWorld.round
 			super.render();
 			if(super.children == null) return;
 			
-			if(_soundManager.loopedPlayingState == "stop");
+			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm);
 				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//8초당 메테오를 발사 합니다.
@@ -490,8 +488,11 @@ package aniPangShootingWorld.round
 					
 				case _enemyBossLV:
 				{
-					_soundManager.stopLoopedPlaying();
-					_soundManager.play(SoundResource.BOSS_WARNING);
+					if(GameSetting.instance.effectSound)
+					{
+						_soundManager.stopLoopedPlaying();
+						_soundManager.play(SoundResource.BOSS_WARNING);
+					}
 					_bossWarningTime = getTimer();
 					this.objectType = ObjectType.ROUND_BOSS_WARNING;
 				}

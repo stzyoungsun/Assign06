@@ -13,9 +13,21 @@ package aniPangShootingWorld.round.Setting
 		private static var _instance : GameSetting;
 		private static var _constructed : Boolean;
 		
+		private var _wingCnt : Number = 0;
+		private var _goldCnt : Number = 0;
+		private var _roundStateArray:Object;
+		
+		private var _vibration:Boolean;
+		private var _bgm:Boolean;
+		private var _effectSound:Boolean;
+		
 		public function GameSetting()
 		{
 			if (!_constructed) throw new Error("Singleton, use Scene.instance");
+			
+			_vibration = true;
+			_bgm = true;
+			_effectSound = true;
 		}
 	
 		public static function get instance():GameSetting
@@ -29,11 +41,6 @@ package aniPangShootingWorld.round.Setting
 			return _instance;
 		}
 		
-		private var _wingCnt : Number = 0;
-		private var _goldCnt : Number = 0;
-		
-		private var _roundStateArray : Object ;
-		
 		public function gameSettingInit() : void
 		{
 			var stream : FileStream = new FileStream();
@@ -41,7 +48,6 @@ package aniPangShootingWorld.round.Setting
 			var xmlData : String;
 			if(path.exists)
 			{
-				trace(path.url);
 				stream.open(path,FileMode.READ);
 				xmlData = stream.readMultiByte(stream.bytesAvailable,"utf-8");
 				if(xmlData == "null")
@@ -52,11 +58,8 @@ package aniPangShootingWorld.round.Setting
 			}
 			else
 			{
-				trace("File Not");
 				_roundStateArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Game.xml"]);
 			}
-			
-			
 		}
 		
 		public function SaveSetting() : void
@@ -67,7 +70,6 @@ package aniPangShootingWorld.round.Setting
 			s = s.replace(pattern,"}\n");
 			
 			var path:File = File.applicationStorageDirectory.resolvePath( "data/Game.xml" );
-			trace(path.url);
 			var fileStream : FileStream = new FileStream();
 			fileStream.open(path, FileMode.WRITE);
 			
@@ -80,5 +82,14 @@ package aniPangShootingWorld.round.Setting
 		
 		public function get roundStateArray():Object{return _roundStateArray;}
 		public function set roundStateArray(value:Object):void{_roundStateArray = value;}
+
+		public function get vibration():Boolean { return _vibration; }
+		public function set vibration(value:Boolean):void { _vibration = value; }
+
+		public function get bgm():Boolean { return _bgm; }
+		public function set bgm(value:Boolean):void { _bgm = value; }
+
+		public function get effectSound():Boolean { return _effectSound; }
+		public function set effectSound(value:Boolean):void { _effectSound = value; }
 	}
 }

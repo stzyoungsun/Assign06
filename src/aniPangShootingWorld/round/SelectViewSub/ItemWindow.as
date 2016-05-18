@@ -68,7 +68,6 @@ package aniPangShootingWorld.round.SelectViewSub
 		
 		private function checkEnum(enumItem : Number):FwTexture
 		{
-			// TODO Auto Generated method stub
 			switch(enumItem)
 			{
 				case ITEM_COIN:
