@@ -1,6 +1,5 @@
 package aniPangShootingWorld.round.SelectViewSub
 {
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
 	
@@ -14,6 +13,7 @@ package aniPangShootingWorld.round.SelectViewSub
 	import framework.core.Framework;
 	import framework.display.Button;
 	import framework.display.Image;
+	import framework.display.Sprite;
 	import framework.event.TouchEvent;
 	import framework.scene.SceneManager;
 	import framework.texture.FwTexture;
@@ -28,95 +28,150 @@ package aniPangShootingWorld.round.SelectViewSub
 		public static const CLICKED_STATE : Number = 4;
 		
 		private var _roundNum : Number =0;
+		private var _roundArrayOrder : Number = 0;
 		
 		private var _roundButtonSetting : Object;
+		private var _stage : Sprite;
 		
 		/**
 		 * @param roundOrder 현재 View 안에서의 roundButton의 번호
 		 * @param roundButtonSetting roundButton의 세팅 값
 		 */		
-		public function RoundButton(roundOrder : Number, roundButtonSetting : Object)
+		public function RoundButton(roundOrder : Number, roundButtonSetting : Object, stage : Sprite)
 		{
-			super(String(roundOrder + roundButtonSetting.RoundStartNum),Framework.viewport.width/20,Framework.viewport.width/20,checkState(roundButtonSetting.Round[roundOrder-1].state)
+			super(String(roundOrder + roundButtonSetting.RoundStartNum),Framework.viewport.width/45,Framework.viewport.width/45,checkState(roundButtonSetting.Round[roundOrder-1].state)
 				, TextureManager.getInstance().atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB]);
 			
+			_stage = stage;
 			this.width = Framework.viewport.width/6;
 			this.height = Framework.viewport.width/6;
 			this.x = Framework.viewport.width*roundButtonSetting.Round[roundOrder-1].x;
 			this.y = Framework.viewport.height*roundButtonSetting.Round[roundOrder-1].y;
 			
-			_roundNum = roundOrder-1 + roundButtonSetting.RoundStartNum;	//라운드에 삽입 할 실질적인 라운드 (0 ~ 라운드 개수만큼)
+			//Select View 화면에서의 순서의 배열 번호
+			_roundArrayOrder = roundOrder-1;
+			//전체 게임을 기준으로 Round 번호
+			_roundNum = roundOrder + roundButtonSetting.RoundStartNum;	
 			_roundButtonSetting = roundButtonSetting;
 			
 			addEventListener(TouchEvent.TRIGGERED, onClicked);
 		}
-		
-//		private function calcStep():Number
-//		{
-//			// TODO Auto Generated method stub
-//			if(_roundNum - 1 < 0 ) return 0;
-//			
-//			var x : Number = Framework.viewport.width;
-//			var y : Number = Framework.viewport.height;
-//			
-//			var gapX : Number = (_roundButtonSetting.Round[_roundNum].x*x)-(_roundButtonSetting.Round[_roundNum-1].x*x);
-//			var gapY : Number = (_roundButtonSetting.Round[_roundNum].y*y)-(_roundButtonSetting.Round[_roundNum-1].y*y);
-//			var step : Number = (Math.sqrt(Math.pow(gapX,2) + Math.pow(gapY,2)))/2;
-//			trace(Math.pow(2,gapX))
-//			 
-//			return step;
-//		}
 		
 		/**
 		 * 클릭 한 라운드 버튼 번호에 상태에 따라 상태에 맞는 이벤트 출력
 		 */		
 		protected function onClicked(event:Event):void
 		{
-			switch(_roundButtonSetting.Round[_roundNum].state)
+			var message : MessageBox;
+			
+			switch(_roundButtonSetting.Round[_roundArrayOrder].state)
 			{
 				case NOT_CLEAR:
 				{
-					if(_roundNum-1 >= 0)
+					if(_roundArrayOrder-1 >= 0)
 					{
-						if(_roundButtonSetting.Round[_roundNum-1].state != NOT_CLEAR && _roundButtonSetting.Round[_roundNum-1].state != CLICKED_STATE
-							&& _roundButtonSetting.Round[_roundNum].state == NOT_CLEAR)
+						if(_roundButtonSetting.Round[_roundArrayOrder-1].state != NOT_CLEAR && _roundButtonSetting.Round[_roundArrayOrder-1].state != CLICKED_STATE)
 						{
-							this.buttonBackground.texture = checkState(CLICKED_STATE);
-							_roundButtonSetting.Round[_roundNum].state = CLICKED_STATE;
-						}	
+							if(_roundNum > 3) 
+							{
+								message = new MessageBox("Not Update Please Waiting",25);
+								message.x = Framework.viewport.width/2 - message.width/2;
+								message.y = Framework.viewport.height/2 - message.height/2;
+								_stage.addChild(message);
+							}
+							else
+							{
+								message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+								message.x = Framework.viewport.width/2 - message.width/2;
+								message.y = Framework.viewport.height/2 - message.height/2;
+								_stage.addChild(message);
+							}
+							 
+						}
+						else
+						{
+							message = new MessageBox("Prev "+(_roundNum-1)+" Round Not Clear",25);
+							message.x = Framework.viewport.width/2 - message.width/2;
+							message.y = Framework.viewport.height/2 - message.height/2;
+							_stage.addChild(message); 
+						}
 					}
 					else
 					{	
-						var messageBox : MessageBox = new MessageBox("123",25,true);
-						messageBox.x = Framework.viewport.width/2;
-						messageBox.y = Framework.viewport.height/2;
-						addChild(messageBox);
-						//this.buttonBackground.texture = checkState(CLICKED_STATE);
-						//_roundButtonSetting.Round[_roundNum].state = CLICKED_STATE;
+						if(_roundNum >= 3) 
+						{
+							message = new MessageBox("Not Update Please Waiting",25);
+							message.x = Framework.viewport.width/2 - message.width/2;
+							message.y = Framework.viewport.height/2 - message.height/2;
+							_stage.addChild(message);
+						}
+						else
+						{
+							message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+							message.x = Framework.viewport.width/2 - message.width/2;
+							message.y = Framework.viewport.height/2 - message.height/2;
+							_stage.addChild(message); 
+						}
 					}
 					break;
 				}
 					
 				default: 
 				{
-//					var messageBox : MessageBox = new MessageBox("123",true);
-//					SelectView.current.addChild(messageBox);
-//					
-//					trace(messageBox.width);
-//					messageBox.x = Framework.viewport.width/2 - messageBox.width/2;
-//					messageBox.y = Framework.viewport.height/2 - messageBox.height/2;
-					
-					GameSetting.instance.roundStateArray.GameWing--;
-					trace(GameSetting.instance.roundStateArray.GameWing);
-					this.parent.dispose();
-					var roundObject : Round = new Round(_roundNum);
-					SceneManager.instance.addScene(roundObject);
-					SceneManager.instance.sceneChange();
+					message = new MessageBox("Start"+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+					message.x = Framework.viewport.width/2 - message.width/2;
+					message.y = Framework.viewport.height/2 - message.height/2;
+					_stage.addChild(message); 
 				}
 			}
-			
 		}
 		
+		public function onOKFunction() : void
+		{
+			var message : MessageBox;
+			
+			switch(_roundButtonSetting.Round[_roundArrayOrder].state)
+			{
+				case NOT_CLEAR:
+				{
+					if(_roundArrayOrder-1 >= 0)
+					{
+						if(_roundButtonSetting.Round[_roundArrayOrder-1].state != NOT_CLEAR && _roundButtonSetting.Round[_roundArrayOrder-1].state != CLICKED_STATE)
+						{
+							this.buttonBackground.texture = checkState(CLICKED_STATE);
+							_roundButtonSetting.Round[_roundArrayOrder].state = CLICKED_STATE;
+						}	
+					}
+					else
+					{	
+						this.buttonBackground.texture = checkState(CLICKED_STATE);
+						_roundButtonSetting.Round[_roundArrayOrder].state = CLICKED_STATE;
+					}
+					break;
+				}
+					
+				default: 
+				{
+					if(GameSetting.instance.roundStateArray.GameWing <= 0)
+					{
+						message = new MessageBox("Not Wing You But Wing in Store",25);
+						message.x = Framework.viewport.width/2 - message.width/2;
+						message.y = Framework.viewport.height/2 - message.height/2;
+						_stage.addChild(message); 
+					}
+					else
+					{
+						GameSetting.instance.roundStateArray.GameWing--;
+						this.parent.dispose();
+						var roundObject : Round = new Round(_roundNum-1);
+						SceneManager.instance.addScene(roundObject);
+						SceneManager.instance.sceneChange();
+					}
+				}
+			}
+		}
+		
+		public function onCancleButton() : void{}
 		/**
 		 * @param stateNum 라운드의 클리어 상태
 		 * @return 클리어 상태에 따른 텍스쳐 값

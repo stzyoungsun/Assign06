@@ -69,7 +69,9 @@ package aniPangShootingWorld.round
 		private function drawStoreButton():void
 		{
 			_storeButton = new Button("Store",Framework.viewport.width/35,Framework.viewport.width/35,GameTexture.messageBox[5]);
-			_storeButton.x = Framework.viewport.width -_storeButton.width;
+			_storeButton.width = Framework.viewport.width/3;
+			_storeButton.height = Framework.viewport.height/15;
+			_storeButton.x = Framework.viewport.width*0.66;
 			_storeButton.y = Framework.viewport.height/12;
 			addChild(_storeButton);
 			
@@ -82,6 +84,8 @@ package aniPangShootingWorld.round
 			if(GameSetting.instance.roundStateArray.GameTotalRound <= _sceneSetting.RoundStartNum + _sceneSetting.Roundcnt) return;
 			
 			_nextButton = new Button("Next", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[3]);
+			_nextButton.width = Framework.viewport.width/3;
+			_nextButton.height = Framework.viewport.height/15;
 			addChild(_nextButton);
 			
 			_nextButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
@@ -93,7 +97,9 @@ package aniPangShootingWorld.round
 			if(_sceneSetting.RoundStartNum == 0) return;
 			
 			_prevButton = new Button("Prev", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[4]);
-			_prevButton.y = Framework.viewport.height - _prevButton.height;
+			_prevButton.width = Framework.viewport.width/3;
+			_prevButton.height = Framework.viewport.height/15;
+			_prevButton.y = Framework.viewport.height*0.93;
 			addChild(_prevButton);
 			
 			_prevButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
@@ -120,7 +126,8 @@ package aniPangShootingWorld.round
 					
 				case _storeButton:
 				{
-					var storebox : StoreBox = new StoreBox();
+					_storeButton.visible = false;
+					var storebox : StoreBox = new StoreBox(_storeButton);
 					storebox.width = Framework.viewport.width/2;
 					storebox.height = Framework.viewport.height/3;
 					trace(Framework.viewport.width);
@@ -149,7 +156,7 @@ package aniPangShootingWorld.round
 			// TODO Auto Generated method stub
 			for(var i : int =0; i < _sceneSetting.Roundcnt; i++)
 			{
-				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting);
+				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting, this);
 				addChild(roundButton);
 			}
 		}
