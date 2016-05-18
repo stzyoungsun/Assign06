@@ -2,7 +2,6 @@ package aniPangShootingWorld.ui
 {
 	import flash.events.Event;
 	
-	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;

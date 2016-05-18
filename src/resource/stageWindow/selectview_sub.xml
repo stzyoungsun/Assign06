@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TextureAtlas imagePath="selectview_sub.png">
    <SubTexture name="0.png" x="151" y="201" width="32" height="32" />
-   <SubTexture name="1.png" x="0" y="425" width="32" height="32" />
-   <SubTexture name="2.png" x="91" y="334" width="32" height="32" />
-   <SubTexture name="3.png" x="0" y="458" width="32" height="32" />
-   <SubTexture name="4.png" x="91" y="367" width="32" height="32" />
-   <SubTexture name="5.png" x="124" y="334" width="32" height="32" />
-   <SubTexture name="6.png" x="33" y="425" width="32" height="32" />
-   <SubTexture name="7.png" x="478" y="0" width="32" height="32" />
-   <SubTexture name="8.png" x="157" y="334" width="32" height="32" />
-   <SubTexture name="9.png" x="124" y="367" width="32" height="32" />
+   <SubTexture name="1.png" x="91" y="334" width="32" height="32" />
+   <SubTexture name="2.png" x="91" y="367" width="32" height="32" />
+   <SubTexture name="3.png" x="124" y="334" width="32" height="32" />
+   <SubTexture name="4.png" x="478" y="0" width="32" height="32" />
+   <SubTexture name="5.png" x="65" y="425" width="32" height="32" />
+   <SubTexture name="6.png" x="124" y="367" width="32" height="32" />
+   <SubTexture name="7.png" x="157" y="334" width="32" height="32" />
+   <SubTexture name="8.png" x="182" y="290" width="32" height="32" />
+   <SubTexture name="9.png" x="292" y="199" width="32" height="32" />
    <SubTexture name="coin.png" x="0" y="0" width="200" height="200" />
    <SubTexture name="coinWindow.png" x="0" y="201" width="150" height="41" />
+   <SubTexture name="configure.png" x="0" y="425" width="64" height="64" />
    <SubTexture name="pass.png" x="387" y="0" width="90" height="90" />
    <SubTexture name="passed1.png" x="387" y="91" width="90" height="90" />
    <SubTexture name="passed2.png" x="0" y="243" width="90" height="90" />
    <SubTexture name="passed3.png" x="0" y="334" width="90" height="90" />
    <SubTexture name="passing.png" x="91" y="243" width="90" height="90" />
    <SubTexture name="passyet.png" x="201" y="199" width="90" height="90" />
-   <SubTexture name="Point.png" x="33" y="458" width="20" height="20" />
+   <SubTexture name="Point.png" x="91" y="400" width="20" height="20" />
    <SubTexture name="wing.png" x="201" y="0" width="185" height="198" />
 </TextureAtlas>
