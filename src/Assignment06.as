@@ -11,7 +11,7 @@ package
 	
 	import framework.core.Framework;
 
-	[SWF(width="600", height="999", frameRate="60"]
+	[SWF(width="600", height="1024", frameRate="60"]
 	
 	public class Assignment06 extends Sprite
 	{
@@ -25,7 +25,7 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			addEventListener(Event.ENTER_FRAME, onWing);
 			addEventListener(Event.ACTIVATE, activateListener);
-			addEventListener(Event.DEACTIVATE, deactivateListener);
+			//addEventListener(Event.DEACTIVATE, deactivateListener);
 			fw.showStats = true;
 		}
 		

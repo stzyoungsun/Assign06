@@ -1,5 +1,5 @@
-{ "GameWing" : 30
-  ,"GameTotalGold" : 3000
+{ "GameWing" : 10
+  ,"GameTotalGold" : 50
   ,"GameTotalRound" : 11
   ,"Scene":[{"ViewPng":"selectview.png"
   ,"RoundStartNum":0
@@ -17,6 +17,6 @@
 		,{"state":0, "x":0.55, "y":0.55}
 		,{"state":0, "x":0.7, "y":0.43}
 		,{"state":0, "x":0.83, "y":0.25}
-		,{"state":0, "x":0.55, "y":0.1}
+		,{"state":0, "x":0.50, "y":0.1}
 		,{"state":0, "x":0.3, "y":0.15}]	
 }]}

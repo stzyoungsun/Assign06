@@ -186,7 +186,7 @@ package framework.display
 		
 		public override function dispose():void
 		{
-			_buttonBounds = null;
+			//_buttonBounds = null;
 		}
 		
 		public override function set width(value:Number):void

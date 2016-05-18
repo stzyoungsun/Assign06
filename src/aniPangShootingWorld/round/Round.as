@@ -96,7 +96,7 @@ package aniPangShootingWorld.round
 			_roundNum = roundNum;
 			
 			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT;
-			PlayerState.sPlayerPower = 4;
+			PlayerState.sPlayerPower = 0;
 			PlayerState.sGoldCount = 0;
 			PlayerState.sTotalHeart = 0;
 			PlayerState.sTotalPower = 0;

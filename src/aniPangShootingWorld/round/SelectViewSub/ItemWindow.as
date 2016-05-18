@@ -1,6 +1,7 @@
 package aniPangShootingWorld.round.SelectViewSub
 {
 	import aniPangShootingWorld.round.SelectView;
+	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;
@@ -52,12 +53,14 @@ package aniPangShootingWorld.round.SelectViewSub
 				case ITEM_COIN:
 				{
 					_itemTextField.text = String(SelectView.sgameTotalGold);
+					GameSetting.instance.roundStateArray.GameTotalGold = SelectView.sgameTotalGold; 
 					break;
 				}
 					
 				case ITEM_WING:
 				{
 					_itemTextField.text = String(SelectView.sgameWingCount);
+					GameSetting.instance.roundStateArray.GameWing = SelectView.sgameWingCount; 
 					break;
 				}
 			}
