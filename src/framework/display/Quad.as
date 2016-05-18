@@ -21,10 +21,7 @@ package framework.display
 		protected var _indexBuffer:IndexBuffer3D;
 		protected var _vertexData:Vector.<Number>;
 		protected var _numDataPerVertex:Number;
-		
 		private var _color:uint;
-		
-		private static const S_POINT:Point = new Point();
 		
 		/**
 		 * 생성자 - x, y, width, height를 설정 후 Buffer 데이터를 생성하는 메서드 호출
@@ -122,9 +119,7 @@ package framework.display
 		public override function get bounds():Rectangle
 		{
 			var rectangle:Rectangle = new Rectangle();
-			S_POINT.x = _vertexData[_numDataPerVertex * 3];
-			S_POINT.y = _vertexData[_numDataPerVertex * 3 + 1];
-			rectangle.setTo(x - pivotX * scaleX, y - pivotY * scaleY, S_POINT.x * scaleX, S_POINT.y * scaleY);
+			rectangle.setTo(x - pivotX * scaleX, y - pivotY * scaleY, _vertexData[_numDataPerVertex * 3] * scaleX, _vertexData[_numDataPerVertex * 3 + 1] * scaleY);
 			
 			if(scaleX < 0) { rectangle.width *= -1; rectangle.x -= rectangle.width; }
 			if(scaleY < 0) { rectangle.height *= -1; rectangle.y -= rectangle.height; }

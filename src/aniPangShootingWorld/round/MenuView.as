@@ -1,8 +1,6 @@
 package aniPangShootingWorld.round
 {
-	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.loader.ResourceLoader;
-	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.GameTexture;
@@ -90,14 +88,14 @@ package aniPangShootingWorld.round
 			_loadingImage = null;
 			
 			GameTexture.createGameTexture();
-			
+
 			_menuText = new MovieClip(GameTexture.pressTouch, 10, Framework.viewport.width / 4, Framework.viewport.height * 3 / 4);
 			_menuText.width = Framework.viewport.width/2;
 			_menuText.height = Framework.viewport.height/10;
 			_menuText.start();
-			
-			addChild(_menuText);			
+			addChild(_menuText);
 			addEventListener(TouchEvent.TOUCH, onTouch);
+			
 			RoundSetting.instance.settingRound();
 			GameSetting.instance.gameSettingInit();
 			
