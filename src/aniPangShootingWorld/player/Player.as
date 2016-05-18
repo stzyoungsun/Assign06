@@ -142,8 +142,8 @@ package aniPangShootingWorld.player
 			//Note @유영선 슈퍼파워 모드 일 경우 플레이어 케릭이 커짐
 			if(PlayerState.sSuperPowerFlag == false)
 			{
-				this.width = Framework.viewport.width/6;
-				this.height = Framework.viewport.height/6;
+				this.width = Framework.viewport.width/8;
+				this.height = Framework.viewport.height/8;
 			}
 			else
 			{

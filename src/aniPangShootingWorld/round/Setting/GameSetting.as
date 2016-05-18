@@ -53,7 +53,7 @@ package aniPangShootingWorld.round.Setting
 			else
 			{
 				trace("File Not");
-				
+				_roundStateArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Game.xml"]);
 			}
 			
 			

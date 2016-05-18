@@ -94,8 +94,8 @@ package aniPangShootingWorld.round
 			_gameSetting = GameSetting.instance.roundStateArray;
 			_roundNum = roundNum;
 			
-			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT-4;
-			PlayerState.sPlayerPower = 0;
+			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT;
+			PlayerState.sPlayerPower = 4;
 			PlayerState.sGoldCount = 0;
 			PlayerState.sTotalHeart = 0;
 			PlayerState.sTotalPower = 0;
@@ -192,9 +192,7 @@ package aniPangShootingWorld.round
 				else 
 				{
 					this.objectType = ObjectType.ROUND_BOSS;
-					removeChild(_bossWarningView);
-					_bossWarningView.dispose();
-					_bossWarningView = null;
+					removeChild(_bossWarningView , true);
 				}
 			}
 			
@@ -211,7 +209,7 @@ package aniPangShootingWorld.round
 				
 				var curResultTimer : int = getTimer();
 				PlayerState.sPlayerPower = 0;
-				//Note @유영선 보스 워닝 화면 5초간 출력
+				//Note @결과 창 출력
 				if(curResultTimer - _resultTimer > 4000)
 				{
 					_resultView.visible = true;
@@ -506,8 +504,8 @@ package aniPangShootingWorld.round
 		{
 			_player = new Player(GameTexture.player, 5, new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, GameTexture.bullet[0]), this);
 			
-			_player.width = Framework.viewport.width/6;
-			_player.height = Framework.viewport.height/6;
+			_player.width = Framework.viewport.width/8;
+			_player.height = Framework.viewport.height/8;
 			_player.start();
 			
 			addEventListener(TouchEvent.TOUCH, onTouch);
@@ -526,6 +524,7 @@ package aniPangShootingWorld.round
 		
 		private function onTouch(event:TouchEvent):void
 		{
+			trace("들어옴");
 			switch(event.touch.phase)
 			{
 				case TouchPhase.MOVED:

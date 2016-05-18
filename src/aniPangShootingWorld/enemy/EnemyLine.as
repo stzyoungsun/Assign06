@@ -1,5 +1,6 @@
 package aniPangShootingWorld.enemy
 {
+	import aniPangShootingWorld.enemy.enemytype.EnemyChicken;
 	import aniPangShootingWorld.enemy.enemytype.EnemyDog;
 	import aniPangShootingWorld.enemy.enemytype.EnemyMonkey;
 	import aniPangShootingWorld.enemy.enemytype.EnemyPig;
@@ -58,9 +59,13 @@ package aniPangShootingWorld.enemy
 						break;
 					
 					case EnemyObjectUtil.ENEMY_DOG:
-						bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 30,
+						bulletMgr = new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1,
 						TextureManager.getInstance().atlasTextureDictionary[AtlasResource.ITEM_MISSILE_METEOR].subTextures[AtlasResource.ITEM_MISSILE_METEOR_SUB_BULLET_8]);
 						_enemyVector.push(new EnemyDog(GameTexture.monsterDog, 10,bulletMgr, stage));
+						break;
+					
+					case EnemyObjectUtil.ENEMY_CHICK:
+						_enemyVector.push(new EnemyChicken(GameTexture.monsterChick, 10, stage));
 						break;
 						
 				}
