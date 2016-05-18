@@ -82,7 +82,6 @@ package aniPangShootingWorld.round
 		private var _resultTimer : Number;
 		
 		private var _gameSetting : Object;
-		private var _coverImage:Image;
 		private var _enemyLine : EnemyLine = new EnemyLine();
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
@@ -126,9 +125,6 @@ package aniPangShootingWorld.round
 			_meteoInterval =  RoundSetting.instance.roundObject[roundNum].MeteoInterval;
 			
 			roundSetting(RoundSetting.instance.roundObject[roundNum].LV1, RoundSetting.instance.roundObject[_roundNum].LV1Speed);
-			
-			_coverImage = new Image(0, 0, FwTexture.fromBitmapData(new BitmapData(Framework.viewport.width, Framework.viewport.height, true, 0x0)));
-			addChild(_coverImage);
 		}
 		
 		/**

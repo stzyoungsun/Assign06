@@ -344,6 +344,12 @@ package framework.display
 				target = child.hitTest(_sPoint);
 				if (target) return target;
 			}
+			
+			if(bounds.contains(localX, localY))
+			{
+				return this;
+			}
+			
 			return null;
 		}
 		
