@@ -42,6 +42,7 @@ package aniPangShootingWorld.ui
 		public function MessageBox(systemMessage:String, maxLength:int = 25, hasButton:Boolean = false, okFunction:Function = null, cancelFunction:Function = null)
 		{
 			// MessageBox 내의 모든 자식 객체를 담는 Sprite 객체
+			
 			_messageBoxCanvas = new Sprite();
 			
 			// 타이틀 바 쪽에 위치하는 객체들을 담는 Sprite 객체
@@ -117,6 +118,9 @@ package aniPangShootingWorld.ui
 				_cancelBtn.width = Framework.viewport.width / 4;
 				_cancelBtn.height = Framework.viewport.height / 20;
 				
+				_okBtn.addEventListener(TouchEvent.TRIGGERED, onTriggeredButton);
+				_cancelBtn.addEventListener(TouchEvent.TRIGGERED, onTriggeredButton);
+				
 				_contentCanvas.addChild(_okBtn);
 				_contentCanvas.addChild(_cancelBtn);
 			}
@@ -145,6 +149,7 @@ package aniPangShootingWorld.ui
 					if(_cancelBtn != null) _cancelFunction();
 					break;
 				case _closeBtn:
+					this.dispose();
 					removeFromParent();
 					break;
 			}
