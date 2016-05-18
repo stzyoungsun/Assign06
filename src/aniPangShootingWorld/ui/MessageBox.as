@@ -2,6 +2,7 @@ package aniPangShootingWorld.ui
 {
 	import flash.events.Event;
 	
+	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;
@@ -11,6 +12,7 @@ package aniPangShootingWorld.ui
 	import framework.display.ImageTextField;
 	import framework.display.Sprite;
 	import framework.event.TouchEvent;
+	import framework.texture.TextureManager;
 	
 	/**
 	 * 사용자에게 시스템 메시지를 UI를 통해 보여주는 클래스
@@ -32,7 +34,9 @@ package aniPangShootingWorld.ui
 		
 		private var _okFunction:Function;
 		private var _cancelFunction:Function;
+		private var _backImage : Image;
 		
+		public static var backFlag : Boolean = false;
 		/**
 		 * 생성자 - 화면에 렌더링할 외형을 설정하고 각 버튼들에 이벤트 리스너를 등록한다. 
 		 * @param systemMessage - 사용자에게 보여줄 시스템 메시지
@@ -42,8 +46,16 @@ package aniPangShootingWorld.ui
 		public function MessageBox(systemMessage:String, maxLength:int = 25, hasButton:Boolean = false, okFunction:Function = null, cancelFunction:Function = null)
 		{
 			// MessageBox 내의 모든 자식 객체를 담는 Sprite 객체
-			
 			_messageBoxCanvas = new Sprite();
+			_backImage = new Image(0,0,TextureManager.getInstance().textureDictionary["grey_screen.png"]); 
+			_backImage.width = Framework.viewport.width;
+			_backImage.height = Framework.viewport.height;
+			
+			if(backFlag == false)
+			{
+				backFlag = true;
+				Framework.sceneStage.addChild(_backImage);
+			}
 			
 			// 타이틀 바 쪽에 위치하는 객체들을 담는 Sprite 객체
 			_titleBarCanvas = new Sprite();
@@ -139,18 +151,24 @@ package aniPangShootingWorld.ui
 		public function onTriggeredButton(event:Event):void
 		{
 			var button:Button = event.currentTarget as Button;
+			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
+			{
+				Framework.sceneStage.removeChild(_backImage);
+				backFlag = false;
+			}
+			this.dispose();
+			if(parent.getChildIndex(this) != -1) removeFromParent();
 			
 			switch(button)
 			{
 				case _okBtn:
+					
 					if(_okFunction != null) _okFunction();
 					break;
 				case _cancelBtn:
 					if(_cancelBtn != null) _cancelFunction();
 					break;
 				case _closeBtn:
-					this.dispose();
-					removeFromParent();
 					break;
 			}
 		}
