@@ -62,12 +62,12 @@ package aniPangShootingWorld.ui
 			// 타이틀바 이미지
 			_titleBarImage = new Image(0, 0, GameTexture.messageBox[1]);
 			_titleBarImage.width = Framework.viewport.width / 2;
-			_titleBarImage.height = Framework.viewport.height / 40;
+			_titleBarImage.height = Framework.viewport.height / 20;
 			// 타이틀바 우측에 위치하는 닫기 버튼
 			_closeBtn = new Button("", 0, 0, GameTexture.messageBox[2]);
-			_closeBtn.width = Framework.viewport.height / 40;
-			_closeBtn.height = Framework.viewport.height / 40;
-			_closeBtn.x = Framework.viewport.width / 2 - Framework.viewport.height / 40;
+			_closeBtn.width = Framework.viewport.height / 20;
+			_closeBtn.height = Framework.viewport.height / 20;
+			_closeBtn.x = Framework.viewport.width / 2 - Framework.viewport.height / 20;
 			_closeBtn.addEventListener(TouchEvent.TRIGGERED, onTriggeredButton);
 			// 타이틀바 Sprite 객체에 addChild
 			_titleBarCanvas.addChild(_titleBarImage);
@@ -76,7 +76,7 @@ package aniPangShootingWorld.ui
 			// 컨텐츠 쪽에 위치하는 객체들을 담는 Sprite 객체
 			_contentCanvas = new Sprite();
 			// 타이틀바의 아래에 위치하도록 y값 설정
-			_contentCanvas.y = _titleBarImage.height;
+			_contentCanvas.y = Framework.viewport.height / 20;
 			// 컨텐츠 이미지
 			_contentImage = new Image(0, 0, GameTexture.messageBox[0]);
 			_contentImage.width = Framework.viewport.width / 2;
