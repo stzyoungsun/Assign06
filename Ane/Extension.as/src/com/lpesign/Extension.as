@@ -1,17 +1,22 @@
 package com.lpesign
 {
 	import flash.display.BitmapData;
+	import flash.events.EventDispatcher;
 	import flash.events.StatusEvent;
 	import flash.external.ExtensionContext;
 	
-	public class Extension
+	/**
+	 * Air Native Extension 
+	 */
+	public class Extension extends EventDispatcher
 	{
 		private var context:ExtensionContext;
 		private var _drawSprite : Function;
 		
-		public function Extension(drawSprite : Function = null)
+		public function Extension(drawSprite:Function = null)
 		{
 			_drawSprite = drawSprite;
+			
 			try
 			{
 				if(!context)
@@ -24,12 +29,18 @@ package com.lpesign
 				trace(e.message);
 			}
 		}
+		
 		public function statusHandle(event:StatusEvent):void{
-			trace(event);
-			// process event data
-			trace(event.code);
-			trace(event.level);
-			_drawSprite(event.level as String);
+			if((event.level as String) == "INPUT_ID")
+			{
+				dispatchEvent(new StatusEvent("INPUT_ID", false, false, event.code, event.level));
+			}
+			else if((event.level as String) == "eventCode")
+			{
+				_drawSprite(event.level as String);
+			}
+		}
+		
 		}
 		
 		public function toast(message:String):void{
@@ -51,6 +62,11 @@ package com.lpesign
 		public function push(icon : BitmapData, title:String, message : String, time:int):void
 		{
 			context.call("push",icon, title,message,time);
+		}
+		
+		public function inputID():void
+		{
+			context.call("input");
 		}
 	}
 }
