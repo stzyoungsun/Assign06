@@ -21,6 +21,7 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.ui.ConfigureBox;
+	import aniPangShootingWorld.ui.MessageBox;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
@@ -276,8 +277,10 @@ package aniPangShootingWorld.round
 		{
 			var roundNum : Number = _roundNum;
 			
-			if(findViewNum() == 0) return roundNum;
-				
+			if(findViewNum() == 0)
+			{
+				return roundNum;
+			}
 			else
 			{
 				for(var i : int = fineViewNum; i > 0; --i)
@@ -327,6 +330,7 @@ package aniPangShootingWorld.round
 			_resultTimer = getTimer();
 			addChild(_resultView);
 		}
+		
 		/**	 
 		 * Note @유영선 게임 시작 전 화면을 구현 합니다.
 		 */		
@@ -553,9 +557,28 @@ package aniPangShootingWorld.round
 				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				removeEventListener(TouchEvent.TOUCH, onTouch);
 			}
-			else if(event.keyCode == Keyboard.EXIT)
+			else if(event.keyCode == Keyboard.BACK)
 			{
+				GameSetting.instance.pause = true;
 				
+				var exitBox:MessageBox = new MessageBox(
+					"Go back to the main menu",
+					25,
+					true,
+					function():void { exitBox.dispatchEvent(new Event("back")); },
+					function():void { exitBox.dispatchEvent(new Event("resume")); }
+				);
+				
+				exitBox.width = Framework.viewport.width / 2;
+				exitBox.height = Framework.viewport.height / 3;
+				exitBox.x = Framework.viewport.width / 4;
+				exitBox.y = Framework.viewport.height / 3;
+				exitBox.addEventListener("resume", onResume);
+				exitBox.addEventListener("back", onBackGame);
+				addChild(exitBox);
+				
+				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				removeEventListener(TouchEvent.TOUCH, onTouch);
 			}
 		}
 		
@@ -571,6 +594,16 @@ package aniPangShootingWorld.round
 			GameSetting.instance.pause = false;
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		}
+		
+		private function onBackGame(event:Event):void
+		{
+			this.dispose();
+			clearStarCheck();
+			
+			SceneManager.instance.addScene(new SelectView(findViewNum()));
+			SceneManager.instance.sceneChange();
+			trace("exit");
 		}
 		
 		/**
