@@ -72,12 +72,12 @@ package aniPangShootingWorld.round.Setting
 			var pattern : RegExp = /}/g;
 			save = save.replace(pattern,"}\n");
 			
-			var path:File = File.applicationStorageDirectory.resolvePath( "data/" + _userName + "_Game.xml" );
+			var path:File = File.applicationStorageDirectory.resolvePath("data/" + _userName + "_Game.xml" );
 			var fileStream : FileStream = new FileStream();
 			fileStream.open(path, FileMode.WRITE);
 			fileStream.writeUTFBytes(save);
 			
-			path = File.applicationStorageDirectory.resolvePath("data/current_user.xml");
+			path = File.applicationStorageDirectory.resolvePath("data/current_user.data");
 			fileStream.open(path, FileMode.WRITE);
 			fileStream.writeUTFBytes(_userName);
 			fileStream.close();

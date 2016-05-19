@@ -3,6 +3,9 @@ package aniPangShootingWorld.round
 	import com.lpesign.Extension;
 	
 	import flash.events.StatusEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	
 	import aniPangShootingWorld.loader.ResourceLoader;
 	import aniPangShootingWorld.round.Setting.GameSetting;
@@ -112,9 +115,19 @@ package aniPangShootingWorld.round
 		
 		private function checkUser():void
 		{
-			if(TextureManager.getInstance().xmlDictionary["current_user.xml"])
+			var path:File = File.applicationStorageDirectory.resolvePath("data/current_user.data");
+			
+			if(path.exists)
 			{
-				var userName:String = TextureManager.getInstance().xmlDictionary["current_user.xml"].toString();
+				var fileStream : FileStream = new FileStream();
+				fileStream.open(path, FileMode.READ);
+				var userName:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
+				fileStream.close();
+				
+				if(userName == "")
+				{
+					userName = "NO_USER_DATA";
+				}
 				_userName = userName;
 				RoundSetting.instance.userName = _userName;
 				GameSetting.instance.userName = _userName;
