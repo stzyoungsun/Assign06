@@ -13,6 +13,8 @@ package aniPangShootingWorld.enemy.enemytype
 	{
 		private var _stage : Sprite;
 		private var _chickenVector : Vector.<EnemyChicken> = new Vector.<EnemyChicken>;
+		private var _subChickenVector : Vector.<EnemyObject> = new Vector.<EnemyObject>;
+		
 		public function EnemyChicken(textureVector:Vector.<FwTexture>, frame:Number, stage:Sprite)
 		{
 			super(textureVector, frame, stage);
@@ -34,18 +36,29 @@ package aniPangShootingWorld.enemy.enemytype
 			{
 				randomx = UtilFunction.random(0,Framework.viewport.width - this.width/2, 1);
 				randomy = UtilFunction.random(0 ,this.y, 1);
-				var _chickenVector : EnemyObject = new EnemyChicken(GameTexture.monsterChick, 10, _stage);
-				_chickenVector.addHPBar();
+				_subChickenVector.push(new EnemyChicken(GameTexture.monsterChick, 10, _stage)); 
+				_subChickenVector[i].addHPBar();
 				
-				_chickenVector.x = randomx;
-				_chickenVector.y = randomy;
+				_subChickenVector[i].x = randomx;
+				_subChickenVector[i].y = randomy;
 				
-				_chickenVector.width = Framework.viewport.width*4/25;
-				_chickenVector.height = Framework.viewport.width*4/25;
+				_subChickenVector[i].width = Framework.viewport.width*4/25;
+				_subChickenVector[i].height = Framework.viewport.width*4/25;
 				
-				
-				_stage.addChild(_chickenVector);
+				_stage.addChild(_subChickenVector[i]);
 			}	
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			
+			for(var i : int =0; i < _subChickenVector.length; i++)
+			{
+				_subChickenVector[i].deleteHPBar();
+				_stage.removeChild(_subChickenVector[i], true);
+			}
+			_subChickenVector = null;
 		}
 	}
 }
