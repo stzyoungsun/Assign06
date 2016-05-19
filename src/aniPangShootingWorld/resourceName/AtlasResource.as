@@ -153,9 +153,9 @@ package aniPangShootingWorld.resourceName
 		public static const PRESS_TOUCH_SUB_2:String = "press_touch_2.png";
 		
 		public static const READY_NUMBER:String = "ready_sheet.png";
-		public static const READY_NUMBER_SUB_READY_1:String = "ready_1.png";
+		public static const READY_NUMBER_SUB_READY_1:String = "ready_3.png";
 		public static const READY_NUMBER_SUB_READY_2:String = "ready_2.png";
-		public static const READY_NUMBER_SUB_READY_3:String = "ready_3.png";
+		public static const READY_NUMBER_SUB_READY_3:String = "ready_1.png";
 		public static const READY_NUMBER_SUB_START:String = "start.png";
 			
 		public static const RESULT:String = "result_sheet.png";
