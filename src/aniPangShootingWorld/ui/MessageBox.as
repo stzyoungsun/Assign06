@@ -164,7 +164,8 @@ package aniPangShootingWorld.ui
 					if(_okFunction != null) _okFunction();
 					break;
 				case _cancelBtn:
-					if(_cancelBtn != null) _cancelFunction();
+				case _closeBtn:
+					if(_cancelFunction != null) _cancelFunction();
 					break;
 			}
 			
