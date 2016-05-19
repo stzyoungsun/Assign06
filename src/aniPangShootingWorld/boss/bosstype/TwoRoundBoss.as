@@ -2,6 +2,7 @@ package aniPangShootingWorld.boss.bosstype
 {
 	import flash.utils.getTimer;
 	
+	import aniPangShootingWorld.boss.BossObject;
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.enemytype.EnemyChicken;
 	import aniPangShootingWorld.item.ItemGroup;
@@ -16,7 +17,6 @@ package aniPangShootingWorld.boss.bosstype
 	import framework.display.Sprite;
 	import framework.gameobject.BulletManager;
 	import framework.texture.FwTexture;
-	import aniPangShootingWorld.boss.BossObject;
 
 	public class TwoRoundBoss  extends BossObject
 	{
@@ -53,6 +53,8 @@ package aniPangShootingWorld.boss.bosstype
 			
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
+			
+			_name = "TwoRoundBoss";
 		}
 		
 		/**
@@ -85,7 +87,7 @@ package aniPangShootingWorld.boss.bosstype
 		{
 			var randomx : Number = 0;
 			var randomy : Number = 0;
-			if(this.width < 100)
+			if(this.width < Framework.viewport.width/8)
 			{
 				return;
 			}

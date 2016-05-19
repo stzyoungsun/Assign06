@@ -1,10 +1,17 @@
 package aniPangShootingWorld.boss
 {
+	import flash.geom.Point;
+	import flash.utils.getTimer;
+	
+	import aniPangShootingWorld.boss.bosstype.ThreeRoundBoss;
+	import aniPangShootingWorld.boss.subboss.ThreeRoundSubBoss;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
+	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.MovieClip;
+	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.gameobject.Bullet;
@@ -19,11 +26,26 @@ package aniPangShootingWorld.boss
 	 */
 	public class BossObject extends MovieClip
 	{
+		public static const MOVING_PHASE_1:Number = 0;
+		public static const MOVIEG_PHASE_2:Number = 1;
+		
+		public static const PHASE_1:Number = 1;
+		public static const PHASE_2:Number = 2;
+		public static const PHASE_3:Number = 3;
+		
 		private var _bulletManager:BulletManager;
 		private var _bossHp:Number;
 		private var _maxBossHp:Number;
 		private var _stage:Sprite;
 		private var _bossHPbar:HPbar;
+		
+		protected var trackingVector : Vector.<Vector.<Point>>;
+		protected var _name : String;
+		private var i : Number = 0;
+		private var ptime : Number = 0;
+		
+		protected var bossMovingPhase:Number = -1;
+		private var _moveFlag : Boolean = false;
 		/**
 		 * 생성자 - 객체 및 변수의 초기화 작업 진행 
 		 * @param bossAtlas - 보스의 이미지를 담은 AtlasBitmapData 객체
@@ -37,6 +59,7 @@ package aniPangShootingWorld.boss
 			this.objectType = ObjectType.BOSS_GENERAL;
 			_stage = stage;
 			_bulletManager = bulletManager;
+			ptime = getTimer();
 		}
 
 		/**
@@ -55,6 +78,12 @@ package aniPangShootingWorld.boss
 			shotBullet();
 			
 			processCollision();
+			var currentTime:Number = getTimer();
+			// 3초후 제거
+		
+			if(_moveFlag == true)
+				autoMovig();
+				
 			
 			if(_bossHPbar != null)
 			{
@@ -88,7 +117,17 @@ package aniPangShootingWorld.boss
 			if(this.objectType == ObjectType.BOSS_COLLISION)
 			{
 				//체력 감소
-				_bossHp--;
+				if(_name == "ThreeRoundBoss")
+				{
+					if(ThreeRoundBoss.sSubBossCnt == 0)
+					{
+						_bossHp--;
+						_moveFlag = true;
+					}
+						
+				}
+				else
+					_bossHp--;
 				
 				// 체력 비율에 따라 보스의 Phase를 변경시키는 메서드
 				changePhase();
@@ -117,6 +156,33 @@ package aniPangShootingWorld.boss
 				deleteHPBar();
 				dieBoss();
 			}
+		}
+		
+		private function autoMovig():void
+		{
+	
+			if(this.bossMovingPhase == BossObject.MOVING_PHASE_1)
+			{
+				this.x = trackingVector[0][i].x;
+				this.y = trackingVector[0][i++].y;
+				
+				if(this.x == 0) 
+				{
+					this.bossMovingPhase = BossObject.MOVIEG_PHASE_2;
+					i = 0;
+				}
+			}
+				
+			else 
+			{
+				if(i == trackingVector[1].length) 
+				{
+					i = 0;
+				}
+				this.x = trackingVector[1][i].x;
+				this.y = trackingVector[1][i++].y;
+			}
+			
 		}
 		
 		/**
@@ -158,8 +224,17 @@ package aniPangShootingWorld.boss
 			var bullet:Bullet = _bulletManager.bulletVector[bulletNum];
 			var radian:Number = bullet.angle * Math.PI * 2;
 			
-			bullet.x += bullet.speed * Math.cos(radian);
-			bullet.y += bullet.speed * Math.sin(radian);
+			if(_name == "ThreeRoundSubBoss")
+			{
+				bullet.width = Framework.viewport.width/5;
+				bullet.height += Framework.viewport.height/10;
+			}
+
+			else
+			{
+				bullet.x += bullet.speed * Math.cos(radian);
+				bullet.y += bullet.speed * Math.sin(radian);
+			}
 		}
 		
 		/**

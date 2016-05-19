@@ -16,10 +16,6 @@ package aniPangShootingWorld.boss.bosstype
 	
 	public class OneRoundBoss extends BossObject
 	{
-		private static const PHASE_1:Number = 1;
-		private static const PHASE_2:Number = 2;
-		private static const PHASE_3:Number = 3;
-		
 		private var _bulletManager:BulletManager;
 		private var _stage:Sprite;
 		private var _shotAngle:Number;
@@ -53,6 +49,8 @@ package aniPangShootingWorld.boss.bosstype
 			
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
+			
+			_name = "OneRoundBoss";
 		}
 		
 		/**
