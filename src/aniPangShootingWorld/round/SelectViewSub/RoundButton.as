@@ -1,6 +1,7 @@
 package aniPangShootingWorld.round.SelectViewSub
 {
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.resourceName.AtlasResource;
@@ -32,12 +33,12 @@ package aniPangShootingWorld.round.SelectViewSub
 		
 		private var _roundButtonSetting : Object;
 		private var _stage : Sprite;
-		
+		private var _backFunction : Function;
 		/**
 		 * @param roundOrder 현재 View 안에서의 roundButton의 번호
 		 * @param roundButtonSetting roundButton의 세팅 값
 		 */		
-		public function RoundButton(roundOrder : Number, roundButtonSetting : Object, stage : Sprite)
+		public function RoundButton(roundOrder : Number, roundButtonSetting : Object, stage : Sprite, backFunc : Function)
 		{
 			super(String(roundOrder + roundButtonSetting.RoundStartNum),Framework.viewport.width/45,Framework.viewport.width/45,checkState(roundButtonSetting.Round[roundOrder-1].state)
 				, TextureManager.getInstance().atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB]);
@@ -53,7 +54,7 @@ package aniPangShootingWorld.round.SelectViewSub
 			//전체 게임을 기준으로 Round 번호
 			_roundNum = roundOrder + roundButtonSetting.RoundStartNum;	
 			_roundButtonSetting = roundButtonSetting;
-			
+			_backFunction = backFunc;
 			addEventListener(TouchEvent.TRIGGERED, onClicked);
 		}
 		
@@ -161,6 +162,7 @@ package aniPangShootingWorld.round.SelectViewSub
 					}
 					else
 					{
+						Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, _backFunction);
 						GameSetting.instance.roundStateArray.GameWing--;
 						this.parent.dispose();
 						var roundObject : Round = new Round(_roundNum-1);

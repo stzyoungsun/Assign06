@@ -146,7 +146,7 @@ package aniPangShootingWorld.round
 			}
 		}
 		
-		private function onKeyDown(event:KeyboardEvent):void
+		public function onKeyDown(event:KeyboardEvent):void
 		{
 			if(event.keyCode == Keyboard.BACK)
 			{
@@ -178,7 +178,7 @@ package aniPangShootingWorld.round
 		{
 			for(var i : int =0; i < _sceneSetting.Roundcnt; i++)
 			{
-				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting, this);
+				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting, this,onKeyDown);
 				addChild(roundButton);
 			}
 		}
