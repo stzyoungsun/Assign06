@@ -599,7 +599,6 @@ package aniPangShootingWorld.round
 		private function onBackGame(event:Event):void
 		{
 			this.dispose();
-			clearStarCheck();
 			
 			SceneManager.instance.addScene(new SelectView(findViewNum()));
 			SceneManager.instance.sceneChange();
