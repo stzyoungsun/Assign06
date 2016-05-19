@@ -15,7 +15,7 @@ package aniPangShootingWorld.ui
 		
 		public function ConfigureBox()
 		{
-			super("", 0, true, okBtnFunction, closeBtnFunction);
+			super("", 0, true, okFunction, cancelFunction);
 			
 			_gameSetting = GameSetting.instance;
 			
@@ -39,7 +39,7 @@ package aniPangShootingWorld.ui
 			addChild(_effectSoundCheckBox);
 		}
 		
-		private function okBtnFunction():void
+		private function okFunction():void
 		{
 			_gameSetting.vibration = _vibrationCheckBox.currentState;
 			_gameSetting.bgm = _bgmCheckBox.currentState;
@@ -48,12 +48,7 @@ package aniPangShootingWorld.ui
 			dispatchEvent(new Event("resume"));
 		}
 		
-		private function closeBtnFunction():void
-		{
-			dispatchEvent(new Event("resume"));
-		}
-		
-		private function onClose(event:Event):void
+		private function cancelFunction():void
 		{
 			dispatchEvent(new Event("resume"));
 		}

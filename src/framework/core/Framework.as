@@ -80,6 +80,7 @@ package framework.core
 			_nativeStage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
 			_nativeStage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
 			_nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+			_nativeStage.addEventListener(KeyboardEvent.KEY_UP, onKey);
 			
 			_showStats = false;
 			
@@ -194,6 +195,7 @@ package framework.core
 		
 		private function onKey(event:KeyboardEvent):void
 		{
+			event.preventDefault();
 			stage.dispatchEvent(event);
 		}
 		
@@ -295,6 +297,6 @@ package framework.core
 		public static function get viewport():Rectangle { return _sCurrent ? _sCurrent._viewPort : null; }
 		public static function get sceneStage():DisplayObjectContainer { return _sCurrent ? _sCurrent._sceneStage : null; }
 		public static function set sceneStage(value:DisplayObjectContainer):void {_sCurrent._sceneStage = value; }
-		public static function get stage():DisplayObjectContainer { return _sCurrent ? _sCurrent._stage : null; }
+		public static function get stage():Stage { return _sCurrent ? _sCurrent._stage : null; }
 	}
 }
