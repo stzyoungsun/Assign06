@@ -1,12 +1,16 @@
 package aniPangShootingWorld.round
 {
+	import flash.desktop.NativeApplication;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	
 	import aniPangShootingWorld.round.SelectViewSub.ItemWindow;
 	import aniPangShootingWorld.round.SelectViewSub.RoundButton;
 	import aniPangShootingWorld.round.SelectViewSub.StoreBox;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.ui.ConfigureBox;
+	import aniPangShootingWorld.ui.MessageBox;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.animaiton.MovieClip;
@@ -64,6 +68,8 @@ package aniPangShootingWorld.round
 			drawPrevButton();
 			drawStoreButton();
 			drawConfigureButton();
+			
+			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
 		private function drawStoreButton():void
@@ -140,13 +146,32 @@ package aniPangShootingWorld.round
 			}
 		}
 		
+		private function onKeyDown(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.BACK)
+			{
+				var exitBox:MessageBox = new MessageBox(
+					"Exit Game",
+					25,
+					true,
+					function():void { NativeApplication.nativeApplication.exit(); },
+					function():void { Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown); }
+				);
+				
+				exitBox.width = Framework.viewport.width / 2;
+				exitBox.height = Framework.viewport.height / 3;
+				exitBox.x = Framework.viewport.width / 4;
+				exitBox.y = Framework.viewport.height / 3;
+				addChild(exitBox);
+				
+				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			}
+		}
+		
 		private function drawItemWindow():void
 		{
-			var coinWindow : ItemWindow = new ItemWindow(Framework.viewport.width/2, Framework.viewport.height/50, ItemWindow.ITEM_COIN);
-			addChild(coinWindow);
-			
-			var wingWindow : ItemWindow = new ItemWindow(Framework.viewport.width*3/4, Framework.viewport.height/50, ItemWindow.ITEM_WING);
-			addChild(wingWindow);
+			addChild(new ItemWindow(Framework.viewport.width/2, Framework.viewport.height/50, ItemWindow.ITEM_COIN));
+			addChild(new ItemWindow(Framework.viewport.width*3/4, Framework.viewport.height/50, ItemWindow.ITEM_WING));
 		}
 		
 		private function drawRoundButton():void
@@ -160,20 +185,7 @@ package aniPangShootingWorld.round
 		
 		private function drawDeco():void
 		{
-			switch(0)
-			{
-				case 0:
-				{
-					_decoClip = new MovieClip(GameTexture.player,5,Framework.viewport.width/4,Framework.viewport.height*5/18);
-					break;
-				}
-					
-				default:
-				{
-					break;
-				}
-			}
-			
+			_decoClip = new MovieClip(GameTexture.player,5,Framework.viewport.width/4,Framework.viewport.height*5/18);
 			_decoClip.width = Framework.viewport.width/10;
 			_decoClip.height = Framework.viewport.height/10;
 			_decoClip.start();
