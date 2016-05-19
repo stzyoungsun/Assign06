@@ -140,6 +140,7 @@ package aniPangShootingWorld.boss.subboss
 			_bulletManager.bulletVector[bulletNum].initBullet(x, y, Framework.viewport.width/30, Framework.viewport.width/30);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			_bulletManager.bulletVector[bulletNum].visible = true;
 		}
 	}
 }

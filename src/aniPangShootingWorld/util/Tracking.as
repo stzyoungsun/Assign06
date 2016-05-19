@@ -37,7 +37,7 @@ package aniPangShootingWorld.util
 			 //Note @유영선 최고점 높이
 			var maxHeight : Number = Framework.viewport.height/2 - objectHeight/2
 			 //Note @유영선 최고점 도달 시간
-			var mHTimer : Number = (Framework.viewport.width - objectWidth)/60;
+			var mHTimer : Number = 10;
 			 
 			destHeight = destPos.y - startPos.y;
 			mountheight = maxHeight - startPos.y;
@@ -57,7 +57,7 @@ package aniPangShootingWorld.util
 				x = startPos.x + speedX*timer;
 				y = startPos.y + speedY*timer - 0.5*gravity*timer*timer;
 				trackingVector.push(new Point(x,y));
-				timer += 1/60;
+				timer += 1/30;
 			}
 			
 			while(timer > 0)
@@ -66,7 +66,7 @@ package aniPangShootingWorld.util
 				y  = startPos.y + speedY*timer - 0.5*gravity*timer*timer;
 				trackingVector.push(new Point(x,y));
 				
-				timer -= 1/60;
+				timer -= 1/30;
 			}
 		}
 		

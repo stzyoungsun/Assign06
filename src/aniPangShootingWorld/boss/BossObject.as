@@ -166,7 +166,7 @@ package aniPangShootingWorld.boss
 				this.x = trackingVector[0][i].x;
 				this.y = trackingVector[0][i++].y;
 				
-				if(this.x == 0) 
+				if(this.x < 0) 
 				{
 					this.bossMovingPhase = BossObject.MOVIEG_PHASE_2;
 					i = 0;
@@ -203,6 +203,7 @@ package aniPangShootingWorld.boss
 					&& _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_MOVING) 
 					|| _bulletManager.bulletVector[i].objectType == ObjectType.ENEMY_BULLET_COLLISION)
 				{
+					_bulletManager.bulletVector[i].visible = false;
 					_stage.removeChild(_bulletManager.bulletVector[i]);
 					_bulletManager.bulletVector[i].objectType = ObjectType.ENEMY_BULLET_IDLE;
 					_bulletManager.bulletNumVector.push(i);
@@ -221,6 +222,8 @@ package aniPangShootingWorld.boss
 		 */
 		private function bulletState(bulletNum : Number) : void
 		{
+			if(_bulletManager.bulletVector[bulletNum].objectType == ObjectType.ENEMY_BULLET_IDLE) return;
+			
 			var bullet:Bullet = _bulletManager.bulletVector[bulletNum];
 			var radian:Number = bullet.angle * Math.PI * 2;
 			

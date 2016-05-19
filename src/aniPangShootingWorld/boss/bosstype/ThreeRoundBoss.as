@@ -71,7 +71,7 @@ package aniPangShootingWorld.boss.bosstype
 			
 			while(movex >= 0)
 			{
-				trackingVector[MOVING_PHASE_1].push(new Point(movex--, this.y));
+				trackingVector[MOVING_PHASE_1].push(new Point(movex-=Framework.viewport.height/1000, this.y));
 			}
 			
 			trackingVector[MOVIEG_PHASE_2] = new Vector.<Point>;
@@ -202,8 +202,7 @@ package aniPangShootingWorld.boss.bosstype
 					}
 					break;
 				case PHASE_2:
-					
-					if(currentTime - _prevTime > 30)
+					if(currentTime - _prevTime > 50)
 					{ 
 						var randomPosition:int = Math.random() * 3;
 						if(randomPosition == 0) { bulletX = this.x; }
@@ -215,12 +214,12 @@ package aniPangShootingWorld.boss.bosstype
 						_shotAngle += 0.05;
 						_shotAngle -= Math.floor(_shotAngle);
 						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
+						_prevTime = currentTime;
 					}
 					
 					break;
 				case PHASE_3:
-					
-					if(currentTime - _prevTime > 30)
+					if(currentTime - _prevTime > 50)
 					{ 
 						bulletX = this.x;
 						bulletY = this.y + this.height / 2;
@@ -229,6 +228,7 @@ package aniPangShootingWorld.boss.bosstype
 						
 						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
 						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
+						_prevTime = currentTime;
 						break;
 					}
 				}
@@ -247,6 +247,7 @@ package aniPangShootingWorld.boss.bosstype
 			_bulletManager.bulletVector[bulletNum].initBullet(x, y, Framework.viewport.width/30, Framework.viewport.width/30, shotAngle, shotSpeed);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			_bulletManager.bulletVector[bulletNum].visible = true;
 		}
 		
 	}

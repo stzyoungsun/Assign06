@@ -189,6 +189,7 @@ package aniPangShootingWorld.boss.bosstype
 			_bulletManager.bulletVector[bulletNum].initBullet(x, y, this.width / 15, this.height / 15, shotAngle, shotSpeed);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			_bulletManager.bulletVector[bulletNum].visible = true;
 		}
 	}
 }

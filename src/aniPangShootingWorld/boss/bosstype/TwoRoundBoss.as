@@ -95,7 +95,7 @@ package aniPangShootingWorld.boss.bosstype
 			{
 				randomx = UtilFunction.random(0,Framework.viewport.width - this.width/2, 1);
 
-				var childBoss : TwoRoundBoss = new TwoRoundBoss(GameTexture.boss2, 10, RoundSetting.instance.roundObject[2].BossHP, 
+				var childBoss : TwoRoundBoss = new TwoRoundBoss(GameTexture.boss2, 10, maxBossHp/2, 
 					new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), _stage);
 				
 				childBoss.start();
@@ -149,6 +149,7 @@ package aniPangShootingWorld.boss.bosstype
 			_bulletManager.bulletVector[bulletNum].initBullet(x, y, Framework.viewport.width/30, Framework.viewport.width/30, shotAngle, shotSpeed);
 			//Note @유영선 round의 stage에 addChild
 			_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
+			_bulletManager.bulletVector[bulletNum].visible = true;
 		}
 	}
 }
