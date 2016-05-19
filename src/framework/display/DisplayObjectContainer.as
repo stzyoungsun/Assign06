@@ -176,7 +176,6 @@ package framework.display
 							{
 								if(Collision.ObjectToObject(child,_children[curChildNum]))
 								{
-									trace("플레이어 충돌");
 									child.objectType = ObjectType.PLAYER_COLLISION;
 									_children[curChildNum].objectType = ObjectType.ITEM_IDLE;
 								}
@@ -198,7 +197,6 @@ package framework.display
 							{
 								if(Collision.ObjectToObject(child,_children[curChildNum]))
 								{
-									trace("적 미사일 플레이어 충돌");
 									child.objectType = ObjectType.ENEMY_BULLET_COLLISION;
 									_children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
 								}
@@ -209,7 +207,6 @@ package framework.display
 							{
 								if(Collision.ObjectToObject(child,_children[curChildNum]))
 								{
-									trace("아이템과 충돌");
 									child.objectType = ObjectType.ITEM_COIN_COLLISON;
 								}
 								break;
@@ -219,7 +216,6 @@ package framework.display
 							{
 								if(Collision.ObjectToObject(child,_children[curChildNum]))
 								{
-									trace("아이템과 충돌");
 									child.objectType = ObjectType.ITEM_HERAT_COLLISON;
 								}
 								break;
@@ -229,7 +225,6 @@ package framework.display
 							{
 								if(Collision.ObjectToObject(child,_children[curChildNum]))
 								{
-									trace("아이템과 충돌");
 									child.objectType = ObjectType.ITEM_POWER_COLLISON;
 								}
 								break;
@@ -239,7 +234,6 @@ package framework.display
 						   {
 							   if(Collision.ObjectToObject(child,_children[curChildNum]))
 							   {
-								   trace("아이템과 충돌");
 								   child.objectType = ObjectType.OBSTACLE_COLLISON;
 								   _children[curChildNum].objectType = ObjectType.PLAYER_COLLISION;
 							   }
@@ -265,7 +259,6 @@ package framework.display
 									{
 										if(Collision.ObjectToObject(child,_children[curChildNum]))
 										{
-											trace("보스 플레이어 미사일 충돌 충돌");
 											child.objectType = ObjectType.PLAYER_BULLET_COLLISION;
 											_children[curChildNum].objectType = ObjectType.BOSS_COLLISION;
 										}

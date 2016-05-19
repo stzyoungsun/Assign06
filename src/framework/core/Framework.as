@@ -297,6 +297,6 @@ package framework.core
 		public static function get viewport():Rectangle { return _sCurrent ? _sCurrent._viewPort : null; }
 		public static function get sceneStage():DisplayObjectContainer { return _sCurrent ? _sCurrent._sceneStage : null; }
 		public static function set sceneStage(value:DisplayObjectContainer):void {_sCurrent._sceneStage = value; }
-		public static function get stage():DisplayObjectContainer { return _sCurrent ? _sCurrent._stage : null; }
+		public static function get stage():Stage { return _sCurrent ? _sCurrent._stage : null; }
 	}
 }
