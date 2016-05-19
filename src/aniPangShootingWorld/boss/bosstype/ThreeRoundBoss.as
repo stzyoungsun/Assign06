@@ -1,5 +1,6 @@
 package aniPangShootingWorld.boss.bosstype
 {
+	import flash.geom.Point;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
@@ -8,6 +9,8 @@ package aniPangShootingWorld.boss.bosstype
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.util.GameTexture;
+	import aniPangShootingWorld.util.Tracking;
+	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -18,9 +21,7 @@ package aniPangShootingWorld.boss.bosstype
 
 	public class ThreeRoundBoss extends BossObject
 	{
-		private static const PHASE_1:Number = 1;
-		private static const PHASE_2:Number = 2;
-		private static const PHASE_3:Number = 3;
+
 		private static const MAX_SUB_COUNT : Number = 4;
 		
 		private var _bulletManager:BulletManager;
@@ -33,16 +34,18 @@ package aniPangShootingWorld.boss.bosstype
 		private var _remainBullet:Boolean;
 		private var _subBossVector : Vector.<ThreeRoundSubBoss> = new Vector.<ThreeRoundSubBoss>;
 		
+		public static var sSubBossCnt : Number = 0;
 		public function ThreeRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(textureVector, frame, bulletManager, stage);
 			
-			this.width = Framework.viewport.width*0.5;
-			this.height = Framework.viewport.height / 5;
+			this.width = Framework.viewport.width*0.35;
+			this.height = Framework.viewport.height / 6;
 			this.start();
 			
-			this.x = Framework.viewport.width/2 - this.width/2 ;
+			this.x = Framework.viewport.width/2 - this.width/2;
 			this.y = 0;
+			
 			_prevTime = 0;
 			
 			_stage = stage;
@@ -57,19 +60,42 @@ package aniPangShootingWorld.boss.bosstype
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
 			
-			createSubBoss();
+			_bossPhase = PHASE_1;
+			createSubBoss(MAX_SUB_COUNT);
+			_name = "ThreeRoundBoss";
+			
+			trackingVector = new Vector.<Vector.<Point>>;
+			trackingVector[MOVING_PHASE_1] = new Vector.<Point>;
+			
+			var movex : Number = this.x;
+			
+			while(movex >= 0)
+			{
+				trackingVector[MOVING_PHASE_1].push(new Point(movex--, this.y));
+			}
+			
+			trackingVector[MOVIEG_PHASE_2] = new Vector.<Point>;
+			Tracking.minuscurveTraking(this.width, this.height, trackingVector[MOVIEG_PHASE_2]);
+			bossMovingPhase = MOVING_PHASE_1;
+			
+			
 		}
 		
-		private function createSubBoss():void
+		private function createSubBoss(subNum : Number):void
 		{
 			// TODO Auto Generated method stub
-			for(var i : Number =0; i < MAX_SUB_COUNT ; i++)
+			for(var i : Number =0; i < subNum ; i++)
 			{
-				_subBossVector.push(new ThreeRoundSubBoss(this,GameTexture.boss3Object,10,30,new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]),_stage));
-				_subBossVector[i].initSubBoss(i*_subBossVector[i].width, this.height);
+				_subBossVector.push(new ThreeRoundSubBoss(this,GameTexture.boss3Object,10,20,new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1, GameTexture.bullet[8]),_stage));
+				
+				_subBossVector[i].width = Framework.viewport.width/4;
+				_subBossVector[i].height = Framework.viewport.width/4;
+				
+				_subBossVector[i].initSubBoss(i*_subBossVector[i].width, this.height*1.2);
 				_subBossVector[i].addHPBar();
 				_stage.addChild(_subBossVector[i]);
 			}
+			sSubBossCnt = 4;
 		}
 		
 		/**
@@ -79,11 +105,12 @@ package aniPangShootingWorld.boss.bosstype
 		{
 			var currentTime:Number = getTimer();
 			// 3초후 제거
-			if(currentTime - _prevTime > 2000)
+			if(currentTime - _prevTime > 3000)
 			{
+				_stage.objectType = ObjectType.ROUND_CLEAR;
 				_stage.removeChild(this);
 				(_stage as Round).resultTimer = getTimer();
-				var item : ItemGroup = new ItemGroup(10,this.x, this.y,_stage);
+				var item : ItemGroup = new ItemGroup(30,this.x, this.y,_stage);
 				item.drawItem();
 			}
 		}
@@ -109,15 +136,43 @@ package aniPangShootingWorld.boss.bosstype
 			}
 			
 			var currentTime:Number = getTimer();
-			if(currentTime - _prevTime > 500)
+			if(currentTime - _prevTime > 1000)
 			{
 				_wait = false;
 				_prevTime = currentTime;
 			}
 		}
 		
+		/**
+		 * 체력 비율에 따라 보스의 Phase를 변경시키는 메서드
+		 */
+		public override function changePhase():void
+		{
+			// 보스의 체력 비율에 따라 PHASE를 변경 시킴
+			var bossHpRatio:Number = bossHp / maxBossHp;
+			
+			if(_bossPhase == PHASE_1 && bossHpRatio < 0.8)
+			{
+				_shotAngle = 0;
+				_bossPhase = PHASE_2;
+				_wait = true;
+				_remainBullet = true;
+			}
+			else if(_bossPhase == PHASE_2 && bossHpRatio < 0.4)
+			{
+				_shotAngle = 0;
+				_bossPhase = PHASE_3;
+				_wait = true;
+				_remainBullet = true;
+			}
+		}
+		
 		public override function shotBullet():void
 		{
+			var currentTime:Number = getTimer();
+			
+			if(sSubBossCnt != 0) return;
+			
 			if(bossHp <= 0)
 			{
 				return;
@@ -136,34 +191,47 @@ package aniPangShootingWorld.boss.bosstype
 			switch(_bossPhase)
 			{
 				case PHASE_1:
-					var currentTime:Number = getTimer();
-					if(currentTime - _prevTime > 250)
-					{
+					if(currentTime - _prevTime > 500)
+					{ 
 						bulletX = this.x + this.width / 2;
 						bulletY = this.y;
 						// 각도를 플레이어 객체가 있는 위치를 조준하도록 설정
 						_shotAngle = Math.atan2(Player.currentPlayer.y - bulletY, Player.currentPlayer.x + Player.currentPlayer.width / 2 - bulletX) / Math.PI / 2;
-						shooting(bulletX, bulletY, _shotAngle, _shotSpeed * 1.2);
+						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
 						_prevTime = currentTime;
 					}
 					break;
 				case PHASE_2:
-					var randomPosition:int = Math.random() * 3;
-					if(randomPosition == 0) { bulletX = this.x; }
-					else if(randomPosition == 1) { bulletX = this.x + this.width / 2; }
-					else if(randomPosition == 2) { bulletX = this.x + this.width; }
-					bulletY = this.y + this.height / 2;
-					_shotAngle += 0.05;
-					_shotAngle -= Math.floor(_shotAngle);
-					shooting(bulletX, bulletY, _shotAngle, _shotSpeed);
+					
+					if(currentTime - _prevTime > 30)
+					{ 
+						var randomPosition:int = Math.random() * 3;
+						if(randomPosition == 0) { bulletX = this.x; }
+						else if(randomPosition == 1) { bulletX = this.x + this.width / 2; }
+						else if(randomPosition == 2) { bulletX = this.x + this.width; }
+						
+						bulletY = this.y + this.height / 2;
+						
+						_shotAngle += 0.05;
+						_shotAngle -= Math.floor(_shotAngle);
+						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
+					}
+					
 					break;
 				case PHASE_3:
-					bulletX = Math.random() * this.width;
-					bulletY = this.y + this.height / 2;
-					_shotAngle += 0.05;
-					shooting(bulletX, bulletY, _shotAngle, _shotSpeed * 1.3);
-					break;
-			}
+					
+					if(currentTime - _prevTime > 30)
+					{ 
+						bulletX = this.x;
+						bulletY = this.y + this.height / 2;
+						
+						_shotAngle += 0.05;
+						
+						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
+						shooting(bulletX, bulletY, _shotAngle, _shotSpeed*0.7);
+						break;
+					}
+				}
 		}
 		
 		/**
