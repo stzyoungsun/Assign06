@@ -80,6 +80,7 @@ package framework.core
 			_nativeStage.addEventListener(MouseEvent.MOUSE_MOVE, onTouch);
 			_nativeStage.addEventListener(MouseEvent.MOUSE_UP, onTouch);
 			_nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+			_nativeStage.addEventListener(KeyboardEvent.KEY_UP, onKey);
 			
 			_showStats = false;
 			
@@ -194,6 +195,7 @@ package framework.core
 		
 		private function onKey(event:KeyboardEvent):void
 		{
+			event.preventDefault();
 			stage.dispatchEvent(event);
 		}
 		
