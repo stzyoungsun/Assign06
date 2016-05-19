@@ -7,6 +7,7 @@ import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.lpesign.extensions.Function.AlarmFunction;
 import com.lpesign.extensions.Function.ExitDialogFuncion;
+import com.lpesign.extensions.Function.InputFunction;
 import com.lpesign.extensions.Function.ListDialogFunction;
 import com.lpesign.extensions.Function.SpriteSheetFunction;
 import com.lpesign.extensions.Function.ToastFunction;
@@ -28,6 +29,7 @@ public class Context extends FREContext{
         map.put("listdialog",new ListDialogFunction());
 		map.put("spritesheet",new SpriteSheetFunction());
 		map.put("push", new AlarmFunction());
+		map.put("input", new InputFunction());
 		
         return map;
     }

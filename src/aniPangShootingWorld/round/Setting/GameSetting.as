@@ -21,6 +21,7 @@ package aniPangShootingWorld.round.Setting
 		private var _bgm:Boolean;
 		private var _effectSound:Boolean;
 		private var _pause:Boolean;
+		private var _userName:String;
 		
 		public function GameSetting()
 		{
@@ -42,7 +43,7 @@ package aniPangShootingWorld.round.Setting
 		public function gameSettingInit() : void
 		{
 			var stream : FileStream = new FileStream();
-			var path:File = File.applicationStorageDirectory.resolvePath( "data/Game.xml" );
+			var path:File = File.applicationStorageDirectory.resolvePath( "data/" + _userName + "_Game.xml" );
 			var xmlData : String;
 			if(path.exists)
 			{
@@ -64,22 +65,22 @@ package aniPangShootingWorld.round.Setting
 			_effectSound = true;
 		}
 		
-		public function SaveSetting() : void
+		public function saveSetting() : void
 		{
-			var s : String = json.JSON.encode(_roundStateArray);
+			var save : String = json.JSON.encode(_roundStateArray);
 			
 			var pattern : RegExp = /}/g;
-			s = s.replace(pattern,"}\n");
+			save = save.replace(pattern,"}\n");
 			
-			var path:File = File.applicationStorageDirectory.resolvePath( "data/Game.xml" );
+			var path:File = File.applicationStorageDirectory.resolvePath( "data/" + _userName + "_Game.xml" );
 			var fileStream : FileStream = new FileStream();
 			fileStream.open(path, FileMode.WRITE);
+			fileStream.writeUTFBytes(save);
 			
-			fileStream.writeUTFBytes(s);
+			path = File.applicationStorageDirectory.resolvePath("data/current_user.xml");
+			fileStream.open(path, FileMode.WRITE);
+			fileStream.writeUTFBytes(_userName);
 			fileStream.close();
-			
-			path = null;
-			fileStream = null;
 		}
 		
 		public function get roundStateArray():Object{return _roundStateArray;}
@@ -96,5 +97,7 @@ package aniPangShootingWorld.round.Setting
 
 		public function get pause():Boolean { return _pause; }
 		public function set pause(value:Boolean):void { _pause = value; }
+
+		public function set userName(value:String):void { _userName = value; }
 	}
 }

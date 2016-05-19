@@ -1,5 +1,9 @@
 package aniPangShootingWorld.round
 {
+	import com.lpesign.Extension;
+	
+	import flash.events.StatusEvent;
+	
 	import aniPangShootingWorld.loader.ResourceLoader;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.round.Setting.RoundSetting;
@@ -15,6 +19,9 @@ package aniPangShootingWorld.round
 	import framework.scene.SceneManager;
 	import framework.texture.AtlasTexture;
 	import framework.texture.FwTexture;
+	import framework.texture.TextureManager;
+	
+	import json.JSON;
 	
 	/**
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
@@ -32,6 +39,7 @@ package aniPangShootingWorld.round
 		private var _menuText : MovieClip;
 		
 		private var _loadingGaugeTexture:AtlasTexture;
+		private var _userName:String;
 		
 		/**
 		 * 로드 전 이미지를 불러와서 화면에 출력합니다.
@@ -94,16 +102,30 @@ package aniPangShootingWorld.round
 			_menuText.height = Framework.viewport.height/10;
 			_menuText.start();
 			addChild(_menuText);
-			addEventListener(TouchEvent.TOUCH, onTouch);
 			
-			RoundSetting.instance.settingRound();
-			GameSetting.instance.gameSettingInit();
+			checkUser();
+			
+			addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			_resourceLoader = null;
 		}
 		
+		private function checkUser():void
+		{
+			if(TextureManager.getInstance().xmlDictionary["current_user.xml"])
+			{
+				var userName:String = TextureManager.getInstance().xmlDictionary["current_user.xml"].toString();
+				_userName = userName;
+				RoundSetting.instance.userName = _userName;
+				GameSetting.instance.userName = _userName;
+			}
+			else
+			{
+				_userName = "NO_USER_DATA";
+			}
+		}
+		
 		/**
-		 * 
 		 * @param event
 		 * Note @유영선 화면을 터치 했을 경우 게임 시작
 		 */		
@@ -113,19 +135,35 @@ package aniPangShootingWorld.round
 			switch(event.touch.phase)
 			{
 				case TouchPhase.ENDED:
-					SceneManager.instance.addScene(this);
-					var selectView:SelectView = new SelectView(0);
 					
-//					PlayerState.sPlayerHeart = 5;
-//					PlayerState.sPlayerPower = 0;
-//					PlayerState.sGoldCount = 0;
-//					PlayerState.sTotalHeart = 0;
-//					PlayerState.sTotalPower = 0;
-					
-					SceneManager.instance.addScene(selectView);
-					SceneManager.instance.sceneChange(); 
+					if(_userName == "NO_USER_DATA")
+					{
+						var nativeExtension:Extension = new Extension();
+						nativeExtension.inputID();
+						nativeExtension.addEventListener("INPUT_ID", onInputID);
+					}
+					else
+					{
+						RoundSetting.instance.settingRound();
+						GameSetting.instance.gameSettingInit();
+						SceneManager.instance.addScene(this);
+						SceneManager.instance.addScene(new SelectView(0));
+						SceneManager.instance.sceneChange();
+					}
 					break;
 			}
+		}
+		
+		private function onInputID(event:StatusEvent):void
+		{
+			RoundSetting.instance.userName = event.code;
+			GameSetting.instance.userName = event.code;
+			
+			RoundSetting.instance.settingRound();
+			GameSetting.instance.gameSettingInit();
+			SceneManager.instance.addScene(this);
+			SceneManager.instance.addScene(new SelectView(0));
+			SceneManager.instance.sceneChange();
 		}
 		
 		public override function dispose() : void

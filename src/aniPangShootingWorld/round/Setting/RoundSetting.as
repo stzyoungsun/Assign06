@@ -8,6 +8,7 @@ package aniPangShootingWorld.round.Setting
 	{
 		private static var _instance : RoundSetting;
 		private static var _constructed : Boolean;
+		private var _userName:String;
 	
 		public function RoundSetting()
 		{
@@ -34,13 +35,10 @@ package aniPangShootingWorld.round.Setting
 		public function settingRound() : void
 		{
 			_roundObjectArray = json.JSON.decode(TextureManager.getInstance().xmlDictionary["Round.xml"]);
-			
-			for (var key:Object in _roundObjectArray) {
-				trace(_roundObjectArray[key].roundnum) ;
-				trace(_roundObjectArray[key].background) ;      
-			}
 		}
 		
 		public function get roundObject():Array{return _roundObjectArray;}
+
+		public function set userName(value:String):void { _userName = value; }
 	}
 }
