@@ -54,12 +54,11 @@ package aniPangShootingWorld.round
 			drawPrevButton();
 			drawStoreButton();
 			drawConfigureButton();
-			
-			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
 		public function initView():void
 		{
+			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			if(_roundDictionary != null) removeButton();
 			_sceneSetting = GameSetting.instance.roundStateArray.Scene[_viewNum];
 			_selectImage.texture = TextureManager.getInstance().textureDictionary[_sceneSetting.ViewPng];

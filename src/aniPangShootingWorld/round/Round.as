@@ -516,7 +516,7 @@ package aniPangShootingWorld.round
 		private function playerDraw():void
 		{
 			_player = new Player(GameTexture.player, 5, new BulletManager(ObjectType.PLAYER_BULLET_IDLE, 30, GameTexture.bullet[0]), this);
-			
+			_player.addEventListener("exit", onExitGame);
 			_player.width = Framework.viewport.width/8;
 			_player.height = Framework.viewport.height/8;
 			_player.start();
@@ -606,6 +606,8 @@ package aniPangShootingWorld.round
 		private function onExitGame(event:Event):void
 		{
 			this.dispose();
+			
+			Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
 			_soundManager.stopLoopedPlaying();
 			SceneManager.instance.sceneChange();

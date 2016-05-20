@@ -2,6 +2,7 @@ package aniPangShootingWorld.player
 {
 	import com.adobe.nativeExtensions.Vibration;
 	
+	import flash.events.Event;
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.resourceName.SoundResource;
@@ -38,7 +39,7 @@ package aniPangShootingWorld.player
 		 * @param stage			현재 Round의 객체
 		 * 
 		 */		
-		public function Player(textureVector:Vector.<FwTexture>, frame:Number, bulletManager:BulletManager, stage:Sprite )
+		public function Player(textureVector:Vector.<FwTexture>, frame:Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			//@Note 유영선  플레이어의 y값을 설정 합니다. 플레이어는 화면 바닥에 고정
 			y = Framework.viewport.height - Framework.viewport.height/5;
@@ -205,9 +206,7 @@ package aniPangShootingWorld.player
 			//@Note 유영선 플레이어 체력이 0이 되었을 경우 메뉴 화면으로 돌아감
 			if(PlayerState.sPlayerHeart == 0)
 			{
-				_stage.dispose();
-				SceneManager.instance.sceneChange();
-				(Framework.sceneStage as SelectView).initView();
+				dispatchEvent(new Event("exit"));
 				return;
 			}
 			
