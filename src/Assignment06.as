@@ -34,7 +34,7 @@ package
 		private function deactivateListener(event:Event):void
 		{
 			GameSetting.instance.saveSetting();
-			_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",3000, true);
+			_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~", 30000, true);
 			_exitFlag = true;
 			fw.stop();
 		}
@@ -44,7 +44,7 @@ package
 			fw.start();
 			if(_exitFlag == true)
 			{
-				_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",3000, false);
+				_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~", 30000, false);
 				_exitFlag = false;
 			}
 			
