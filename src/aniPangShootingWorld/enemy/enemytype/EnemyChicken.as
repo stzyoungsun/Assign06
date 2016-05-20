@@ -9,6 +9,10 @@ package aniPangShootingWorld.enemy.enemytype
 	import framework.display.Sprite;
 	import framework.texture.FwTexture;
 
+	/**
+	 * 병아리 적을 만듭니다.
+	 * 병이리 적의 특징은 사망시 0~2마리 분열을 합니다.
+	 */	
 	public class EnemyChicken extends EnemyObject
 	{
 		private var _stage : Sprite;

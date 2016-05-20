@@ -4,7 +4,6 @@ package aniPangShootingWorld.boss.bosstype
 	
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.Round;
 	
 	import framework.core.Framework;
 	import framework.display.ObjectType;
@@ -21,10 +20,18 @@ package aniPangShootingWorld.boss.bosstype
 		private var _shotAngle:Number;
 		private var _shotSpeed:Number;
 		private var _bossPhase:Number;
-		private var _waitTime:Number;
 		private var _wait:Boolean;
 		private var _remainBullet:Boolean;
 		
+		/**
+		 * 
+		 * @param textureVector  1라운드 보스의 텍스쳐
+ 		 * @param frame          보스 애니매이션의 프레임
+		 * @param bossMaxHP      1라운드 보스의 체력
+		 * @param bulletManager  1라운드 보스의 미사일 매니져
+		 * @param stage          라운드의 stage
+		 * 
+		 */		
 		public function OneRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(textureVector, frame, bulletManager, stage);
@@ -45,7 +52,6 @@ package aniPangShootingWorld.boss.bosstype
 			_shotSpeed = Framework.viewport.height / 100;
 			_bossPhase = PHASE_1;
 			_wait = false;
-			_waitTime = 2000;
 			
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
@@ -117,9 +123,11 @@ package aniPangShootingWorld.boss.bosstype
 					break;
 				case PHASE_2:
 					var randomPosition:int = Math.random() * 3;
+					
 					if(randomPosition == 0) { bulletX = this.x; }
 					else if(randomPosition == 1) { bulletX = this.x + this.width / 2; }
 					else if(randomPosition == 2) { bulletX = this.x + this.width; }
+					
 					bulletY = this.y + this.height / 2;
 					_shotAngle += 0.05;
 					_shotAngle -= Math.floor(_shotAngle);

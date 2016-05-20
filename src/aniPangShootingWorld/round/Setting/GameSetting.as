@@ -8,6 +8,10 @@ package aniPangShootingWorld.round.Setting
 	
 	import json.JSON;
 
+	/**
+	 * 전체 적인 게임을 세팅하는 클래스입니다.
+	 * JSON을 파싱하여 저장 및 로드를 합니다.
+	 */	
 	public class GameSetting
 	{
 		private static var _instance : GameSetting;
@@ -40,6 +44,9 @@ package aniPangShootingWorld.round.Setting
 			return _instance;
 		}
 		
+		/** 
+		 * 세팅 값을 파일 로드 하여 object 객체에 저장합니다.
+		 */		
 		public function gameSettingInit() : void
 		{
 			var stream : FileStream = new FileStream();
@@ -65,6 +72,9 @@ package aniPangShootingWorld.round.Setting
 			_effectSound = true;
 		}
 		
+		/** 
+		 * object 객체를 파일에 JSON 형태로 저장합니다.
+		 */		
 		public function saveSetting() : void
 		{
 			var save : String = json.JSON.encode(_roundStateArray);

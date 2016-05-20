@@ -3,12 +3,8 @@ package aniPangShootingWorld.boss.bosstype
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.BossObject;
-	import aniPangShootingWorld.enemy.EnemyObject;
-	import aniPangShootingWorld.enemy.enemytype.EnemyChicken;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.Round;
-	import aniPangShootingWorld.round.Setting.RoundSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.UtilFunction;
 	
@@ -24,10 +20,6 @@ package aniPangShootingWorld.boss.bosstype
 		private var _stage:Sprite;
 		private var _shotAngle:Number;
 		private var _shotSpeed:Number;
-		private var _bossPhase:Number;
-		private var _waitTime:Number;
-		private var _wait:Boolean;
-		private var _remainBullet:Boolean;
 		
 		public static var stotalBossCnt : Number = 15;
 		public function TwoRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
@@ -48,9 +40,7 @@ package aniPangShootingWorld.boss.bosstype
 			
 			_shotAngle = 0;
 			_shotSpeed = Framework.viewport.height / 100;
-			_wait = false;
-			_waitTime = 2000;
-			
+
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
 			
@@ -66,11 +56,11 @@ package aniPangShootingWorld.boss.bosstype
 			// 3초후 제거
 			if(currentTime - _prevTime > 2000)
 			{
+				//분열
 				devide();
 				// 보스 자신을 제거
-				
 				_stage.removeChild(this);
-				
+				//첫 번째 인자의 개수 만큼 아이템 생성
 				var item : ItemGroup = new ItemGroup(10,this.x, this.y,_stage);
 				item.drawItem();
 				
@@ -84,6 +74,9 @@ package aniPangShootingWorld.boss.bosstype
 			}
 		}
 		
+		/** 
+		 * 보스가 사망 했을 경우 특정 조건이 만족하기 전까지 2마리로 분열
+		 */		
 		public function devide() : void
 		{
 			var randomx : Number = 0;
@@ -115,6 +108,9 @@ package aniPangShootingWorld.boss.bosstype
 			}	
 		}
 		
+		/**
+		 * 미사일 발사 패턴을 조절하는 함수 
+		 */		
 		public override function shotBullet():void
 		{
 			if(bossHp <= 0)

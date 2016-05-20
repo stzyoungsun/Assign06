@@ -4,11 +4,9 @@ package aniPangShootingWorld.boss
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.boss.bosstype.ThreeRoundBoss;
-	import aniPangShootingWorld.boss.subboss.ThreeRoundSubBoss;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
-	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.MovieClip;
 	import framework.core.Framework;
@@ -46,6 +44,7 @@ package aniPangShootingWorld.boss
 		
 		protected var bossMovingPhase:Number = -1;
 		private var _moveFlag : Boolean = false;
+		
 		/**
 		 * 생성자 - 객체 및 변수의 초기화 작업 진행 
 		 * @param bossAtlas - 보스의 이미지를 담은 AtlasBitmapData 객체
@@ -67,7 +66,8 @@ package aniPangShootingWorld.boss
 		 * 1.Bullet 발사<br/>
 		 * 2.충돌 처리<br/>
 		 * 3.Bullet 검사<br/>
-		 * 이 세 가지를 반복적으로 수행한다.
+		 * 4. moveFlag가 true일 경우 보스의 움직임을 처리합니다.
+		 * 이 네 가지를 반복적으로 수행한다.
 		 */
 		public override function render():void
 		{
@@ -82,13 +82,16 @@ package aniPangShootingWorld.boss
 			}
 			
 			if(GameSetting.instance.pause) return;
-
+			//미사일 발사
 			shotBullet();
-			
+			//충돌 처리
 			processCollision();
+			
 			var currentTime:Number = getTimer();
 			// 3초후 제거
-		
+			
+			bulletFrame();
+			
 			if(_moveFlag == true)
 				autoMovig();
 				
@@ -99,15 +102,21 @@ package aniPangShootingWorld.boss
 				_bossHPbar.calcHP(maxBossHp,bossHp);
 			}
 		
-			bulletFrame();
+			
 		}
 		
+		/** 
+		 * 보스에게 체력 게이지를 만듭니다.
+		 */		
 		public function addHPBar() : void
 		{
 			_bossHPbar = new HPbar(0, 0, GameTexture.bossHpBar[9]);
 			_stage.addChild(_bossHPbar);
 		}
 		
+		/**
+		 * 보스에 만들어진 체력게이지를 지웁니다.
+		 */		
 		public function deleteHPBar() : void
 		{
 			if(_stage.getChildIndex(_bossHPbar) != -1)
@@ -163,6 +172,10 @@ package aniPangShootingWorld.boss
 			}			
 		}
 		
+		/**
+		 * moveFlag가 true 인 경우에만 동작합니다. 
+		 * 보스의 움직임을 미리 성정한 궤도 (trackingVector) 변수에 따라 움직이게 합니다.
+		 */		
 		private function autoMovig():void
 		{
 	

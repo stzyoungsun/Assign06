@@ -35,15 +35,23 @@ package aniPangShootingWorld.round.SelectViewSub
 		private var _backFunction : Function;
 		
 		private var _roundName : String;
+		
 		/**
+		 * 
 		 * @param roundOrder 현재 View 안에서의 roundButton의 번호
 		 * @param roundButtonSetting roundButton의 세팅 값
-		 */		
+		 * @param stage 선책창의 sprite
+		 * @param backFunc 백 버튼의 콜백함수
+		 * 
+		 */	
 		public function RoundButton(roundOrder : Number, roundButtonSetting : Object, stage : Sprite, backFunc : Function)
 		{
+			//Select View 화면에서의 순서의 배열 번호
 			_roundArrayOrder = roundOrder-1;
+			//전체 게임을 기준으로 Round 번호
 			_roundNum = roundOrder + roundButtonSetting.RoundStartNum;	
 			var roundName : String; 
+			
 			if(_roundNum == 4)
 			{
 				roundButtonSetting.Round[roundOrder-1].state = 5;
@@ -60,11 +68,7 @@ package aniPangShootingWorld.round.SelectViewSub
 			this.height = Framework.viewport.width/6;
 			this.x = Framework.viewport.width*roundButtonSetting.Round[roundOrder-1].x;
 			this.y = Framework.viewport.height*roundButtonSetting.Round[roundOrder-1].y;
-			
-			//Select View 화면에서의 순서의 배열 번호
-			
-			//전체 게임을 기준으로 Round 번호
-			
+		
 			_roundButtonSetting = roundButtonSetting;
 			_backFunction = backFunc;
 			addEventListener(TouchEvent.TRIGGERED, onClicked);
@@ -152,6 +156,9 @@ package aniPangShootingWorld.round.SelectViewSub
 			}
 		}
 		
+		/** 
+		 * 메세지 창의 OK를 눌렀을 경후 불러지는 콜백 함수
+		 */		
 		public function onOKFunction() : void
 		{
 			var message : MessageBox;

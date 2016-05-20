@@ -5,6 +5,9 @@ package aniPangShootingWorld.obstacle
 	import framework.display.Sprite;
 	import framework.texture.FwTexture;
 
+	/** 
+	 * 적 의외에 장애물들을 만들기 위한 클래스입니다.
+	 */	
 	public class Obstacle extends MovieClip
 	{
 		private var _stage :Sprite;

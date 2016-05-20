@@ -30,14 +30,17 @@ package aniPangShootingWorld.item
 				var randEndx : Number = UtilFunction.random(startx-Framework.viewport.width/4,startx+Framework.viewport.width/4,1);
 				var randEndy : Number = UtilFunction.random(starty-Framework.viewport.height/4,starty - Framework.viewport.height/2,1);
 				
+				//30 개의 경우중 0~26까지는 코인을 생성합니다
 				if(randomNumber>=0 && randomNumber < 27)
 				{
 					_itemVector.push(new Item(GameTexture.coin, 30, startx, starty, randEndx, randEndy, ObjectType.ITEM_COIN,_stage));
 				}
+				//30 개의 경우중  27만 하트를 생성합니다
 				else if(randomNumber==27)
 				{
 					_itemVector.push(new Item(GameTexture.heart, 30, startx, starty, randEndx, randEndy, ObjectType.ITEM_HEART,_stage));
 				}
+				//나머지 경우에서 젤리를 생성합니다.
 				else
 				{
 					_itemVector.push(new Item(GameTexture.power, 30, startx, starty, randEndx, randEndy, ObjectType.ITEM_POWER,_stage));
@@ -45,6 +48,9 @@ package aniPangShootingWorld.item
 			}
 		}
 		
+		/** 
+		 * 생성된 아이템들을 화면에 출력합니다.
+		 */		
 		public function drawItem() : void 
 		{
 			for(var i : Number =0; i < _itemCount; ++i)

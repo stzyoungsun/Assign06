@@ -10,6 +10,10 @@ package aniPangShootingWorld.round.SelectViewSub
 	import framework.display.Sprite;
 	import framework.texture.FwTexture;
 
+	/**
+	 * 선택 창 화면에서 게임 코인, 게임 날개를 출력하고 지속적으로 관찰하여 그 변화를 화면에 출력하는 창입니다.
+	 * 
+	 */	
 	public class ItemWindow extends Sprite
 	{
 		public static const ITEM_COIN : Number = 0;
@@ -42,12 +46,12 @@ package aniPangShootingWorld.round.SelectViewSub
 		public override function render() : void
 		{
 			super.render();
-			
+			//게임내 재화의 상태를 관측하여 변화에 따라 지속적으로 변경합니다.
 			drawtext(_enumItem);
 		}
+		
 		private function drawtext(enumItem:Number):void
 		{
-			// TODO Auto Generated method stub
 			switch(enumItem)
 			{
 				case ITEM_COIN:

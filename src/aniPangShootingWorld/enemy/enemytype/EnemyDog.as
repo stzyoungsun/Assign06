@@ -1,7 +1,5 @@
 package aniPangShootingWorld.enemy.enemytype
 {
-	import flash.utils.getTimer;
-	
 	import aniPangShootingWorld.enemy.EnemyObject;
 	import aniPangShootingWorld.enemy.EnemyObjectUtil;
 	import aniPangShootingWorld.player.Player;
@@ -18,7 +16,7 @@ package aniPangShootingWorld.enemy.enemytype
 	
 	/**
 	 * Note @유영선 Dog 적의 클래스 입니다. 
-	 * Dog 적의 특징 : 스핀 미사일을 발사 합니다.
+	 * Dog 적의 특징 : 유도 미사일 한발을 발사합니다.
 	 */
 	public class EnemyDog extends EnemyObject
 	{
@@ -48,8 +46,6 @@ package aniPangShootingWorld.enemy.enemytype
 		 */		
 		public function shooting() : void
 		{
-			
-			
 			var bulletX : Number= this.x + this.width / 2;
 			var bulletY : Number= this.y;
 			//Note @유영선  플레이어가 발사 속도를 조절
@@ -67,7 +63,6 @@ package aniPangShootingWorld.enemy.enemytype
 				_stage.addChild(_bulletManager.bulletVector[bulletNum]);	
 				shootFlag = true;
 			}
-			
 		}
 		
 		/**
