@@ -60,9 +60,9 @@ package com.lpesign
 			_context.call("spritesheet",spriteSheet);
 		}
 		
-		public function push(icon : BitmapData, title:String, message : String, time:int):void
+		public function push(icon : BitmapData, title:String, message : String, time:int, alarmFlag : Boolean):void
 		{
-			_context.call("push",icon, title,message,time);
+			_context.call("push",icon, title,message,time,alarmFlag);
 		}
 		
 		public function inputID():void

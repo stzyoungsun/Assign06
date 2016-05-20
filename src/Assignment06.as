@@ -19,6 +19,7 @@ package
 	{
 		private var fw:Framework = new Framework(MenuView, stage);
 		private var _pushMessage : Extension = new Extension();
+		private var _exitFlag : Boolean = false;
 		public function Assignment06()
 		{
 			super();
@@ -33,13 +34,20 @@ package
 		private function deactivateListener(event:Event):void
 		{
 			GameSetting.instance.saveSetting();
-			_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",30000);
+			_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",3000, true);
+			_exitFlag = true;
 			fw.stop();
 		}
 		
 		private function activateListener(event:Event):void
 		{
 			fw.start();
+			if(_exitFlag == true)
+			{
+				_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",3000, false);
+				_exitFlag = false;
+			}
+			
 		}
 	}
 }

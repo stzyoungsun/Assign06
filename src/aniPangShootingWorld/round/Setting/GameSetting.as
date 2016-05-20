@@ -25,7 +25,7 @@ package aniPangShootingWorld.round.Setting
 		private var _bgm:Boolean;
 		private var _effectSound:Boolean;
 		private var _pause:Boolean;
-		private var _userName:String;
+		private var _userName:String ="";
 		
 		public function GameSetting()
 		{

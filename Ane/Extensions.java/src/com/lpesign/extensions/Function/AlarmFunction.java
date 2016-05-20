@@ -11,6 +11,7 @@ import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 import com.lpesign.extensions.PushNotifcation;
 
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -30,6 +31,7 @@ public class AlarmFunction implements FREFunction
     private  CharSequence _title = "";
     private  CharSequence _message = "";
     private int _interval = 0;
+    private boolean _alarmFlag = false;
     
     private	byte[] _byteArray = {};
     @Override
@@ -45,7 +47,9 @@ public class AlarmFunction implements FREFunction
         	_title = arg1[1].getAsString();
             _message = arg1[2].getAsString(); 
             _interval = arg1[3].getAsInt();
+            _alarmFlag = arg1[4].getAsBool();
             
+            Log.d(TAG, "_alarmFlag" + _alarmFlag);
    		    int srcWidth = inputValue.getWidth();
    		    int srcHeight = inputValue.getHeight();
    		    bm = Bitmap.createBitmap(srcWidth, srcHeight, Config.ARGB_8888);
@@ -99,9 +103,11 @@ private boolean setAlarm(){
          putIntent.putExtra("message",_message);
          
          PendingIntent pender = PendingIntent.getBroadcast(_context.getActivity(), 0, putIntent, 0);
-         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + _interval , pender);
-         
-         alarm.cancel(null);
+        
+         if(_alarmFlag == true)
+        	 alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + _interval , pender);
+         else
+        	 alarm.cancel(pender);
 
          return true;
 
