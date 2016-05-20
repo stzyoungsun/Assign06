@@ -10,7 +10,7 @@ package com.lpesign
 	 */
 	public class Extension extends EventDispatcher
 	{
-		private var context:ExtensionContext;
+		private var _context:ExtensionContext;
 		private var _drawSprite : Function;
 		
 		public function Extension(drawSprite:Function = null)
@@ -19,10 +19,8 @@ package com.lpesign
 			
 			try
 			{
-				if(!context)
-					context = ExtensionContext.createExtensionContext("com.lpesign.Extension", null);
-				if(context)
-					context.addEventListener(StatusEvent.STATUS,statusHandle);
+				if(!_context) _context = ExtensionContext.createExtensionContext("com.lpesign.Extension", null);
+				if(_context) _context.addEventListener(StatusEvent.STATUS,statusHandle);
 			} 
 			catch(e:Error) 
 			{
@@ -30,7 +28,8 @@ package com.lpesign
 			}
 		}
 		
-		public function statusHandle(event:StatusEvent):void{
+		public function statusHandle(event:StatusEvent):void
+		{
 			if((event.level as String) == "INPUT_ID")
 			{
 				dispatchEvent(new StatusEvent("INPUT_ID", false, false, event.code, event.level));
@@ -41,32 +40,34 @@ package com.lpesign
 			}
 		}
 		
+		public function toast(message:String):void
+		{
+			_context.call("toast",message);
 		}
 		
-		public function toast(message:String):void{
-			context.call("toast",message);
-		}
-		
-		public function exitDialog(clickedFlag:Boolean):void{
-			context.call("exitdialog",clickedFlag);
+		public function exitDialog(clickedFlag:Boolean):void
+		{
+			_context.call("exitdialog",clickedFlag);
 		}
 				
-		public function listDialog(arrPngName:Array) : void{
-			context.call("listdialog",arrPngName);
+		public function listDialog(arrPngName:Array) : void
+		{
+			_context.call("listdialog",arrPngName);
 		}
 		
-		public function spriteActivity(spriteSheet:BitmapData) : void{
-			context.call("spritesheet",spriteSheet);
+		public function spriteActivity(spriteSheet:BitmapData) : void
+		{
+			_context.call("spritesheet",spriteSheet);
 		}
 		
 		public function push(icon : BitmapData, title:String, message : String, time:int):void
 		{
-			context.call("push",icon, title,message,time);
+			_context.call("push",icon, title,message,time);
 		}
 		
 		public function inputID():void
 		{
-			context.call("input");
+			_context.call("input");
 		}
 	}
 }
