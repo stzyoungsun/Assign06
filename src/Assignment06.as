@@ -32,15 +32,13 @@ package
 		
 		private function deactivateListener(event:Event):void
 		{
-			// TODO Auto-generated method stub
 			GameSetting.instance.saveSetting();
-			_pushMessage.push(new PrevLoadImage.icon().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",30000);
+			_pushMessage.push(new PrevLoadImage.ICON().bitmapData,"30초 동안 기다렸어요ㅠㅠ","얼른 와서 몬스터를 처치해 주세요~~",30000);
 			fw.stop();
 		}
 		
 		private function activateListener(event:Event):void
 		{
-			// TODO Auto-generated method stub
 			fw.start();
 		}
 	}
