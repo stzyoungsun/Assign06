@@ -159,6 +159,11 @@ package aniPangShootingWorld.round
 		public function logoutFromGame():void
 		{
 			_userName = "NO_USER_DATA";
+			var path:File = File.applicationStorageDirectory.resolvePath("data/current_user.data");
+			var fileStream : FileStream = new FileStream();
+			fileStream.open(path, FileMode.WRITE);
+			fileStream.writeUTFBytes("NO_USER_DATA");
+			fileStream.close();
 		}
 		
 		/**
