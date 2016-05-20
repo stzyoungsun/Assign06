@@ -207,6 +207,7 @@ package aniPangShootingWorld.player
 			{
 				_stage.dispose();
 				SceneManager.instance.sceneChange();
+				(Framework.sceneStage as SelectView).initView();
 				return;
 			}
 			
