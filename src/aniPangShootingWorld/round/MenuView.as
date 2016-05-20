@@ -38,6 +38,7 @@ package aniPangShootingWorld.round
 		private var _menuText:MovieClip;
 		private var _loadingGaugeTexture:AtlasTexture;
 		private var _userName:String;
+		private var _selectView:SelectView;
 		
 		/**
 		 * 로드 전 이미지를 불러와서 화면에 출력합니다.
@@ -155,6 +156,11 @@ package aniPangShootingWorld.round
 			}
 		}
 		
+		public function logoutFromGame():void
+		{
+			_userName = "NO_USER_DATA";
+		}
+		
 		/**
 		 * 네이티브 쪽에서 사용자 아이디를 입력받은 후 버튼을 클릭하면 호출되는 메서드
 		 * @param event - 사용자 정보를 가지고 있는 StatusEvent 객체
@@ -177,8 +183,13 @@ package aniPangShootingWorld.round
 			GameSetting.instance.userName = _userName;
 			GameSetting.instance.gameSettingInit();
 			
+			if(_selectView == null)
+			{
+				_selectView = new SelectView(0);
+			}
+			
 			SceneManager.instance.addScene(this);
-			SceneManager.instance.addScene(new SelectView(0));
+			SceneManager.instance.addScene(_selectView);
 			SceneManager.instance.sceneChange();
 		}
 		

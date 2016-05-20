@@ -147,7 +147,7 @@ package aniPangShootingWorld.ui
 			_cancelFunction = cancelFunction;
 		}
 		
-		public function onTriggeredButton(event:Event):void
+		private function onTriggeredButton(event:Event):void
 		{
 			var button:Button = event.currentTarget as Button;
 			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
