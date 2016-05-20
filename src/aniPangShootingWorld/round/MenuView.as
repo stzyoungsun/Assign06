@@ -129,8 +129,6 @@ package aniPangShootingWorld.round
 					userName = "NO_USER_DATA";
 				}
 				_userName = userName;
-				RoundSetting.instance.userName = _userName;
-				GameSetting.instance.userName = _userName;
 			}
 			else
 			{
@@ -157,11 +155,7 @@ package aniPangShootingWorld.round
 					}
 					else
 					{
-						RoundSetting.instance.settingRound();
-						GameSetting.instance.gameSettingInit();
-						SceneManager.instance.addScene(this);
-						SceneManager.instance.addScene(new SelectView(0));
-						SceneManager.instance.sceneChange();
+						moveSelectView();
 					}
 					break;
 			}
@@ -169,8 +163,14 @@ package aniPangShootingWorld.round
 		
 		private function onInputID(event:StatusEvent):void
 		{
-			RoundSetting.instance.userName = event.code;
-			GameSetting.instance.userName = event.code;
+			_userName = event.code;
+			moveSelectView();
+		}
+		
+		private function moveSelectView():void
+		{
+			RoundSetting.instance.userName = _userName;
+			GameSetting.instance.userName = _userName;
 			
 			RoundSetting.instance.settingRound();
 			GameSetting.instance.gameSettingInit();
