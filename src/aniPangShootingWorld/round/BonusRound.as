@@ -9,11 +9,6 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.boss.bosstype.OneRoundBoss;
 	import aniPangShootingWorld.boss.bosstype.ThreeRoundBoss;
 	import aniPangShootingWorld.boss.bosstype.TwoRoundBoss;
-	import aniPangShootingWorld.enemy.EnemyLine;
-	import aniPangShootingWorld.enemy.EnemyObject;
-	import aniPangShootingWorld.enemy.EnemyObjectUtil;
-	import aniPangShootingWorld.obstacle.Meteo;
-	import aniPangShootingWorld.obstacle.Obstacle;
 	import aniPangShootingWorld.player.Player;
 	import aniPangShootingWorld.player.PlayerState;
 	import aniPangShootingWorld.resourceName.SoundResource;
@@ -25,7 +20,6 @@ package aniPangShootingWorld.round
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.HPbar;
 	import aniPangShootingWorld.util.ResultDlg;
-	import aniPangShootingWorld.util.UtilFunction;
 	
 	import framework.animaiton.MovieClip;
 	import framework.background.BackGround;
@@ -71,22 +65,19 @@ package aniPangShootingWorld.round
 
 		//Note @유영선 결과창
 		private var _resultView : ResultDlg;
-		private var _resultTimer : Number;
 		
 		private var _gameSetting : Object;
-		
+		private var _bossNumber : Number = 2;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
 		
-		private var _roundNum : Number;
 		
-		public function BonusRound(roundNum : Number)
+		public function BonusRound()
 		{
 			this.objectType = ObjectType.ROUND_PREV;
 			_gameSetting = GameSetting.instance.roundStateArray;
-			_roundNum = roundNum;
-			
+	
 			GameSetting.instance.pause = true;
 			
 			PlayerState.sPlayerHeart = PlayerState.MAX_HERAT;
@@ -134,7 +125,10 @@ package aniPangShootingWorld.round
 			if(this.objectType == ObjectType.ROUND_PREV)
 			{
 				if(_prevGameView.play == false)
+				{
+					_bossWarningTime = getTimer();
 					this.objectType = ObjectType.ROUND_BOSS_WARNING;
+				}	
 			}
 				
 			//Note @유영선 보스 전 시작 경고 화면
@@ -151,8 +145,8 @@ package aniPangShootingWorld.round
 					//Note @유영선 보스 워닝하면 5초간 출력 후 보스 등장
 				else 
 				{
-					this.objectType = ObjectType.ROUND_BOSS;
-					removeChild(_bossWarningView , true);
+					_bossWarningView.visible = false;
+					bossDraw(_bossNumber++);
 				}
 			}
 				
@@ -160,20 +154,26 @@ package aniPangShootingWorld.round
 			else if(this.objectType == ObjectType.ROUND_BOSS)
 			{
 				PlayerState.sPlayerPower = 0;
-				bossDraw();
 			}
 				
 				//Note @유영선 결과 창 구현
 			else if(this.objectType == ObjectType.ROUND_CLEAR)
 			{
+				_boss = null;
+				
+				if(_bossNumber != 3)
+				{
+					this.objectType = ObjectType.ROUND_PREV;
+					return;
+				}
+				
 				var curResultTimer : int = getTimer();
 				PlayerState.sPlayerPower = 0;
 				
 				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				_prevGameView = null;
-				
 				//Note @결과 창 출력
-				if(curResultTimer - _resultTimer > 4000)
+				if(curResultTimer - resultTimer > 4000)
 				{
 					_resultView.visible = true;
 					
@@ -201,78 +201,17 @@ package aniPangShootingWorld.round
 			{
 				this.dispose();
 				
-				clearStarCheck()
-				var selectView : SelectView = new SelectView(findViewNum());
+				var selectView : SelectView = new SelectView(0);
 				
 				SceneManager.instance.addScene(selectView);
 				SceneManager.instance.sceneChange(); 
 			}
 		}
 		
-		/** 
-		 * Note @유영선 재화 획득 개수에 따라 별의 개수를 설정 합니다.
-		 */		
-		private function clearStarCheck():void
-		{
-			// TODO Auto Generated method stub
-			var findView : Number = findViewNum();
-			var getTotalItem : Number = PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount;
-			if(getTotalItem < 80)
-				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.ONE_START_CLEAR;
-			else if(getTotalItem < 160)
-				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.TWO_STAR_CLEAR;
-			else 
-				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.THREE_STAR_CLEAR;
-			
-			_gameSetting.GameTotalGold += getTotalItem;
-		}
-		
-		/** 
-		 * @return View 안에서의 라운드 위치를 리턴 합니다
-		 */		
-		private function findViewInRoundNum(fineViewNum) : Number
-		{
-			var roundNum : Number = _roundNum;
-			
-			if(findViewNum() == 0)
-			{
-				return roundNum;
-			}
-			else
-			{
-				for(var i : int = fineViewNum; i > 0; --i)
-				{
-					roundNum -= _gameSetting.Scene[fineViewNum-1].Roundcnt;
-				}
-				return roundNum;
-			}
-		}
-		
-		/**
-		 * 라운드 상태에 따른 ViewNum을 탐색합니다.
-		 */		
-		private function  findViewNum():Number
-		{
-			// TODO Auto Generated method stub
-			var veiwNum : Number = 0;
-			var cnt : int = 0;
-			while(cnt < _gameSetting.GameTotalRound)
-			{
-				if((_gameSetting.Scene[cnt].RoundStartNum+_gameSetting.Scene[cnt].Roundcnt) > _roundNum)
-					break;
-				cnt++;
-			}
-			
-			veiwNum = cnt;
-			
-			return veiwNum;
-		}
-		
 		private function resultViewDraw():void
 		{
 			_resultView = new ResultDlg();
 			_resultView.visible = false;
-			_resultTimer = getTimer();
 			addChild(_resultView);
 		}
 		
@@ -295,11 +234,12 @@ package aniPangShootingWorld.round
 		/**
 		 *Note @유영선 보스를 화면에 출력 합니다.
 		 */		
-		private function bossDraw() : void
+		private function bossDraw(bossNum : Number) : void
 		{
 			if(_boss == null)
 			{
-				bossSetting();
+				this.objectType = ObjectType.ROUND_BOSS;
+				bossSetting(bossNum);
 				addChild(_boss);
 			}
 		}
@@ -307,25 +247,25 @@ package aniPangShootingWorld.round
 		/** 
 		 *  Note @유영선 라운드에 따라 보스를 설정 합니다.
 		 */		
-		private function bossSetting():void
+		private function bossSetting(bossNum : Number):void
 		{
-			switch(_roundNum)
+			switch(bossNum)
 			{
 				case 0:
 				{
-					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					_boss = new OneRoundBoss(GameTexture.boss1, 10, RoundSetting.instance.roundObject[0].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
 				case 1:
 				{
 					TwoRoundBoss.stotalBossCnt = 15;
-					_boss = new TwoRoundBoss(GameTexture.boss2, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					_boss = new TwoRoundBoss(GameTexture.boss2, 10, RoundSetting.instance.roundObject[1].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}
 					
 				case 2:
 				{
-					_boss = new ThreeRoundBoss(GameTexture.boss3, 10, RoundSetting.instance.roundObject[_roundNum].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
+					_boss = new ThreeRoundBoss(GameTexture.boss3, 10, RoundSetting.instance.roundObject[2].BossHP, new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 100, GameTexture.bullet[8]), this);
 					break;
 				}	
 			}
@@ -429,7 +369,7 @@ package aniPangShootingWorld.round
 		{
 			this.dispose();
 			
-			SceneManager.instance.addScene(new SelectView(findViewNum()));
+			SceneManager.instance.addScene(new SelectView(0));
 			SceneManager.instance.sceneChange();
 			trace("exit");
 		}
@@ -439,7 +379,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function backGroundDraw():void
 		{
-			_backGround = new BackGround(60, 1, TextureManager.getInstance().textureDictionary[RoundSetting.instance.roundObject[_roundNum].background]);
+			_backGround = new BackGround(60, 1, TextureManager.getInstance().textureDictionary[RoundSetting.instance.roundObject[0].background]);
 			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
@@ -458,7 +398,6 @@ package aniPangShootingWorld.round
 			_boss = null;
 		}
 		
-		public function set resultTimer(value:Number):void{_resultTimer = value;}
 	}
 }
 
