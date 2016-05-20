@@ -27,7 +27,7 @@ package aniPangShootingWorld.round
 		//게임 상에 플레이어가 획득 한 누적 골드
 		public static var sgameTotalGold : Number = 0;
 		//게임을 플레이 할 수 있는 재화 (날개)
-		public static var sgameWingCount : Number =0;
+		public static var sgameWingCount : Number = 0;
 		
 		private var _selectImage : Image;
 		private var _decoClip : MovieClip;
@@ -45,9 +45,6 @@ package aniPangShootingWorld.round
 		public function SelectView(viewNum : Number)
 		{
 			_viewNum = viewNum;
-			sgameTotalGold = GameSetting.instance.roundStateArray.GameTotalGold;
-			sgameWingCount = GameSetting.instance.roundStateArray.GameWing;
-			
 			_sceneSetting = GameSetting.instance.roundStateArray.Scene[viewNum];
 			
 			drawBackground();
@@ -58,17 +55,26 @@ package aniPangShootingWorld.round
 			drawStoreButton();
 			drawConfigureButton();
 			
-			initView(viewNum);
-			
 			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
-		private function initView(viewNum : Number):void
+		public function initView():void
 		{
-			_sceneSetting = GameSetting.instance.roundStateArray.Scene[viewNum];
+			if(_roundDictionary != null) removeButton();
+			_sceneSetting = GameSetting.instance.roundStateArray.Scene[_viewNum];
 			_selectImage.texture = TextureManager.getInstance().textureDictionary[_sceneSetting.ViewPng];
+			sgameTotalGold = GameSetting.instance.roundStateArray.GameTotalGold;
+			sgameWingCount = GameSetting.instance.roundStateArray.GameWing;
 			
 			drawRoundButton();
+		}
+		
+		public function removeButton():void
+		{
+			for(var i:int = 0; i < _sceneSetting.Roundcnt; i++)
+			{
+				removeChild(_roundDictionary[i]);
+			}
 		}
 		
 		private function drawBackground():void
@@ -113,31 +119,23 @@ package aniPangShootingWorld.round
 		
 		protected function onClicked(event:Event):void
 		{
-			var i:int;
-			
 			switch(event.currentTarget)
 			{
 				case _nextButton:
 				{
-					for(i = 0; i < _sceneSetting.Roundcnt; i++)
-					{
-						removeChild(_roundDictionary[i]);
-					}
 					_nextButton.visible = false;
 					_prevButton.visible = true;
-					initView(++_viewNum);
+					_viewNum++;
+					initView();
 					break;
 				}
 					
 				case _prevButton:
 				{
-					for(i = 0; i < _sceneSetting.Roundcnt; i++)
-					{
-						removeChild(_roundDictionary[i]);
-					}
 					_nextButton.visible = true;
 					_prevButton.visible = false;
-					initView(--_viewNum);
+					_viewNum--;
+					initView();
 					break;
 				}
 					

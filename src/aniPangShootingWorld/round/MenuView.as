@@ -164,6 +164,7 @@ package aniPangShootingWorld.round
 			fileStream.open(path, FileMode.WRITE);
 			fileStream.writeUTFBytes("NO_USER_DATA");
 			fileStream.close();
+			GameSetting.instance.saveSetting();
 		}
 		
 		/**
@@ -192,6 +193,8 @@ package aniPangShootingWorld.round
 			{
 				_selectView = new SelectView(0);
 			}
+			
+			_selectView.initView();
 			
 			SceneManager.instance.addScene(this);
 			SceneManager.instance.addScene(_selectView);

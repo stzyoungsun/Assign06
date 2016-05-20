@@ -153,6 +153,12 @@ package aniPangShootingWorld.ui
 			
 			if(parent.getChildIndex(this) != -1) removeFromParent();
 			
+			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
+			{
+				Framework.sceneStage.removeChild(_backImage);
+				backFlag = false;
+			}
+			
 			switch(button)
 			{
 				case _okBtn:
@@ -163,28 +169,13 @@ package aniPangShootingWorld.ui
 					if(_cancelFunction != null) _cancelFunction();
 					break;
 			}
-			
-			this.dispose();
-		}
-		
-		public override function dispose():void
-		{
-			super.dispose();
-			
-			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
-			{
-				Framework.sceneStage.removeChild(_backImage);
-				backFlag = false;
-			}
 		}
 		
 		/**
 		 * 시스템 메시지를 변경하는 메서드 
 		 * @param value - 변경할 메시지
 		 */
-		public function set systemMessage(value:String):void
-		{
-			_systemMessageTextField.text = value;
-		}
+		public function set systemMessage(value:String):void { _systemMessageTextField.text = value; }
+		public function get backImage():Image { return _backImage; }
 	}
 }
