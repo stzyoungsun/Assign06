@@ -565,7 +565,7 @@ package aniPangShootingWorld.round
 					"Go back to the main menu",
 					25,
 					true,
-					function():void { exitBox.dispatchEvent(new Event("back")); },
+					function():void { exitBox.dispatchEvent(new Event("exit")); },
 					function():void { exitBox.dispatchEvent(new Event("resume")); }
 				);
 				
@@ -574,7 +574,7 @@ package aniPangShootingWorld.round
 				exitBox.x = Framework.viewport.width / 4;
 				exitBox.y = Framework.viewport.height / 3;
 				exitBox.addEventListener("resume", onResume);
-				exitBox.addEventListener("back", onBackGame);
+				exitBox.addEventListener("exit", onExitGame);
 				addChild(exitBox);
 				
 				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -596,13 +596,14 @@ package aniPangShootingWorld.round
 			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
-		private function onBackGame(event:Event):void
+		private function onExitGame(event:Event):void
 		{
 			this.dispose();
 			
+			_soundManager.stopLoopedPlaying();
+			
 			SceneManager.instance.addScene(new SelectView(findViewNum()));
 			SceneManager.instance.sceneChange();
-			trace("exit");
 		}
 		
 		/**
