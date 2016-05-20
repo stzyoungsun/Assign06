@@ -143,7 +143,7 @@ package aniPangShootingWorld.round
 			
 			if(super.children == null || GameSetting.instance.pause) return;
 			
-			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm);
+			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm)
 				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//8초당 메테오를 발사 합니다.

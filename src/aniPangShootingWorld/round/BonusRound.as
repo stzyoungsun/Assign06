@@ -99,7 +99,6 @@ package aniPangShootingWorld.round
 		
 		/**
 		 *Note @유영선 적들을 그립니다 
-		 * 
 		 */
 		public override function render():void
 		{
@@ -107,8 +106,8 @@ package aniPangShootingWorld.round
 			
 			if(super.children == null || GameSetting.instance.pause) return;
 			
-			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm);
-			_soundManager.play(SoundResource.BGM_1, true);
+			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm)
+				_soundManager.play(SoundResource.BGM_1, true);
 			
 			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
 			if(PlayerState.sSuperPowerFlag == true) 
@@ -198,10 +197,8 @@ package aniPangShootingWorld.round
 			{
 				this.dispose();
 				
-				var selectView : SelectView = new SelectView(0);
-				
-				SceneManager.instance.addScene(selectView);
-				SceneManager.instance.sceneChange(); 
+				SceneManager.instance.sceneChange();
+				(Framework.sceneStage as SelectView).initView();
 			}
 		}
 		
@@ -331,7 +328,7 @@ package aniPangShootingWorld.round
 					"Go back to the main menu",
 					25,
 					true,
-					function():void { exitBox.dispatchEvent(new Event("back")); },
+					function():void { exitBox.dispatchEvent(new Event("exit")); },
 					function():void { exitBox.dispatchEvent(new Event("resume")); }
 				);
 				
@@ -340,7 +337,7 @@ package aniPangShootingWorld.round
 				exitBox.x = Framework.viewport.width / 4;
 				exitBox.y = Framework.viewport.height / 3;
 				exitBox.addEventListener("resume", onResume);
-				exitBox.addEventListener("back", onBackGame);
+				exitBox.addEventListener("exit", onExitGame);
 				addChild(exitBox);
 				
 				Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -362,12 +359,13 @@ package aniPangShootingWorld.round
 			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		}
 		
-		private function onBackGame(event:Event):void
+		private function onExitGame(event:Event):void
 		{
 			this.dispose();
 			
-			SceneManager.instance.addScene(new SelectView(0));
+			_soundManager.stopLoopedPlaying();
 			SceneManager.instance.sceneChange();
+			(Framework.sceneStage as SelectView).initView();
 			trace("exit");
 		}
 		
