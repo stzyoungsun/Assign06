@@ -4,6 +4,7 @@ package aniPangShootingWorld.round
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 	
 	import aniPangShootingWorld.round.SelectViewSub.ItemWindow;
 	import aniPangShootingWorld.round.SelectViewSub.RoundButton;
@@ -28,8 +29,6 @@ package aniPangShootingWorld.round
 		//게임을 플레이 할 수 있는 재화 (날개)
 		public static var sgameWingCount : Number =0;
 		
-		private static var _current : Sprite;
-		
 		private var _selectImage : Image;
 		private var _decoClip : MovieClip;
 		private var _sceneSetting : Object;
@@ -38,38 +37,46 @@ package aniPangShootingWorld.round
 		private var _storeButton : Button;
 		private var _configureButton:Button;
 		private var _viewNum : Number;
+		private var _roundDictionary:Dictionary;
 		
 		/**
 		 * 스테이지를 선택 하는 창이 나옵니다.
 		 */		
-		public function SelectView(ViewNum : Number)
+		public function SelectView(viewNum : Number)
 		{
-			_viewNum = ViewNum;
-			_current = this;
+			_viewNum = viewNum;
 			sgameTotalGold = GameSetting.instance.roundStateArray.GameTotalGold;
 			sgameWingCount = GameSetting.instance.roundStateArray.GameWing;
 			
-			initView(ViewNum);
-		}
-		
-		private function initView(viewNum : Number):void
-		{
 			_sceneSetting = GameSetting.instance.roundStateArray.Scene[viewNum];
-
-			_selectImage = new Image(0, 0, TextureManager.getInstance().textureDictionary[_sceneSetting.ViewPng]);
-			_selectImage.width = Framework.viewport.width;
-			_selectImage.height = Framework.viewport.height;
-			addChild(_selectImage);
 			
+			drawBackground();
 			drawDeco();
-			drawRoundButton();
 			drawItemWindow();
 			drawNextButton();
 			drawPrevButton();
 			drawStoreButton();
 			drawConfigureButton();
 			
+			initView(viewNum);
+			
 			Framework.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		}
+		
+		private function initView(viewNum : Number):void
+		{
+			_sceneSetting = GameSetting.instance.roundStateArray.Scene[viewNum];
+			_selectImage.texture = TextureManager.getInstance().textureDictionary[_sceneSetting.ViewPng];
+			
+			drawRoundButton();
+		}
+		
+		private function drawBackground():void
+		{
+			_selectImage = new Image(0, 0, TextureManager.getInstance().textureDictionary[_sceneSetting.ViewPng]);
+			_selectImage.width = Framework.viewport.width;
+			_selectImage.height = Framework.viewport.height;
+			addChild(_selectImage);
 		}
 		
 		private function drawStoreButton():void
@@ -85,41 +92,51 @@ package aniPangShootingWorld.round
 		
 		private function drawNextButton():void
 		{
-			if(GameSetting.instance.roundStateArray.GameTotalRound <= _sceneSetting.RoundStartNum + _sceneSetting.Roundcnt) return;
-			
 			_nextButton = new Button("Next", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[3]);
 			_nextButton.width = Framework.viewport.width/3;
 			_nextButton.height = Framework.viewport.height/15;
 			_nextButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
+			if(GameSetting.instance.roundStateArray.GameTotalRound <= _sceneSetting.RoundStartNum + _sceneSetting.Roundcnt) _nextButton.visible = false;
 			addChild(_nextButton);
 		}
 		
 		private function drawPrevButton():void
 		{
-			if(_sceneSetting.RoundStartNum == 0) return;
-			
 			_prevButton = new Button("Prev", Framework.viewport.width/35, Framework.viewport.width/35, GameTexture.messageBox[4]);
 			_prevButton.width = Framework.viewport.width/3;
 			_prevButton.height = Framework.viewport.height/15;
 			_prevButton.y = Framework.viewport.height*0.93;
 			_prevButton.addEventListener(TouchEvent.TRIGGERED, onClicked);
+			if(_sceneSetting.RoundStartNum == 0) _prevButton.visible = false;
 			addChild(_prevButton);
 		}
 		
 		protected function onClicked(event:Event):void
 		{
+			var i:int;
+			
 			switch(event.currentTarget)
 			{
 				case _nextButton:
 				{
-					this.removeChildren(0,-1);
+					for(i = 0; i < _sceneSetting.Roundcnt; i++)
+					{
+						removeChild(_roundDictionary[i]);
+					}
+					_nextButton.visible = false;
+					_prevButton.visible = true;
 					initView(++_viewNum);
 					break;
 				}
 					
 				case _prevButton:
 				{
-					this.removeChildren(0,-1);
+					for(i = 0; i < _sceneSetting.Roundcnt; i++)
+					{
+						removeChild(_roundDictionary[i]);
+					}
+					_nextButton.visible = true;
+					_prevButton.visible = false;
 					initView(--_viewNum);
 					break;
 				}
@@ -176,10 +193,11 @@ package aniPangShootingWorld.round
 		
 		private function drawRoundButton():void
 		{
+			_roundDictionary = new Dictionary();
 			for(var i : int =0; i < _sceneSetting.Roundcnt; i++)
 			{
-				var roundButton : RoundButton = new RoundButton(i+1, _sceneSetting, this,onKeyDown);
-				addChild(roundButton);
+				_roundDictionary[i] = new RoundButton(i + 1, _sceneSetting, this, onKeyDown);
+				addChild(_roundDictionary[i]);
 			}
 		}
 		
@@ -203,6 +221,12 @@ package aniPangShootingWorld.round
 			addChild(_configureButton);
 		}
 		
-		public static function get current():Sprite{return _current;}
+		public override function dispose():void
+		{
+			super.dispose();
+			_sceneSetting = null;
+		}
+
+		public function get roundDictionary():Dictionary { return _roundDictionary; }
 	}
 }
