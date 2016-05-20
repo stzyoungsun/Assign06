@@ -245,6 +245,7 @@ package aniPangShootingWorld.round
 				
 				SceneManager.instance.sceneChange();
 				clearStarCheck();
+				(Framework.sceneStage as SelectView).initView();
 			}
 		}
 		
@@ -608,6 +609,7 @@ package aniPangShootingWorld.round
 			
 			_soundManager.stopLoopedPlaying();
 			SceneManager.instance.sceneChange();
+			(Framework.sceneStage as SelectView).initView();
 		}
 		
 		/**
