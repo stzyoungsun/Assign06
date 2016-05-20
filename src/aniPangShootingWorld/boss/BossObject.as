@@ -73,6 +73,14 @@ package aniPangShootingWorld.boss
 		{
 			super.render();
 			
+			if(this.objectType == ObjectType.BOSS_DIE)
+			{
+				// 보스의 죽음 처리
+				deleteHPBar();
+				dieBoss();
+				return;
+			}
+			
 			if(GameSetting.instance.pause) return;
 
 			shotBullet();
@@ -136,10 +144,13 @@ package aniPangShootingWorld.boss
 				if(_bossHp <= 0)
 				{
 					this.objectType = ObjectType.BOSS_DIE;
+					_prevTime = getTimer();
 					// 현재 스테이지에 자식으로 등록되어 있고, 상태가 IDLE이 아닌 Bullet들을 모두 제거
 					for(var i:int = 0; i < _bulletManager.totalBullet; i++)
 					{
-						if(_bulletManager.bulletVector[i].objectType != ObjectType.ENEMY_BULLET_IDLE)
+						_bulletManager.bulletVector[i].visible = false;
+						
+						if(_stage.getChildIndex(_bulletManager.bulletVector[i]) != -1)
 						{
 							_stage.removeChild(_bulletManager.bulletVector[i]);
 						}
@@ -150,12 +161,6 @@ package aniPangShootingWorld.boss
 					this.objectType = ObjectType.BOSS_GENERAL;
 				}
 			}			
-			else if(this.objectType == ObjectType.BOSS_DIE)
-			{
-				// 보스의 죽음 처리
-				deleteHPBar();
-				dieBoss();
-			}
 		}
 		
 		private function autoMovig():void

@@ -170,7 +170,7 @@ package aniPangShootingWorld.boss.bosstype
 				// 보스 자신을 제거
 				_stage.objectType = ObjectType.ROUND_CLEAR;
 				_stage.removeChild(this);
-				(_stage as Round).resultTimer = getTimer();
+				_stage.resultTimer = getTimer();
 				var item : ItemGroup = new ItemGroup(30,this.x, this.y,_stage);
 				item.drawItem();
 			}
