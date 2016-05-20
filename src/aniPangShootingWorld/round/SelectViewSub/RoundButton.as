@@ -2,19 +2,16 @@ package aniPangShootingWorld.round.SelectViewSub
 {
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.resourceName.AtlasResource;
 	import aniPangShootingWorld.round.BonusRound;
 	import aniPangShootingWorld.round.Round;
-	import aniPangShootingWorld.round.SelectView;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.ui.MessageBox;
 	import aniPangShootingWorld.util.GameTexture;
 	
 	import framework.core.Framework;
 	import framework.display.Button;
-	import framework.display.Image;
 	import framework.display.Sprite;
 	import framework.event.TouchEvent;
 	import framework.scene.SceneManager;
@@ -98,7 +95,7 @@ package aniPangShootingWorld.round.SelectViewSub
 						
 							else
 							{
-								message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+								message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction);
 								
 								message.x = Framework.viewport.width/2 - message.width/2;
 								message.y = Framework.viewport.height/2 - message.height/2;
@@ -125,14 +122,14 @@ package aniPangShootingWorld.round.SelectViewSub
 						}
 						else if(_roundNum == 4)
 						{
-							message = new MessageBox("Move to Bonus Round (Boss)",25,true,onOKFunction,onCancleButton);
+							message = new MessageBox("Move to Bonus Round (Boss)",25,true,onOKFunction);
 							message.x = Framework.viewport.width/2 - message.width/2;
 							message.y = Framework.viewport.height/2 - message.height/2;
 							_stage.addChild(message); 
 						}
 						else
 						{
-							message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+							message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction);
 							message.x = Framework.viewport.width/2 - message.width/2;
 							message.y = Framework.viewport.height/2 - message.height/2;
 							_stage.addChild(message); 
@@ -144,9 +141,9 @@ package aniPangShootingWorld.round.SelectViewSub
 				default: 
 				{
 					if(_roundNum == 4) 
-						message = new MessageBox("Start Bouns Round",25,true,onOKFunction,onCancleButton);
+						message = new MessageBox("Start Bouns Round",25,true,onOKFunction);
 					else
-						message = new MessageBox("Start"+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+						message = new MessageBox("Start"+(_roundNum)+" Round",25,true,onOKFunction);
 					
 					message.x = Framework.viewport.width/2 - message.width/2;
 					message.y = Framework.viewport.height/2 - message.height/2;
@@ -194,25 +191,24 @@ package aniPangShootingWorld.round.SelectViewSub
 						Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, _backFunction);
 						GameSetting.instance.roundStateArray.GameWing--;
 						//this.parent.dispose();
+						SceneManager.instance.addScene((this.parent as Sprite));
 						var roundObject : Sprite;
 						
-						if(_roundNum == 4) 
-							roundObject = new BonusRound();
-						else
-							roundObject = new Round(_roundNum-1);
-							SceneManager.instance.addScene(roundObject);
-							SceneManager.instance.sceneChange();
+						if(_roundNum == 4) roundObject = new BonusRound();
+						else roundObject = new Round(_roundNum-1);
+						
+						SceneManager.instance.addScene(roundObject);
+						SceneManager.instance.sceneChange();
 					}
 				}
 			}
 		}
 		
-		public function onCancleButton() : void{}
 		/**
 		 * @param stateNum 라운드의 클리어 상태
 		 * @return 클리어 상태에 따른 텍스쳐 값
 		 */		
-		private function checkState(stateNum : Number):FwTexture
+		public function checkState(stateNum : Number):FwTexture
 		{
 			switch(stateNum)
 			{

@@ -206,8 +206,6 @@ package aniPangShootingWorld.player
 			if(PlayerState.sPlayerHeart == 0)
 			{
 				_stage.dispose();
-				var selectView : SelectView = new SelectView(0);
-				SceneManager.instance.addScene(selectView);
 				SceneManager.instance.sceneChange();
 				return;
 			}

@@ -243,11 +243,8 @@ package aniPangShootingWorld.round
 			{
 				this.dispose();
 				
-				clearStarCheck()
-				var selectView : SelectView = new SelectView(findViewNum());
-				
-				SceneManager.instance.addScene(selectView);
-				SceneManager.instance.sceneChange(); 
+				SceneManager.instance.sceneChange();
+				clearStarCheck();
 			}
 		}
 		
