@@ -253,17 +253,26 @@ package aniPangShootingWorld.round
 		 */		
 		private function clearStarCheck():void
 		{
-			// TODO Auto Generated method stub
 			var findView : Number = findViewNum();
 			var getTotalItem : Number = PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount;
+			var roundButton:RoundButton = (Framework.sceneStage as SelectView).roundDictionary[_roundNum];
 			
 			if(getTotalItem < 80)
+			{
 				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.ONE_START_CLEAR;
-			
+				roundButton.buttonBackground.texture = roundButton.checkState(RoundButton.ONE_START_CLEAR);
+			}
+				
 			else if(getTotalItem < 160)
+			{
 				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.TWO_STAR_CLEAR;
-			else 
+				roundButton.buttonBackground.texture = roundButton.checkState(RoundButton.TWO_STAR_CLEAR);
+			}
+			else
+			{
 				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.THREE_STAR_CLEAR;
+				roundButton.buttonBackground.texture = roundButton.checkState(RoundButton.THREE_STAR_CLEAR);
+			}
 			
 			_gameSetting.GameTotalGold += getTotalItem;
 		}
@@ -598,8 +607,6 @@ package aniPangShootingWorld.round
 			this.dispose();
 			
 			_soundManager.stopLoopedPlaying();
-			
-			SceneManager.instance.addScene(new SelectView(findViewNum()));
 			SceneManager.instance.sceneChange();
 		}
 		
