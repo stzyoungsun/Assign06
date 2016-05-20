@@ -5,6 +5,7 @@ package aniPangShootingWorld.ui
 	import aniPangShootingWorld.round.BonusRound;
 	import aniPangShootingWorld.round.MenuView;
 	import aniPangShootingWorld.round.Round;
+	import aniPangShootingWorld.round.SelectView;
 	import aniPangShootingWorld.round.Setting.GameSetting;
 	import aniPangShootingWorld.util.GameTexture;
 	
@@ -76,10 +77,18 @@ package aniPangShootingWorld.ui
 			function logoutOkFunction():void
 			{
 				removeFromParent(true);
+				
+				if(Framework.sceneStage.getChildIndex(backImage) != -1)
+				{
+					Framework.sceneStage.removeChild(backImage);
+					backFlag = false;
+				}
+				
 				if(Framework.sceneStage is Round || Framework.sceneStage is BonusRound)
 				{
 					SceneManager.instance.sceneChange();
 				}
+				
 				SceneManager.instance.sceneChange();
 				(Framework.sceneStage as MenuView).logoutFromGame();
 			}
