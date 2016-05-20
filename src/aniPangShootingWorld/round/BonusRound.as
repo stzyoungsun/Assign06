@@ -34,7 +34,9 @@ package aniPangShootingWorld.round
 	import framework.sound.SoundManager;
 	import framework.texture.TextureManager;
 	
-	
+	/**
+	 * 보스들로만 이루어진 특별 라운드입니다.
+	 */	
 	public class BonusRound extends Sprite
 	{
 		//Note @유영선 배경 그라운드를 저장 할 변수
@@ -62,21 +64,17 @@ package aniPangShootingWorld.round
 		//Note @유영선 보스의 체력바
 		private var _bossHPbar:HPbar;
 		
-
 		//Note @유영선 결과창
 		private var _resultView : ResultDlg;
 		
-		private var _gameSetting : Object;
 		private var _bossNumber : Number = 0;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
 		
-		
 		public function BonusRound()
 		{
 			this.objectType = ObjectType.ROUND_PREV;
-			_gameSetting = GameSetting.instance.roundStateArray;
 	
 			GameSetting.instance.pause = true;
 			
@@ -111,7 +109,6 @@ package aniPangShootingWorld.round
 			
 			if(_soundManager.loopedPlayingState == "stop" && GameSetting.instance.bgm);
 			_soundManager.play(SoundResource.BGM_1, true);
-			
 			
 			//Note @유영선 플레이어의 파워 게이지가 가득 찾을 경우 (배경의 속도가 증가)
 			if(PlayerState.sSuperPowerFlag == true) 
@@ -397,7 +394,6 @@ package aniPangShootingWorld.round
 			_bossHPbar = null;
 			_boss = null;
 		}
-		
 	}
 }
 

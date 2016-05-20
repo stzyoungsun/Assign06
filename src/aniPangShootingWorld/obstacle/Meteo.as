@@ -53,6 +53,9 @@ package aniPangShootingWorld.obstacle
 			_stage.addChild(this);
 		}
 		
+		/** 
+		 * 메테오 발사 명령에 후 순서에 따라 메테오를 발사합니다. 케릭터 추적 -> 경고 -> 발사
+		 */		
 		public override function render():void
 		{
 			super.render();
@@ -96,6 +99,9 @@ package aniPangShootingWorld.obstacle
 			}
 		}
 		
+		/** 
+		 * 메테오를 발사합니다.
+		 */		
 		private function shootMeteo():void
 		{
 			this.objectType = ObjectType.OBSTACLE_MOVING;
@@ -110,7 +116,9 @@ package aniPangShootingWorld.obstacle
 			
 			this.start();
 		}
-		
+		/** 
+		 * 추적된 위치에 메테오 경고창을 출력합니다.
+		 */		
 		private function drawWarrning():void
 		{
 			_meteoWarrning.visible = true;
@@ -121,6 +129,9 @@ package aniPangShootingWorld.obstacle
 			_meteoWarrning.y = _meteoWarrning.height;
 		}
 		
+		/** 
+		 * 케릭터를 추적합니다.
+		 */		
 		private function aimMeteo():void
 		{
 			_meteoLine.visible = true;

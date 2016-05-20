@@ -54,6 +54,9 @@ package aniPangShootingWorld.item
 			_stepy = (Math.abs(_endy - _starty))/20;
 		}
 		
+		/** 
+		 * 아이템의 상태에 따라 그 상태에 맞는 결과를 적용합니다.
+		 */		
 		public override function render():void
 		{
 			super.render();
@@ -132,6 +135,7 @@ package aniPangShootingWorld.item
 		{
 			super.dispose();
 		}
+		
 		public function get endy():Number{return _endy;}
 		public function set endy(value:Number):void{_endy = value;}
 

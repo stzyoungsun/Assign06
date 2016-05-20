@@ -5,9 +5,6 @@ package aniPangShootingWorld.enemy
 	 */	
 	public class EnemyObjectUtil
 	{
-		public static const ENEMY_SPRITENAME_ARRAY : Array = new Array ("Rat_Sprite.png", "Pig_Sprite.png");
-		public static const ENEMY_XML_ARRAY : Array = new Array ("Rat_Sprite.xml","Pig_Sprite.xml");
-		
 		public static const ENEMY_RAT : Number = 0;
 		public static const ENEMY_PIG : Number = 1;
 		public static const ENEMY_MONKEY : Number = 2;

@@ -4,6 +4,10 @@ package aniPangShootingWorld.round.Setting
 	
 	import json.JSON;
 	
+	/** 
+	 * 각각의 라운드의 세팅 값입니다.
+	 * JSON 구조로 저장되어있는 XML를 로드하여 사용합니다.
+	 */	
 	public class RoundSetting
 	{
 		private static var _instance : RoundSetting;
@@ -38,7 +42,6 @@ package aniPangShootingWorld.round.Setting
 		}
 		
 		public function get roundObject():Array{return _roundObjectArray;}
-
 		public function set userName(value:String):void { _userName = value; }
 	}
 }

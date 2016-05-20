@@ -10,6 +10,11 @@ package aniPangShootingWorld.round.SelectViewSub
 	import framework.event.TouchEvent;
 	import framework.event.TouchPhase;
 
+	/** 
+	 * 게임내의 코인을 사용 할 수 있는 상점입니다
+	 * 현재는 코인으로 게임을 할 수 있는 날개를 살 수 있습니다.
+	 * 코인과 날개가 없을 경우 무료충전을 해줍니다.
+	 */	
 	public class StoreBox extends MessageBox
 	{
 		private var _buyWingButton : Button;
@@ -36,7 +41,6 @@ package aniPangShootingWorld.round.SelectViewSub
 		
 		protected function onClicked(event:TouchEvent):void
 		{
-			// TODO Auto-generated method stub
 			var touch:Touch = event.touch;
 			var messageBox : MessageBox;
 			if(touch.phase == TouchPhase.ENDED)

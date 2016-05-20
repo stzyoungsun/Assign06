@@ -7,11 +7,9 @@ package aniPangShootingWorld.boss.bosstype
 	import aniPangShootingWorld.boss.subboss.ThreeRoundSubBoss;
 	import aniPangShootingWorld.item.ItemGroup;
 	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.Tracking;
-	import aniPangShootingWorld.util.UtilFunction;
-	
+
 	import framework.core.Framework;
 	import framework.display.ObjectType;
 	import framework.display.Sprite;
@@ -33,8 +31,17 @@ package aniPangShootingWorld.boss.bosstype
 		private var _wait:Boolean;
 		private var _remainBullet:Boolean;
 		private var _subBossVector : Vector.<ThreeRoundSubBoss> = new Vector.<ThreeRoundSubBoss>;
-		
+		//보스 전에 나오는 부하의 개수
 		public static var sSubBossCnt : Number = 0;
+		/**
+		 * 
+		 * @param textureVector  3라운드 보스의 텍스쳐
+		 * @param frame          보스 애니매이션의 프레임
+		 * @param bossMaxHP      3라운드 보스의 체력
+		 * @param bulletManager  3라운드 보스의 미사일 매니져
+		 * @param stage          라운드의 stage
+		 * 
+		 */	
 		public function ThreeRoundBoss(textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(textureVector, frame, bulletManager, stage);
@@ -61,6 +68,7 @@ package aniPangShootingWorld.boss.bosstype
 			maxBossHp = bossMaxHP;
 			
 			_bossPhase = PHASE_1;
+			//정해진 부하 개수 만큼 부하 생성
 			createSubBoss(MAX_SUB_COUNT);
 			_name = "ThreeRoundBoss";
 			
@@ -81,9 +89,13 @@ package aniPangShootingWorld.boss.bosstype
 			
 		}
 		
+		/**
+		 * 
+		 * @param subNum 부하의 개수
+		 * 부하의 개수의 따라 부하를 생성 후 addchild
+		 */		
 		private function createSubBoss(subNum : Number):void
 		{
-			// TODO Auto Generated method stub
 			for(var i : Number =0; i < subNum ; i++)
 			{
 				_subBossVector.push(new ThreeRoundSubBoss(this,GameTexture.boss3Object,10,30,new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1, GameTexture.bullet[8]),_stage));
@@ -117,7 +129,6 @@ package aniPangShootingWorld.boss.bosstype
 		
 		/**
 		 * 패턴 변경 후 보스가 공격하지 않고 대기시키도록 하는 메서드 
-		 * @param waitTime - 대기 시간
 		 */
 		private function waitForPatternChange():void
 		{
@@ -161,6 +172,9 @@ package aniPangShootingWorld.boss.bosstype
 
 		}
 		
+		/** 
+		 *  Phase를에 따라 미사일 패턴을 변경
+		 */		
 		public override function shotBullet():void
 		{
 			var currentTime:Number = getTimer();

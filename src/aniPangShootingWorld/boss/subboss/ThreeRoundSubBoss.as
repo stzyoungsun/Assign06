@@ -5,8 +5,6 @@ package aniPangShootingWorld.boss.subboss
 	import aniPangShootingWorld.boss.BossObject;
 	import aniPangShootingWorld.boss.bosstype.ThreeRoundBoss;
 	import aniPangShootingWorld.item.ItemGroup;
-	import aniPangShootingWorld.player.Player;
-	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.util.GameTexture;
 	import aniPangShootingWorld.util.UtilFunction;
 	
@@ -24,14 +22,21 @@ package aniPangShootingWorld.boss.subboss
 		private var _shotAngle:Number;
 		private var _shotSpeed:Number;
 		private var _bossPhase:Number;
-		private var _waitTime:Number;
-		private var _wait:Boolean;
 		private var _remainBullet:Boolean;
 		private var _parentBoss : BossObject;
 		
 		private var _warrning : Image;
-		private var warrningFlag : Boolean = false;
+		private var _warrningFlag : Boolean = false;
 		
+		/**
+		 * @param parentBoss 메인 보스의 객체
+		 * @param textureVector 부하 보스의 텍스쳐
+		 * @param frame 부하 보스의 프레임
+		 * @param bossMaxHP 부하 보스의 체력
+		 * @param bulletManager 부하 보스의 미사일 매니져
+		 * @param stage 라운드의 stage
+		 * 부하보스는 보스와 함께 등장하는 적 Object 입니다
+		 */		
 		public function ThreeRoundSubBoss(parentBoss : BossObject,textureVector:Vector.<FwTexture>, frame:Number, bossMaxHP : Number, bulletManager:BulletManager, stage:Sprite)
 		{
 			super(textureVector, frame, bulletManager, stage);
@@ -51,20 +56,27 @@ package aniPangShootingWorld.boss.subboss
 			
 			_shotAngle = 0;
 			_shotSpeed = Framework.viewport.height / 500;
-			_wait = false;
-			_waitTime = 2000;
 			
 			bossHp = bossMaxHP;
 			maxBossHp = bossMaxHP;
 			_name = "ThreeRoundSubBoss";
 		}
 		
+		/**
+		 * 
+		 * @param x 부하 보스의 x좌표
+		 * @param y 부하 보스의 y좌표
+		 * 부하 보스의 위치를 성정하는 함수
+		 */		
 		public function initSubBoss(x : Number, y : Number) : void
 		{
 			this.x = x;
 			this.y = y;
 		}
 		
+		/**
+		 * 미사일 발사 패턴을 조절하는 함수 
+		 */		
 		public override function shotBullet():void
 		{
 			if(bossHp <= 0)
@@ -76,7 +88,8 @@ package aniPangShootingWorld.boss.subboss
 			var bulletY:Number = 0;
 			var bulletSpeed:Number = 0;
 			var currentTime:Number = 0;
-			if(warrningFlag == false)
+			
+			if(_warrningFlag == false)
 			{
 				_prevTime = UtilFunction.random(0, 10000,1);
 				if(_prevTime > 9900)
@@ -87,7 +100,7 @@ package aniPangShootingWorld.boss.subboss
 					_warrning.width = Framework.viewport.width/10;
 					_warrning.height = Framework.viewport.width/10;
 					_stage.addChild(_warrning);
-					warrningFlag = true;
+					_warrningFlag = true;
 					_prevTime = getTimer();
 				}
 			}
@@ -102,7 +115,7 @@ package aniPangShootingWorld.boss.subboss
 					
 					shooting(bulletX, bulletY);
 					_stage.removeChild(_warrning, true);
-					warrningFlag = false;
+					_warrningFlag = false;
 				}
 			}
 		}
@@ -113,8 +126,7 @@ package aniPangShootingWorld.boss.subboss
 		public override function dieBoss():void
 		{
 			var currentTime:Number = getTimer();
-			// 3초후 제거
-		
+
 			_stage.removeChild(this);
 				
 			if(_stage.getChildIndex(_warrning) != -1)
@@ -122,11 +134,13 @@ package aniPangShootingWorld.boss.subboss
 				
 			if(_stage.getChildIndex(_bulletManager.bulletVector[0]) != -1)
 				_stage.removeChild(_bulletManager.bulletVector[0]);
-				
+			
+			//사망시 첫번째 매개변수 만큼 아이템을 생성
 			var item : ItemGroup = new ItemGroup(10,this.x, this.y,_stage);
 			item.drawItem();
 			ThreeRoundBoss.sSubBossCnt--;
 		}
+		
 		/**
 		 * 미사일을 발사 하는 함수 입니다. 미리 생성해 놓은 미사일을 선택하여 발사 합니다. 
 		 */		
