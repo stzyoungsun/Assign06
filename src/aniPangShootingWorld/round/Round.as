@@ -84,7 +84,6 @@ package aniPangShootingWorld.round
 		
 		//Note @유영선 결과창
 		private var _resultView : ResultDlg;
-		private var _resultTimer : Number;
 		
 		private var _gameSetting : Object;
 		private var _enemyLine : EnemyLine = new EnemyLine();
@@ -216,7 +215,7 @@ package aniPangShootingWorld.round
 				_prevGameView = null;
 				
 				//Note @결과 창 출력
-				if(curResultTimer - _resultTimer > 4000)
+				if(curResultTimer - resultTimer > 4000)
 				{
 					_resultView.visible = true;
 					
@@ -260,8 +259,10 @@ package aniPangShootingWorld.round
 			// TODO Auto Generated method stub
 			var findView : Number = findViewNum();
 			var getTotalItem : Number = PlayerState.sTotalHeart*10 + PlayerState.sTotalPower*5 + PlayerState.sGoldCount;
+			
 			if(getTotalItem < 80)
 				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.ONE_START_CLEAR;
+			
 			else if(getTotalItem < 160)
 				_gameSetting.Scene[findView].Round[findViewInRoundNum(findView)].state = RoundButton.TWO_STAR_CLEAR;
 			else 
@@ -327,7 +328,6 @@ package aniPangShootingWorld.round
 		{
 			_resultView = new ResultDlg();
 			_resultView.visible = false;
-			_resultTimer = getTimer();
 			addChild(_resultView);
 		}
 		
@@ -630,7 +630,6 @@ package aniPangShootingWorld.round
 			_bossHPbar = null;
 			_boss = null;
 		}
-		
-		public function set resultTimer(value:Number):void{_resultTimer = value;}
+	
 	}
 }

@@ -70,13 +70,14 @@ package aniPangShootingWorld.boss.bosstype
 				// 보스 자신을 제거
 				
 				_stage.removeChild(this);
-				(_stage as Round).resultTimer = getTimer();
+				
 				var item : ItemGroup = new ItemGroup(10,this.x, this.y,_stage);
 				item.drawItem();
 				
 				stotalBossCnt--;
 				if(stotalBossCnt == 0)
 				{
+					_stage.resultTimer = getTimer();
 					_stage.objectType = ObjectType.ROUND_CLEAR;
 					stotalBossCnt = 15;
 				}

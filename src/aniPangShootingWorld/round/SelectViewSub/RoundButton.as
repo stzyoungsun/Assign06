@@ -5,6 +5,7 @@ package aniPangShootingWorld.round.SelectViewSub
 	import flash.utils.getTimer;
 	
 	import aniPangShootingWorld.resourceName.AtlasResource;
+	import aniPangShootingWorld.round.BonusRound;
 	import aniPangShootingWorld.round.Round;
 	import aniPangShootingWorld.round.SelectView;
 	import aniPangShootingWorld.round.Setting.GameSetting;
@@ -27,6 +28,7 @@ package aniPangShootingWorld.round.SelectViewSub
 		public static const TWO_STAR_CLEAR : Number = 2;
 		public static const THREE_STAR_CLEAR : Number = 3;
 		public static const CLICKED_STATE : Number = 4;
+		public static const BONUS_ROUND : Number = 5;
 		
 		private var _roundNum : Number =0;
 		private var _roundArrayOrder : Number = 0;
@@ -34,15 +36,28 @@ package aniPangShootingWorld.round.SelectViewSub
 		private var _roundButtonSetting : Object;
 		private var _stage : Sprite;
 		private var _backFunction : Function;
+		
+		private var _roundName : String;
 		/**
 		 * @param roundOrder 현재 View 안에서의 roundButton의 번호
 		 * @param roundButtonSetting roundButton의 세팅 값
 		 */		
 		public function RoundButton(roundOrder : Number, roundButtonSetting : Object, stage : Sprite, backFunc : Function)
 		{
-			super(String(roundOrder + roundButtonSetting.RoundStartNum),Framework.viewport.width/45,Framework.viewport.width/45,checkState(roundButtonSetting.Round[roundOrder-1].state)
+			_roundArrayOrder = roundOrder-1;
+			_roundNum = roundOrder + roundButtonSetting.RoundStartNum;	
+			var roundName : String; 
+			if(_roundNum == 4)
+			{
+				roundButtonSetting.Round[roundOrder-1].state = 5;
+				roundName  = "Bouns";
+			}
+			else
+				roundName  = String(roundOrder + roundButtonSetting.RoundStartNum);
+					
+			super(roundName,Framework.viewport.width/45,Framework.viewport.width/45,checkState(roundButtonSetting.Round[roundOrder-1].state)
 				, TextureManager.getInstance().atlasTextureDictionary[AtlasResource.SELECTVIEW_SUB]);
-			
+	
 			_stage = stage;
 			this.width = Framework.viewport.width/6;
 			this.height = Framework.viewport.width/6;
@@ -50,9 +65,9 @@ package aniPangShootingWorld.round.SelectViewSub
 			this.y = Framework.viewport.height*roundButtonSetting.Round[roundOrder-1].y;
 			
 			//Select View 화면에서의 순서의 배열 번호
-			_roundArrayOrder = roundOrder-1;
+			
 			//전체 게임을 기준으로 Round 번호
-			_roundNum = roundOrder + roundButtonSetting.RoundStartNum;	
+			
 			_roundButtonSetting = roundButtonSetting;
 			_backFunction = backFunc;
 			addEventListener(TouchEvent.TRIGGERED, onClicked);
@@ -73,22 +88,24 @@ package aniPangShootingWorld.round.SelectViewSub
 					{
 						if(_roundButtonSetting.Round[_roundArrayOrder-1].state != NOT_CLEAR && _roundButtonSetting.Round[_roundArrayOrder-1].state != CLICKED_STATE)
 						{
-							if(_roundNum > 3) 
+							if(_roundNum > 4) 
 							{
 								message = new MessageBox("Not Update Please Waiting",25);
 								message.x = Framework.viewport.width/2 - message.width/2;
 								message.y = Framework.viewport.height/2 - message.height/2;
 								_stage.addChild(message);
 							}
+						
 							else
 							{
 								message = new MessageBox("Move to "+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+								
 								message.x = Framework.viewport.width/2 - message.width/2;
 								message.y = Framework.viewport.height/2 - message.height/2;
 								_stage.addChild(message);
 							}
-							 
 						}
+						
 						else
 						{
 							message = new MessageBox("Prev "+(_roundNum-1)+" Round Not Clear",25);
@@ -99,12 +116,19 @@ package aniPangShootingWorld.round.SelectViewSub
 					}
 					else
 					{	
-						if(_roundNum >= 3) 
+						if(_roundNum > 4) 
 						{
 							message = new MessageBox("Not Update Please Waiting",25);
 							message.x = Framework.viewport.width/2 - message.width/2;
 							message.y = Framework.viewport.height/2 - message.height/2;
 							_stage.addChild(message);
+						}
+						else if(_roundNum == 4)
+						{
+							message = new MessageBox("Move to Bonus Round (Boss)",25,true,onOKFunction,onCancleButton);
+							message.x = Framework.viewport.width/2 - message.width/2;
+							message.y = Framework.viewport.height/2 - message.height/2;
+							_stage.addChild(message); 
 						}
 						else
 						{
@@ -119,7 +143,11 @@ package aniPangShootingWorld.round.SelectViewSub
 					
 				default: 
 				{
-					message = new MessageBox("Start"+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+					if(_roundNum == 4) 
+						message = new MessageBox("Start Bouns Round",25,true,onOKFunction,onCancleButton);
+					else
+						message = new MessageBox("Start"+(_roundNum)+" Round",25,true,onOKFunction,onCancleButton);
+					
 					message.x = Framework.viewport.width/2 - message.width/2;
 					message.y = Framework.viewport.height/2 - message.height/2;
 					_stage.addChild(message); 
@@ -143,6 +171,7 @@ package aniPangShootingWorld.round.SelectViewSub
 							_roundButtonSetting.Round[_roundArrayOrder].state = CLICKED_STATE;
 						}	
 					}
+					
 					else
 					{	
 						this.buttonBackground.texture = checkState(CLICKED_STATE);
@@ -164,10 +193,15 @@ package aniPangShootingWorld.round.SelectViewSub
 					{
 						Framework.stage.removeEventListener(KeyboardEvent.KEY_DOWN, _backFunction);
 						GameSetting.instance.roundStateArray.GameWing--;
-						this.parent.dispose();
-						var roundObject : Round = new Round(_roundNum-1);
-						SceneManager.instance.addScene(roundObject);
-						SceneManager.instance.sceneChange();
+						//this.parent.dispose();
+						var roundObject : Sprite;
+						
+						if(_roundNum == 4) 
+							roundObject = new BonusRound();
+						else
+							roundObject = new Round(_roundNum-1);
+							SceneManager.instance.addScene(roundObject);
+							SceneManager.instance.sceneChange();
 					}
 				}
 			}
@@ -180,7 +214,6 @@ package aniPangShootingWorld.round.SelectViewSub
 		 */		
 		private function checkState(stateNum : Number):FwTexture
 		{
-	
 			switch(stateNum)
 			{
 				case NOT_CLEAR:
@@ -210,6 +243,12 @@ package aniPangShootingWorld.round.SelectViewSub
 				case CLICKED_STATE:
 				{
 					return GameTexture.subSelectViews[5];
+					break;
+				}
+				
+			    case BONUS_ROUND:
+				{
+					return GameTexture.subSelectViews[1];
 					break;
 				}
 			}
