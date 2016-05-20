@@ -22,9 +22,6 @@ package aniPangShootingWorld.round
 	import framework.scene.SceneManager;
 	import framework.texture.AtlasTexture;
 	import framework.texture.FwTexture;
-	import framework.texture.TextureManager;
-	
-	import json.JSON;
 	
 	/**
 	 * Note @유영선 게임의 첫 화면인 메인화면 클래스 입니다. 리소스 로드 및 게임 시작 이미지를 구현 합니다.
@@ -33,14 +30,12 @@ package aniPangShootingWorld.round
 	{
 		//Note @유영선 리소스를 로드하는 LoaderControl 생성
 		private var _resourceLoader : ResourceLoader;
-		
 		//Note @유영선 메뉴 화면 이미지
-		private var _menuImage : Image;
+		private var _menuImage:Image;
 		//로딩 중 이미지
-		private var _loadingImage : Image;
+		private var _loadingImage:Image;
 		//Note @유영선 화면을 터치해주세요 이미지
-		private var _menuText : MovieClip;
-		
+		private var _menuText:MovieClip;
 		private var _loadingGaugeTexture:AtlasTexture;
 		private var _userName:String;
 		
@@ -63,6 +58,7 @@ package aniPangShootingWorld.round
 			_resourceLoader = new ResourceLoader(onLoaderComplete, onProgress);
 			_resourceLoader.resourceLoad("resource");
 		}
+		
 		/**
 		 * Note @유영선 이미지 로드 중일때 콜하는 함수
 		 */		
@@ -90,7 +86,6 @@ package aniPangShootingWorld.round
 		
 		/**
 		 * Note @유영선 이미지 로드가 완료 되었을 때 콜하는 함수
-		 * 
 		 */		
 		private function onLoaderComplete() : void
 		{
@@ -113,6 +108,9 @@ package aniPangShootingWorld.round
 			_resourceLoader = null;
 		}
 		
+		/**
+		 * 로컬 저장소에 사용자의 정보가 있는지 체크하는 메서드 
+		 */
 		private function checkUser():void
 		{
 			var path:File = File.applicationStorageDirectory.resolvePath("data/current_user.data");
@@ -124,10 +122,7 @@ package aniPangShootingWorld.round
 				var userName:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
 				fileStream.close();
 				
-				if(userName == "")
-				{
-					userName = "NO_USER_DATA";
-				}
+				if(userName == "")	userName = "NO_USER_DATA";
 				_userName = userName;
 			}
 			else
@@ -142,38 +137,46 @@ package aniPangShootingWorld.round
 		 */		
 		private function onTouch(event:TouchEvent):void
 		{
-			//Note @유영선 로드 완료 후 화면을 터치 하면 oneRound로 넘어 갑니다.
-			switch(event.touch.phase)
+			// Note @유영선 로드 완료 후 화면을 터치 하면 SelectView로 넘어 갑니다.
+			// Note @jihwan.ryu 로컬 저장소에 사용자 데이터가 있으면 바로 게임 세팅 진행.
+			// 데이터가 없으면 네이티브쪽에서 입력된 아이디 값을 얻어온 후에 게임 세팅 진행
+			if(event.touch.phase == TouchPhase.ENDED)
 			{
-				case TouchPhase.ENDED:
-					
-					if(_userName == "NO_USER_DATA")
-					{
-						var nativeExtension:Extension = new Extension();
-						nativeExtension.inputID();
-						nativeExtension.addEventListener("INPUT_ID", onInputID);
-					}
-					else
-					{
-						moveSelectView();
-					}
-					break;
+				if(_userName == "NO_USER_DATA")
+				{
+					var nativeExtension:Extension = new Extension();
+					nativeExtension.inputID();
+					nativeExtension.addEventListener("INPUT_ID", onInputID);
+				}
+				else
+				{
+					setGame();
+				}
 			}
 		}
 		
+		/**
+		 * 네이티브 쪽에서 사용자 아이디를 입력받은 후 버튼을 클릭하면 호출되는 메서드
+		 * @param event - 사용자 정보를 가지고 있는 StatusEvent 객체
+		 */
 		private function onInputID(event:StatusEvent):void
 		{
+			// 아이디 값 받음
 			_userName = event.code;
-			moveSelectView();
+			setGame();
 		}
 		
-		private function moveSelectView():void
+		/**
+		 * 사용자에 대한 데이터를 이용해 라운드와 게임에 대한 세팅을 하는 메서드. 세팅이 완료되면 SelectView로 이동한다. 
+		 */
+		private function setGame():void
 		{
 			RoundSetting.instance.userName = _userName;
-			GameSetting.instance.userName = _userName;
-			
 			RoundSetting.instance.settingRound();
+			
+			GameSetting.instance.userName = _userName;
 			GameSetting.instance.gameSettingInit();
+			
 			SceneManager.instance.addScene(this);
 			SceneManager.instance.addScene(new SelectView(0));
 			SceneManager.instance.sceneChange();
