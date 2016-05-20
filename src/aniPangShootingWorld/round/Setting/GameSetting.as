@@ -77,6 +77,8 @@ package aniPangShootingWorld.round.Setting
 		 */		
 		public function saveSetting() : void
 		{
+			if(_userName == "") return;
+			
 			var save : String = json.JSON.encode(_roundStateArray);
 			
 			var pattern : RegExp = /}/g;
