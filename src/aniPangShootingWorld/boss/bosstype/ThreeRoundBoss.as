@@ -86,7 +86,7 @@ package aniPangShootingWorld.boss.bosstype
 			// TODO Auto Generated method stub
 			for(var i : Number =0; i < subNum ; i++)
 			{
-				_subBossVector.push(new ThreeRoundSubBoss(this,GameTexture.boss3Object,10,20,new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1, GameTexture.bullet[8]),_stage));
+				_subBossVector.push(new ThreeRoundSubBoss(this,GameTexture.boss3Object,10,30,new BulletManager(ObjectType.ENEMY_BULLET_IDLE, 1, GameTexture.bullet[8]),_stage));
 				
 				_subBossVector[i].width = Framework.viewport.width/4;
 				_subBossVector[i].height = Framework.viewport.width/4;
@@ -185,7 +185,7 @@ package aniPangShootingWorld.boss.bosstype
 			switch(_bossPhase)
 			{
 				case PHASE_1:
-					if(currentTime - _prevTime > 200)
+					if(currentTime - _prevTime > 350)
 					{ 
 						bulletX = this.x + this.width / 2;
 						bulletY = this.y + this.height / 2;
@@ -201,7 +201,7 @@ package aniPangShootingWorld.boss.bosstype
 					
 					var shotAngleTwo : Number;
 					
-					if(currentTime - _prevTime > 500)
+					if(currentTime - _prevTime > 1000)
 					{ 
 						shotAngleTwo = Math.atan2(Player.currentPlayer.y - bulletY, Player.currentPlayer.x + Player.currentPlayer.width / 2 - bulletX) / Math.PI / 2;
 						shooting(bulletX, bulletY, shotAngleTwo, _shotSpeed*0.7);

@@ -126,7 +126,7 @@ package aniPangShootingWorld.boss.bosstype
 			var bulletSpeed:Number = 0;
 			
 			var currentTime:Number = getTimer();
-			if(currentTime - _prevTime > 350)
+			if(currentTime - _prevTime > 600)
 			{
 				bulletX = this.x + this.width / 2;
 				bulletY = this.y;

@@ -163,7 +163,7 @@ package aniPangShootingWorld.round
 				_backGround.step = Framework.viewport.height/30;
 			}
 			else
-				_backGround.step = 1;
+				_backGround.step = Framework.viewport.height/500;
 			
 			//Note @유영선 시작 전 화면 구현
 			if(this.objectType == ObjectType.ROUND_PREV)

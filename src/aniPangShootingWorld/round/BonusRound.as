@@ -67,7 +67,7 @@ package aniPangShootingWorld.round
 		private var _resultView : ResultDlg;
 		
 		private var _gameSetting : Object;
-		private var _bossNumber : Number = 2;
+		private var _bossNumber : Number = 0;
 		/**
 		 * 적들의 LineCount를 초기화 하고 순서에 따라 화면에 뿌려줍니다.
 		 */
@@ -119,7 +119,7 @@ package aniPangShootingWorld.round
 				_backGround.step = Framework.viewport.height/30;
 			}
 			else
-				_backGround.step = 1;
+				_backGround.step = Framework.viewport.height/500;
 			
 			//Note @유영선 시작 전 화면 구현
 			if(this.objectType == ObjectType.ROUND_PREV)
@@ -379,7 +379,7 @@ package aniPangShootingWorld.round
 		 */		
 		private function backGroundDraw():void
 		{
-			_backGround = new BackGround(60, 1, TextureManager.getInstance().textureDictionary[RoundSetting.instance.roundObject[0].background]);
+			_backGround = new BackGround(60, 1, TextureManager.getInstance().textureDictionary["back4.jpg"]);
 			addChild(_backGround);
 			
 			//Note @유영선 보스워닝뷰 라운드 화면에 등록 후 visble false
