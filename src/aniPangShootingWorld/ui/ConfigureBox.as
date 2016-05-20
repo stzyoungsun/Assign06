@@ -75,6 +75,7 @@ package aniPangShootingWorld.ui
 			
 			function logoutOkFunction():void
 			{
+				removeFromParent(true);
 				if(Framework.sceneStage is Round || Framework.sceneStage is BonusRound)
 				{
 					SceneManager.instance.sceneChange();

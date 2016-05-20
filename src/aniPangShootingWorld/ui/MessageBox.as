@@ -150,11 +150,6 @@ package aniPangShootingWorld.ui
 		private function onTriggeredButton(event:Event):void
 		{
 			var button:Button = event.currentTarget as Button;
-			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
-			{
-				Framework.sceneStage.removeChild(_backImage);
-				backFlag = false;
-			}
 			
 			if(parent.getChildIndex(this) != -1) removeFromParent();
 			
@@ -170,6 +165,17 @@ package aniPangShootingWorld.ui
 			}
 			
 			this.dispose();
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			
+			if(Framework.sceneStage.getChildIndex(_backImage) != -1)
+			{
+				Framework.sceneStage.removeChild(_backImage);
+				backFlag = false;
+			}
 		}
 		
 		/**
