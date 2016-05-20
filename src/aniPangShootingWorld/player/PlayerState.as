@@ -8,6 +8,7 @@ package aniPangShootingWorld.player
 	import framework.core.Framework;
 	import framework.display.Image;
 	import framework.display.ImageTextField;
+	import framework.display.ObjectType;
 	import framework.display.Sprite;
 	import framework.texture.AtlasTexture;
 	import framework.texture.TextureManager;
@@ -75,13 +76,10 @@ package aniPangShootingWorld.player
 			if(sSuperPowerFlag == true)
 			{
 				var curTimer:int = getTimer();
-				if(curTimer - _prevTime < 3000)
-				{
-					trace("슈퍼파워");
-				}
+				if(curTimer - _prevTime < 3000){	}
 				else
 				{
-					trace("슈퍼파워 아님");
+					Player.currentPlayer.objectType == ObjectType.PLAYER_SHIELD_MODE;
 					sSuperPowerFlag = false;
 					_prevTime = getTimer();
 				}

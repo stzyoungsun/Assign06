@@ -175,6 +175,10 @@ package aniPangShootingWorld.player
 					this.objectType = ObjectType.PLAYER_SHIELD_MODE;
 					PlayerState.sPlayerHeart--;
 				}
+				else
+				{
+					this.objectType = ObjectType.PLAYER_GENERAL;
+				}
 			}
 			
 			//Note @유영선  플레이어 쉴드 시간
